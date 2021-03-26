@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="form-container">
     <slot></slot>
   </div>
 </template>
@@ -11,13 +11,13 @@
 </script>
 
 <style>
-  .container {
+  .form-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    margin: 0 60px 0 260px;
+    margin: 0 65px 0 65px;
     flex-wrap: wrap;
-    background: #f8f8f8;
+    background: #0a96b7;
   }
 </style>
