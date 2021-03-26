@@ -2,7 +2,7 @@
   <Navbar />
   <Container>
     <div>
-      <h1>Customer</h1>
+      <h1>Role</h1>
 
     </div>
   </Container>
@@ -13,7 +13,7 @@
   import Navbar from "../components/Navbar.vue";
   import Container from "../components/Container.vue";
   export default {
-    name: "Customer",
+    name: "Role",
     components: { DefaultButton, Navbar, Container },
 
 
