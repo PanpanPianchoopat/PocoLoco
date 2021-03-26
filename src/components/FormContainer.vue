@@ -14,10 +14,11 @@
   .form-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 90%;
     height: 100%;
-    margin: 0 65px 0 65px;
     flex-wrap: wrap;
+    overflow: hidden;
+    padding: 0 70px;
     background: #0a96b7;
   }
 </style>
