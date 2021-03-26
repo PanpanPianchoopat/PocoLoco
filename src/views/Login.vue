@@ -2,12 +2,21 @@
   <div class="login">
     <h1>{{ title }}</h1>
     <div>
-      <i class="fa fa-user fa-3x"></i>
+      <span
+        style="position: absolute; z-index: 0; padding: 40px 60px; color: #0a96b7;"
+      >
+        <i class="fa fa-user fa-3x"></i>
+      </span>
+
       <input type="text" placeholder="Username" />
     </div>
 
     <div class="input-icons">
-      <i class="fa fa-lock fa-3x"></i>
+      <span
+        style="position: absolute; z-index: 0; padding: 40px 60px; color: #0a96b7;"
+      >
+        <i class="fa fa-lock fa-3x"></i>
+      </span>
       <input type="password" placeholder="Password" />
     </div>
     <DefaultButton
@@ -53,11 +62,5 @@
     font-size: 30px;
     outline: none;
     z-index: 1;
-  }
-  i {
-    position: absolute;
-    z-index: 0;
-    padding: 40px 60px;
-    color: #0a96b7;
   }
 </style>
