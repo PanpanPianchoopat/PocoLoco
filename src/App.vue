@@ -13,5 +13,8 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: left;
     color: #2c3e50;
+    background: #f8f8f8;
+    width: 100vw;
+    height: 100vh;
   }
 </style>

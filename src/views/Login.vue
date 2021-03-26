@@ -35,11 +35,11 @@
 <style>
   .login {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     text-align: center;
-    background: white;
+    background: aliceblue;
   }
   h1 {
     font-size: 100px;
