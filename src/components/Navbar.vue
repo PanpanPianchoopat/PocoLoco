@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
     <div class="circle">
-      <img src="../assets/logo.png" />
+      <img src="../assets/owner.png" />
     </div>
     <div class="info">
       <b>Role Name</b>
@@ -52,16 +52,17 @@
   .circle {
     width: 90px;
     height: 90px;
-    background: white;
+    background: #ffa360;
     display: flex;
     justify-content: center;
     align-self: center;
     border-radius: 50%;
+    overflow: hidden;
   }
   img {
-    width: 40px;
+    width: 55px;
     align-self: center;
-    background: white;
+    padding-top: 25px;
   }
   .info {
     display: flex;
