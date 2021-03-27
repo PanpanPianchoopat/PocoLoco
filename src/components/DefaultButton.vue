@@ -12,11 +12,9 @@
 
 <style>
   .default-button-style {
-    height: 60px;
-    width: fit-content;
-    padding: 10px 80px;
-    margin: 50px;
-    font-size: 30px;
+    height: 50px;
+    width: 190px;
+    font-size: 20px;
     background: #fda462;
     color: white;
     border: none;
