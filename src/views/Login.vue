@@ -17,7 +17,7 @@
       >
         <i class="fa fa-lock fa-3x"></i>
       </span>
-      <input type="password" placeholder="Password" />
+      <input class="login-input" type="password" placeholder="Password" />
     </div>
     <DefaultButton
       :style="{ background: '#0a96b7', alignSelf: 'center' }"
