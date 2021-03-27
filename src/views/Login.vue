@@ -8,7 +8,7 @@
         <i class="fa fa-user fa-3x"></i>
       </span>
 
-      <input type="text" placeholder="Username" />
+      <input class="login-input" type="text" placeholder="Username" />
     </div>
 
     <div class="input-icons">
@@ -54,7 +54,7 @@
     font-size: 100px;
     line-height: 117px;
   }
-  input {
+  .login-input {
     width: 440px;
     height: 65px;
     padding: 0 100px;
