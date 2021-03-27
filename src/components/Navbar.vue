@@ -20,7 +20,7 @@
   };
 </script>
 
-<style>
+<style scoped>
   #nav {
     width: 200px;
     height: 100%;

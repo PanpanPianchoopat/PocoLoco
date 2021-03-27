@@ -18,7 +18,7 @@
     height: 100%;
     flex-wrap: wrap;
     overflow: hidden;
-    padding: 0 70px;
+    padding: 95px 70px 0 70px;
     background: #0a96b7;
   }
 </style>
