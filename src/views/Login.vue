@@ -20,7 +20,14 @@
       <input class="login-input" type="password" placeholder="Password" />
     </div>
     <DefaultButton
-      :style="{ background: '#0a96b7', alignSelf: 'center' }"
+      :style="{
+        background: '#0a96b7',
+        alignSelf: 'center',
+        margin: '50px',
+        fontSize: '30px',
+        width: '245px',
+        height: '60px',
+      }"
       @click="this.$router.push({ name: 'Home' })"
       >LOGIN
     </DefaultButton>
