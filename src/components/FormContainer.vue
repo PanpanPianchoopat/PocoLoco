@@ -15,10 +15,9 @@
     display: flex;
     flex-direction: column;
     width: 90%;
-    height: 100%;
     flex-wrap: wrap;
     overflow: hidden;
-    padding: 95px 70px 0 70px;
+    padding: 95px 70px 45px 70px;
     background: #0a96b7;
   }
 </style>
