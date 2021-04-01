@@ -66,7 +66,7 @@
                 <input
                   :value="inputValue"
                   v-on="inputEvents"
-                  :style="{ width: '150px', marginRight: '140px' }"
+                  :style="{ width: '150px', marginRight: '230px' }"
                 />
               </template>
             </v-date-picker>
@@ -159,13 +159,13 @@
   input {
     width: 300px;
     height: 35px;
-    margin: 0 50px 40px 0;
+    margin: 0 80px 40px 0;
     padding-left: 10px;
   }
   select {
     width: 220px;
     height: 40px;
-    margin: 0 130px 30px 0;
+    margin: 0 180px 30px 0;
   }
   .buttons {
     display: flex;
