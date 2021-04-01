@@ -1,32 +1,33 @@
 <template>
   <FormContainer>
     <div class="form-header">
-      <h2>New Customer Registration</h2>
+      <h2>Add New Promotion</h2>
     </div>
 
     <InnerFormContainer>
-      <h3>Customer ID:</h3>
-
       <div class="input-group">
         <div>
-          <h4>First Name</h4>
-          <input type="text" placeholder="ex. Poco" />
+          <h4>Season</h4>
+          <select></select>
         </div>
         <div>
-          <h4>Last Name</h4>
-          <input type="text" placeholder="ex. Loco" />
+          <h4>Room Type</h4>
+          <select></select>
         </div>
       </div>
 
+      <h4>Promotion Name</h4>
+      <input type="text" />
+
       <div class="input-group">
         <div>
-          <h4>Date of Birth</h4>
+          <h4>Start Date</h4>
           <div class="flex x-full">
             <v-date-picker
-              v-model="birthDate"
+              v-model="startDate"
               :masks="{ input: ['YYYY-MM-DD'] }"
               mode="single"
-              class="flex-group"
+              class="flex-grow"
             >
               <template v-slot="{ inputValue, inputEvents }">
                 <div :style="{ display: 'flex', flexDirection: 'row' }">
@@ -37,7 +38,7 @@
                   />
                   <i
                     class="fa fa-calendar fa-2x"
-                    :style="{ margin: '5px 200px 0 0' }"
+                    :style="{ marginTop: '5px', paddingRight: '200px' }"
                   ></i>
                 </div>
               </template>
@@ -45,19 +46,34 @@
           </div>
         </div>
         <div>
-          <h4>Gender</h4>
-          <select></select>
+          <h4>End Date</h4>
+          <div class="flex x-full">
+            <v-date-picker
+              v-model="startDate"
+              :masks="{ input: ['YYYY-MM-DD'] }"
+              mode="single"
+              class="flex-grow"
+            >
+              <template v-slot="{ inputValue, inputEvents }">
+                <div :style="{ display: 'flex', flexDirection: 'row' }">
+                  <input
+                    :value="inputValue"
+                    v-on="inputEvents"
+                    :style="{ width: '150px', marginRight: '10px' }"
+                  />
+                  <i
+                    class="fa fa-calendar fa-2x"
+                    :style="{ marginTop: '5px' }"
+                  ></i>
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
         </div>
       </div>
 
-      <h4>Phone</h4>
-      <input type="text" placeholder="ex. 0812345678" />
-
-      <h4>Email</h4>
-      <input type="text" placeholder="ex. customers@mail.com" />
-
-      <h4>Address</h4>
-      <input type="text" :style="{ width: '100%' }" />
+      <h4>Discount</h4>
+      <input type="number" :style="{ width: '200px' }" />
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -78,7 +94,7 @@
   import DefaultButton from "../components/DefaultButton.vue";
   import InnerFormContainer from "../components/InnerFormContainer.vue";
   export default {
-    name: "CustomerReg",
+    name: "AddPromo",
     components: { FormContainer, DefaultButton, InnerFormContainer },
   };
 </script>

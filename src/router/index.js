@@ -5,6 +5,7 @@ import Login from "../views/Login.vue";
 import EmployeeReg from "../views/EmployeeReg.vue";
 import CustomerReg from "../views/CustomerReg.vue";
 import AddRole from "../views/AddRole.vue";
+import AddPromo from "../views/AddPromo.vue";
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: "/AddRole",
     name: "AddRole",
     component: AddRole,
+  },
+  {
+    path: "/AddPromo",
+    name: "AddPromo",
+    component: AddPromo,
   },
 ];
 
