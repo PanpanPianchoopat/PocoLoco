@@ -20,8 +20,10 @@
         <div>
           <h4>Salary</h4>
           <div class="input-row">
-            <input type="text" :style="{ marginRight: '10px' }" />
-            <p :style="{ marginRight: '80px' }">Baht/month</p>
+            <div :style="{ display: 'flex', flexDirection: 'row' }">
+              <input type="text" :style="{ marginRight: '10px' }" />
+              <p class="unit">Baht/month</p>
+            </div>
           </div>
         </div>
         <div>
@@ -55,9 +57,15 @@
 </script>
 
 <style>
+  .unit {
+    margin-right: 80px;
+  }
   @media (max-width: 1240px) {
     .input-row {
       flex-direction: column;
+    }
+    .unit {
+      margin-right: 0;
     }
   }
 </style>
