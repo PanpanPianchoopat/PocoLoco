@@ -170,6 +170,7 @@
     width: 220px;
     height: 40px;
     margin: 0 180px 30px 0;
+    padding-left: 10px;
   }
   .buttons {
     display: flex;
