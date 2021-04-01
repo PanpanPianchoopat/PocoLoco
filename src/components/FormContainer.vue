@@ -15,9 +15,9 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: auto;
+    min-height: 100%;
     flex-wrap: wrap;
-    overflow: hidden;
+    overflow: auto;
     padding: 45px auto;
     background: #0a96b7;
   }
