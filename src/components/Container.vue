@@ -12,6 +12,7 @@
 
 <style>
   .container {
+    position: fixed;
     display: flex;
     flex-direction: column;
     width: 100%;

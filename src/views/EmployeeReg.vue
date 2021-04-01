@@ -132,14 +132,11 @@
   h2 {
     color: white;
     font-size: 36px;
-    line-height: 10px;
+    margin-bottom: 10px;
   }
   h3 {
     font-size: 24px;
     padding-bottom: 15px;
-  }
-  h4 {
-    line-height: 10px;
   }
   b {
     color: white;
@@ -182,6 +179,9 @@
   @media (max-width: 1000px) {
     .input-row {
       flex-direction: column;
+    }
+    .form-header {
+      padding: 20px 0 10px 10%;
     }
   }
 </style>
