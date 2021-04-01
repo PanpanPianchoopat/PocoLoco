@@ -1,56 +1,60 @@
 <template>
   <FormContainer>
-    <h2>New Employee Registration</h2>
-    <b>Please fill out your information below</b>
-    <div class="form">
-      <div class="inner-container">
-        <h3>EmployeeID:</h3>
+    <div class="form-header">
+      <h2>New Employee Registration</h2>
+      <b>Please fill out your information below</b>
+    </div>
 
-        <div class="input-row">
-          <div class="first-element"><h4>Department</h4></div>
-          <div><h4>Role</h4></div>
-        </div>
-        <div class="input-row">
+    <InnerFormContainer>
+      <h3>EmployeeID:</h3>
+
+      <div class="input-row">
+        <div>
+          <h4>Department</h4>
           <select></select>
+        </div>
+        <div>
+          <h4>Role</h4>
           <select></select>
         </div>
+      </div>
 
-        <h4>Start Date</h4>
-        <div class="flex x-full">
-          <v-date-picker
-            v-model="startDate"
-            :masks="{ input: ['YYYY-MM-DD'] }"
-            mode="single"
-            class="flex-grow"
-          >
-            <template v-slot="{ inputValue, inputEvents }">
-              <input
-                :value="inputValue"
-                v-on="inputEvents"
-                :style="{ width: '150px' }"
-              />
-            </template>
-          </v-date-picker>
-        </div>
-        <hr />
+      <h4>Start Date</h4>
+      <div class="flex x-full">
+        <v-date-picker
+          v-model="startDate"
+          :masks="{ input: ['YYYY-MM-DD'] }"
+          mode="single"
+          class="flex-grow"
+        >
+          <template v-slot="{ inputValue, inputEvents }">
+            <input
+              :value="inputValue"
+              v-on="inputEvents"
+              :style="{ width: '150px' }"
+            />
+          </template>
+        </v-date-picker>
+      </div>
+      <hr />
 
-        <div class="input-row">
-          <div class="first-element"><h4>First Name</h4></div>
-          <div><h4>Last Name</h4></div>
-        </div>
-        <div class="input-row">
+      <div class="input-row">
+        <div>
+          <h4>First Name</h4>
           <input type="text" placeholder="ex. Poco" />
+        </div>
+        <div>
+          <h4>Last Name</h4>
           <input type="text" placeholder="ex. Loco" />
         </div>
+      </div>
 
-        <h4>ID Number / Passport Number</h4>
-        <input type="text" />
+      <h4>ID Number / Passport Number</h4>
+      <input type="text" />
 
-        <div class="input-row">
-          <div :style="{ width: '300px' }"><h4>Date of Birth</h4></div>
-          <div><h4>Gender</h4></div>
-        </div>
-        <div class="input-row">
+      <div class="input-row">
+        <div>
+          <h4>Date of Birth</h4>
           <div class="flex x-full">
             <v-date-picker
               v-model="birthDate"
@@ -67,27 +71,37 @@
               </template>
             </v-date-picker>
           </div>
+        </div>
+        <div>
+          <h4>Gender</h4>
           <select></select>
         </div>
+      </div>
 
-        <h4>Phone</h4>
-        <input type="text" placeholder="ex. 0812345678" />
+      <h4>Phone</h4>
+      <input type="text" placeholder="ex. 0812345678" />
 
-        <h4>Email</h4>
-        <input type="text" placeholder="ex. employee@mail.com" />
+      <h4>Email</h4>
+      <input type="text" placeholder="ex. employee@mail.com" />
 
-        <div class="input-row">
-          <div class="first-element"><h4>Password</h4></div>
-          <div><h4>Confirm Password</h4></div>
-        </div>
-        <div class="input-row">
+      <div class="input-row">
+        <div>
+          <h4>Password</h4>
           <input type="password" placeholder="Password" />
+        </div>
+        <div>
+          <h4>Confirm Password</h4>
           <input type="password" placeholder="Password" />
         </div>
       </div>
-    </div>
+    </InnerFormContainer>
     <div class="buttons">
-      <DefaultButton :style="{ background: '#FF8E8E', marginRight: '110px' }"
+      <DefaultButton
+        :style="{
+          background: 'none',
+          marginRight: '110px',
+          border: '3px solid white',
+        }"
         >CANCEL</DefaultButton
       >
       <DefaultButton :style="{ background: '#54CFD6' }">ADD</DefaultButton>
@@ -98,8 +112,10 @@
 <script>
   import FormContainer from "../components/FormContainer.vue";
   import DefaultButton from "../components/DefaultButton.vue";
+  import InnerFormContainer from "../components/InnerFormContainer.vue";
   export default {
-    components: { FormContainer, DefaultButton },
+    name: "EmployeeReg",
+    components: { FormContainer, DefaultButton, InnerFormContainer },
     data() {
       return {
         startDate: null,
@@ -109,7 +125,10 @@
   };
 </script>
 
-<style scoped>
+<style>
+  .form-header {
+    padding: 90px 0 10px 10%;
+  }
   h2 {
     color: white;
     font-size: 36px;
@@ -126,30 +145,20 @@
     color: white;
     font-size: 18px;
   }
-  .form {
-    width: 100%;
-    height: auto;
-    margin-top: 30px;
-    background-color: white;
-  }
   hr {
-    width: 765px;
+    width: 80%;
     color: black;
     margin: 40px auto;
   }
   .first-element {
     width: 350px;
   }
-  .inner-container {
-    padding: 40px 90px;
-    display: flex;
-    flex-direction: column;
-  }
   .input-row {
     width: 100%;
     display: flex;
     flex-direction: row;
   }
+
   input {
     width: 300px;
     height: 35px;
@@ -165,6 +174,14 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 45px;
+    margin: 45px 0;
+  }
+  *:focus {
+    outline: 0;
+  }
+  @media (max-width: 1000px) {
+    .input-row {
+      flex-direction: column;
+    }
   }
 </style>
