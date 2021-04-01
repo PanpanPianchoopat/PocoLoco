@@ -6,8 +6,6 @@
     </div>
 
     <InnerFormContainer>
-      <h3>EmployeeID:</h3>
-
       <div class="input-group">
         <div>
           <h4>Department</h4>
@@ -32,9 +30,9 @@
               <input
                 :value="inputValue"
                 v-on="inputEvents"
-                :style="{ width: '150px', marginRight: '10px' }"
+                :style="{ width: '150px', marginRight: '0' }"
               />
-              <i class="fa fa-calendar fa-2x" :style="{ marginTop: '5px' }"></i>
+              <i class="fa fa-calendar fa-2x"></i>
             </div>
           </template>
         </v-date-picker>
@@ -70,12 +68,9 @@
                   <input
                     :value="inputValue"
                     v-on="inputEvents"
-                    :style="{ width: '150px', marginRight: '10px' }"
+                    :style="{ width: '150px', marginRight: '0' }"
                   />
-                  <i
-                    class="fa fa-calendar fa-2x"
-                    :style="{ margin: '5px 200px 0 0' }"
-                  ></i>
+                  <i class="fa fa-calendar fa-2x"></i>
                 </div>
               </template>
             </v-date-picker>
@@ -184,6 +179,8 @@
   }
   i {
     color: #0a96b7;
+    margin: 5px 0 0 -35px;
+    padding-right: 240px;
   }
   *:focus {
     outline: 0;

@@ -1,30 +1,39 @@
 <template>
   <FormContainer>
     <div class="form-header">
-      <h2>Add New Promotion</h2>
+      <h2>Add Booking Detail</h2>
+      <b>Booking ID:</b>
     </div>
 
     <InnerFormContainer>
       <div class="input-group">
         <div>
-          <h4>Season</h4>
-          <select></select>
+          <h4>Guest's First Name</h4>
+          <input type="text" placeholder="ex. Poco" />
         </div>
+        <div>
+          <h4>Guest's Last Name</h4>
+          <input type="text" placeholder="ex. Loco" />
+        </div>
+      </div>
+
+      <div class="input-group">
         <div>
           <h4>Room Type</h4>
           <select></select>
         </div>
+        <div>
+          <h4>Room Number</h4>
+          <select></select>
+        </div>
       </div>
-
-      <h4>Promotion Name</h4>
-      <input type="text" />
 
       <div class="input-group">
         <div>
-          <h4>Start Date</h4>
+          <h4>Check In Date</h4>
           <div class="flex x-full">
             <v-date-picker
-              v-model="startDate"
+              v-model="inDate"
               :masks="{ input: ['YYYY-MM-DD'] }"
               mode="single"
               class="flex-grow"
@@ -43,10 +52,10 @@
           </div>
         </div>
         <div>
-          <h4>End Date</h4>
+          <h4>Check Out Date</h4>
           <div class="flex x-full">
             <v-date-picker
-              v-model="endDate"
+              v-model="outDate"
               :masks="{ input: ['YYYY-MM-DD'] }"
               mode="single"
               class="flex-grow"
@@ -65,9 +74,6 @@
           </div>
         </div>
       </div>
-
-      <h4>Discount</h4>
-      <input type="number" :style="{ width: '200px' }" />
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -88,12 +94,12 @@
   import DefaultButton from "../components/DefaultButton.vue";
   import InnerFormContainer from "../components/InnerFormContainer.vue";
   export default {
-    name: "AddPromo",
+    name: "AddBookingDetail",
     components: { FormContainer, DefaultButton, InnerFormContainer },
     data() {
       return {
-        startDate: null,
-        endDate: null,
+        inDate: null,
+        outDate: null,
       };
     },
   };

@@ -33,12 +33,9 @@
                   <input
                     :value="inputValue"
                     v-on="inputEvents"
-                    :style="{ width: '150px', marginRight: '10px' }"
+                    :style="{ width: '150px', marginRight: '0' }"
                   />
-                  <i
-                    class="fa fa-calendar fa-2x"
-                    :style="{ margin: '5px 200px 0 0' }"
-                  ></i>
+                  <i class="fa fa-calendar fa-2x"></i>
                 </div>
               </template>
             </v-date-picker>
@@ -80,6 +77,11 @@
   export default {
     name: "CustomerReg",
     components: { FormContainer, DefaultButton, InnerFormContainer },
+    data() {
+      return {
+        birthDate: null,
+      };
+    },
   };
 </script>
 
