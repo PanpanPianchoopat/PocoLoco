@@ -1,45 +1,11 @@
 <template>
   <FormContainer>
     <div class="form-header">
-      <h2>New Employee Registration</h2>
-      <b>Please fill out your information below</b>
+      <h2>New Customer Registration</h2>
     </div>
 
     <InnerFormContainer>
-      <h3>EmployeeID:</h3>
-
-      <div class="input-group">
-        <div>
-          <h4>Department</h4>
-          <select></select>
-        </div>
-        <div>
-          <h4>Role</h4>
-          <select></select>
-        </div>
-      </div>
-
-      <h4>Start Date</h4>
-      <div class="flex x-full">
-        <v-date-picker
-          v-model="startDate"
-          :masks="{ input: ['YYYY-MM-DD'] }"
-          mode="single"
-          class="flex-grow"
-        >
-          <template v-slot="{ inputValue, inputEvents }">
-            <div :style="{ display: 'flex', flexDirection: 'row' }">
-              <input
-                :value="inputValue"
-                v-on="inputEvents"
-                :style="{ width: '150px', marginRight: '10px' }"
-              />
-              <i class="fa fa-calendar fa-2x" :style="{ marginTop: '5px' }"></i>
-            </div>
-          </template>
-        </v-date-picker>
-      </div>
-      <hr />
+      <h3>Customer ID:</h3>
 
       <div class="input-group">
         <div>
@@ -51,9 +17,6 @@
           <input type="text" placeholder="ex. Loco" />
         </div>
       </div>
-
-      <h4>ID Number / Passport Number</h4>
-      <input type="text" />
 
       <div class="input-group">
         <div>
@@ -91,18 +54,10 @@
       <input type="text" placeholder="ex. 0812345678" />
 
       <h4>Email</h4>
-      <input type="text" placeholder="ex. employee@mail.com" />
+      <input type="text" placeholder="ex. customers@mail.com" />
 
-      <div class="input-group">
-        <div>
-          <h4>Password</h4>
-          <input type="password" placeholder="Password" />
-        </div>
-        <div>
-          <h4>Confirm Password</h4>
-          <input type="password" placeholder="Password" />
-        </div>
-      </div>
+      <h4>Address</h4>
+      <input type="text" :style="{ width: '100%' }" />
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -123,7 +78,7 @@
   import DefaultButton from "../components/DefaultButton.vue";
   import InnerFormContainer from "../components/InnerFormContainer.vue";
   export default {
-    name: "EmployeeReg",
+    name: "CustomerReg",
     components: { FormContainer, DefaultButton, InnerFormContainer },
     data() {
       return {
