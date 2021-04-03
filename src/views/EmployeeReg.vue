@@ -7,11 +7,6 @@
       </div>
 
       <InnerFormContainer>
-        <!-- show data -->
-        <div class="py-2">
-          {{ details }}
-        </div>
-
         <div class="input-group">
           <div>
             <!-- Department -->
