@@ -27,20 +27,14 @@
           <div>
             <h4>Role</h4>
             <select v-model="details.roleID">
-              <!-- <option disabled value>Role</option>
-              <option v-for="item in roleDB" 
-              :value="item.roleID" 
-              :key="item">
-                {{ item.roleName }}
-              </option> -->
               <option disabled value>Role</option>
-              <option value="10">Admin</option>
-              <option value="20">Owner</option>
-              <option value="30">Receptionist</option>
-              <option value="40">Manager</option>
-              <option value="50">Chef</option>
-              <option value="60">Maid</option>
-              <option value="70">Staff</option>
+              <option
+                v-for="(role, index) in roleDB"
+                v-bind:key="index"
+                :value="role.roleID"
+              >
+                {{ role.roleName }}
+              </option>
             </select>
           </div>
         </div>
@@ -229,6 +223,7 @@ export default {
         password: null,
         cf_pass: null,
       },
+      selected: "role",
     };
   },
 
@@ -254,10 +249,11 @@ export default {
           action: "getRole",
           department: this.details.department,
         })
-        .then(function(res) {
-          app.roleDB = res.data;
-          console.log(app.roleDB);
-        });
+        .then(
+          function(res) {
+            this.roleDB = res.data;
+          }.bind(this)
+        );
     },
 
     addEmployee(e) {
