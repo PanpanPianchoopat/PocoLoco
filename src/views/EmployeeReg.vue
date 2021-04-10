@@ -8,9 +8,23 @@
 
       <InnerFormContainer>
         <div class="input-group">
-          <div>
-            <!-- Department -->
+          <!-- Department -->
+          <div v-if="departmentError">
             <h4>Department</h4>
+            <select @change="getRole" v-model="details.department">
+              <option disabled value="">Department</option>
+              <option value="1">Admin/Owner</option>
+              <option value="2">Receptionist</option>
+              <option value="3">Kitchen</option>
+              <option value="4">Housekeeping</option>
+              <option value="5">Security</option>
+              <option value="6">Accounts and Credits</option>
+              <option value="7">Maintenance</option>
+            </select>
+          </div>
+          <!-- Department Error-->
+          <div v-else>
+            <h4 style="color:red">Department</h4>
             <select @change="getRole" v-model="details.department">
               <option disabled value="">Department</option>
               <option value="1">Admin/Owner</option>
@@ -24,8 +38,22 @@
           </div>
 
           <!-- Role -->
-          <div>
+          <div v-if="roleError">
             <h4>Role</h4>
+            <select v-model="details.roleID">
+              <option disabled value>Role</option>
+              <option
+                v-for="(role, index) in roleDB"
+                v-bind:key="index"
+                :value="role.roleID"
+              >
+                {{ role.roleName }}
+              </option>
+            </select>
+          </div>
+          <!-- Role Error-->
+          <div v-else>
+            <h4 style="color:red">Role</h4>
             <select v-model="details.roleID">
               <option disabled value>Role</option>
               <option
@@ -40,30 +68,65 @@
         </div>
 
         <!-- Start Date -->
-        <h4>Start Date</h4>
-        <div class="flex x-full">
-          <v-date-picker
-            v-model="details.startDate"
-            :masks="{ input: ['YYYY-MM-DD'] }"
-            mode="single"
-            class="flex-grow"
-          >
-            <template v-slot="{ inputValue, inputEvents }">
-              <div :style="{ display: 'flex', flexDirection: 'row' }">
-                <input
-                  :value="inputValue"
-                  v-on="inputEvents"
-                  :style="{ width: '150px', marginRight: '0' }"
-                />
-                <i class="fa fa-calendar fa-2x"></i>
-              </div>
-            </template>
-          </v-date-picker>
+        <div v-if="startDateError">
+          <h4>Start Date</h4>
+          <div class="flex x-full">
+            <v-date-picker
+              v-model="details.startDate"
+              :masks="{ input: ['YYYY-MM-DD'] }"
+              mode="single"
+              class="flex-grow"
+            >
+              <template v-slot="{ inputValue, inputEvents }">
+                <div :style="{ display: 'flex', flexDirection: 'row' }">
+                  <input
+                    :value="inputValue"
+                    v-on="inputEvents"
+                    :style="{ width: '150px', marginRight: '0' }"
+                  />
+                  <i class="fa fa-calendar fa-2x"></i>
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
+        </div>
+        <!-- Start Date Error -->
+        <div v-else>
+          <h4 style="color:red">Start Date</h4>
+          <div class="flex x-full">
+            <v-date-picker
+              v-model="details.startDate"
+              :masks="{ input: ['YYYY-MM-DD'] }"
+              mode="single"
+              class="flex-grow"
+            >
+              <template v-slot="{ inputValue, inputEvents }">
+                <div :style="{ display: 'flex', flexDirection: 'row' }">
+                  <input
+                    :value="inputValue"
+                    v-on="inputEvents"
+                    :style="{ width: '150px', marginRight: '0' }"
+                  />
+                  <i class="fa fa-calendar fa-2x"></i>
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
         </div>
 
         <!-- Shift -->
-        <div>
+        <div v-if="shiftError">
           <h4>Shift</h4>
+          <select v-model="details.shift">
+            <option disabled value>Shift</option>
+            <option value="1">05.00 - 13.00</option>
+            <option value="2">13.00 - 21.00</option>
+            <option value="3">21.00 - 05.00</option>
+          </select>
+        </div>
+        <!-- Shift Error-->
+        <div v-else>
+          <h4 style="color:red">Shift</h4>
           <select v-model="details.shift">
             <option disabled value>Shift</option>
             <option value="1">05.00 - 13.00</option>
@@ -74,10 +137,19 @@
 
         <hr />
 
-        <!-- First Name -->
         <div class="input-group">
-          <div>
+          <!-- First Name -->
+          <div v-if="firstNameError">
             <h4>First Name</h4>
+            <input
+              type="text"
+              v-model="details.firstName"
+              placeholder="ex. Poco"
+            />
+          </div>
+          <!-- First Name Error-->
+          <div v-else>
+            <h4 style="color:red">First Name</h4>
             <input
               type="text"
               v-model="details.firstName"
@@ -86,8 +158,17 @@
           </div>
 
           <!-- Lastname -->
-          <div>
+          <div v-if="lastNameError">
             <h4>Last Name</h4>
+            <input
+              type="text"
+              v-model="details.lastName"
+              placeholder="ex. Loco"
+            />
+          </div>
+          <!-- Lastname Error -->
+          <div v-else>
+            <h4 style="color:red">Last Name</h4>
             <input
               type="text"
               v-model="details.lastName"
@@ -97,16 +178,27 @@
         </div>
 
         <!-- Identification -->
-        <h4>ID Number / Passport Number</h4>
-        <input
-          type="text"
-          v-model="details.identification"
-          pattern="^[A-PR-WYa-pr-wy][1-9]\d\s?\d{4}[1-9]$"
-        />
+        <div v-if="identificationError">
+          <h4>ID Number / Passport Number</h4>
+          <input
+            type="text"
+            v-model="details.identification"
+            pattern="^[A-PR-WYa-pr-wy][1-9]\d\s?\d{4}[1-9]$"
+          />
+        </div>
+        <!-- Identification Error-->
+        <div v-else>
+          <h4 style="color:red">ID Number / Passport Number</h4>
+          <input
+            type="text"
+            v-model="details.identification"
+            pattern="^[A-PR-WYa-pr-wy][1-9]\d\s?\d{4}[1-9]$"
+          />
+        </div>
 
         <div class="input-group">
-          <div>
-            <!-- DOB -->
+          <!-- DOB -->
+          <div v-if="DOBError">
             <h4>Date of Birth</h4>
             <div class="flex x-full">
               <v-date-picker
@@ -128,9 +220,42 @@
               </v-date-picker>
             </div>
           </div>
-          <div>
-            <!-- Gender -->
+          <!-- DOBError -->
+          <div v-else>
+            <h4 style="color:red">Date of Birth</h4>
+            <div class="flex x-full">
+              <v-date-picker
+                v-model="details.DOB"
+                :masks="{ input: ['YYYY-MM-DD'] }"
+                mode="single"
+                class="flex-group"
+              >
+                <template v-slot="{ inputValue, inputEvents }">
+                  <div :style="{ display: 'flex', flexDirection: 'row' }">
+                    <input
+                      :value="inputValue"
+                      v-on="inputEvents"
+                      :style="{ width: '150px', marginRight: '0' }"
+                    />
+                    <i class="fa fa-calendar fa-2x"></i>
+                  </div>
+                </template>
+              </v-date-picker>
+            </div>
+          </div>
+
+          <!-- Gender -->
+          <div v-if="genderError">
             <h4>Gender</h4>
+            <select v-model="details.gender">
+              <option disabled value>Gender</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+          </div>
+          <!-- Gender Error -->
+          <div v-else>
+            <h4 style="color:red">Gender</h4>
             <select v-model="details.gender">
               <option disabled value>Gender</option>
               <option value="M">Male</option>
@@ -140,25 +265,56 @@
         </div>
 
         <!-- Phone -->
-        <h4>Phone</h4>
-        <input
-          type="text"
-          v-model="details.phone"
-          placeholder="ex. 0812345678"
-        />
+        <div v-if="phoneError">
+          <h4>Phone</h4>
+          <input
+            type="text"
+            v-model="details.phone"
+            placeholder="ex. 0812345678"
+          />
+        </div>
+        <!-- Phone Error -->
+        <div v-else>
+          <h4 style="color:red">Phone</h4>
+          <input
+            type="text"
+            v-model="details.phone"
+            placeholder="ex. 0812345678"
+          />
+        </div>
 
         <!-- Email -->
-        <h4>Email</h4>
-        <input
-          type="text"
-          v-model="details.email"
-          placeholder="ex. employee@mail.com"
-        />
+        <div v-if="emailError">
+          <h4>Email</h4>
+          <input
+            type="text"
+            v-model="details.email"
+            placeholder="ex. employee@mail.com"
+          />
+        </div>
+        <!-- Email Error-->
+        <div v-else>
+          <h4 style="color:red">Email</h4>
+          <input
+            type="text"
+            v-model="details.email"
+            placeholder="ex. employee@mail.com"
+          />
+        </div>
 
         <div class="input-group">
           <!-- Password -->
-          <div>
+          <div v-if="passwordError">
             <h4>Password</h4>
+            <input
+              type="password"
+              v-model="details.password"
+              placeholder="Password"
+            />
+          </div>
+          <!-- Password Error-->
+          <div v-else>
+            <h4 style="color:red">Password</h4>
             <input
               type="password"
               v-model="details.password"
@@ -167,8 +323,17 @@
           </div>
 
           <!-- Confirm Password -->
-          <div>
+          <div v-if="conPasswordError">
             <h4>Confirm Password</h4>
+            <input
+              type="password"
+              v-model="details.cf_pass"
+              placeholder="Password"
+            />
+          </div>
+          <!-- Confirm Password Error-->
+          <div v-else>
+            <h4 style="color:red">Confirm Password</h4>
             <input
               type="password"
               v-model="details.cf_pass"
@@ -203,25 +368,42 @@ import axios from "axios";
 export default {
   name: "EmployeeReg",
   components: { FormContainer, DefaultButton, InnerFormContainer },
+
   data() {
     return {
       startDate: null,
       birthDate: null,
       roleDB: null,
+
+      departmentError: true,
+      roleError: true,
+      startDateError: true,
+      shiftError: true,
+      firstNameError: true,
+      lastNameError: true,
+      identificationError: true,
+      DOBError: true,
+      genderError: true,
+      phoneError: true,
+      emailError: true,
+      passwordError: true,
+      conPasswordError: true,
+      check: false,
+
       details: {
-        department: null,
-        roleID: null,
-        startDate: null,
-        shift: null,
-        firstName: null,
-        lastName: null,
-        identification: null,
-        DOB: null,
-        gender: null,
-        phone: null,
-        email: null,
-        password: null,
-        cf_pass: null,
+        department: "",
+        roleID: "",
+        startDate: "",
+        shift: "",
+        firstName: "",
+        lastName: "",
+        identification: "",
+        DOB: "",
+        gender: "",
+        phone: "",
+        email: "",
+        password: "",
+        cf_pass: "",
       },
       selected: "role",
     };
@@ -258,27 +440,137 @@ export default {
 
     addEmployee(e) {
       e.preventDefault();
-      axios
-        .post("http://localhost:8080/PocoLoco_db/api_addEmployee.php", {
-          action: "addEmployee",
-          department: this.details.department,
-          roleID: this.details.roleID,
-          shift: this.details.shift,
-          startDate: this.details.startDate,
-          firstName: this.details.firstName,
-          lastName: this.details.lastName,
-          identification: this.details.identification,
-          DOB: this.details.DOB,
-          gender: this.details.gender,
-          phone: this.details.phone,
-          email: this.details.email,
-          password: this.details.password,
-          cf_pass: this.details.cf_pass,
-        })
-        .then(function(res) {
-          console.log(res.data);
-          //alert(res.data);
-        });
+      // this.check =
+      //   this.details.department != "" &&
+      //   this.details.roleID != "" &&
+      //   this.details.startDate != "" &&
+      //   this.details.shift != "" &&
+      //   this.details.firstName != "" &&
+      //   this.details.lastName != "" &&
+      //   this.details.identification != "" &&
+      //   this.details.DOB != "" &&
+      //   this.details.gender != "" &&
+      //   this.details.phone != "" &&
+      //   this.details.email != "" &&
+      //   this.details.password != "" &&
+      //   this.details.cf_pass != "";
+
+      if (this.details.department == "") {
+        this.departmentError = false;
+      }
+      if (this.details.department != "") {
+        this.departmentError = true;
+      }
+      if (this.details.roleID == "") {
+        this.roleError = false;
+      }
+      if (this.details.roleID != "") {
+        this.roleError = true;
+      }
+      if (this.details.shift == "") {
+        this.shiftError = false;
+      }
+      if (this.details.shift != "") {
+        this.shiftError = true;
+      }
+      if (this.details.startDate == "") {
+        this.startDateError = false;
+      }
+      if (this.details.startDate != "") {
+        this.startDateError = true;
+      }
+      if (this.details.firstName == "") {
+        this.firstNameError = false;
+      }
+      if (this.details.firstName != "") {
+        this.firstNameError = true;
+      }
+      if (this.details.lastName == "") {
+        this.lastNameError = false;
+      }
+      if (this.details.lastName != "") {
+        this.lastNameError = true;
+      }
+      if (this.details.identification == "") {
+        this.identificationError = false;
+      }
+      if (this.details.identification != "") {
+        this.identificationError = true;
+      }
+      if (this.details.DOB == "") {
+        this.DOBError = false;
+      }
+      if (this.details.DOB != "") {
+        this.DOBError = true;
+      }
+      if (this.details.gender == "") {
+        this.genderError = false;
+      }
+      if (this.details.gender != "") {
+        this.genderError = true;
+      }
+      if (this.details.phone == "") {
+        this.phoneError = false;
+      }
+      if (this.details.phone != "") {
+        this.phoneError = true;
+      }
+      if (this.details.email == "") {
+        this.emailError = false;
+      }
+      if (this.details.email != "") {
+        this.emailError = true;
+      }
+      if (this.details.password == "") {
+        this.passwordError = false;
+      }
+      if (this.details.password != "") {
+        this.passwordError = true;
+      }
+      if (this.details.cf_pass == "") {
+        this.conPasswordError = false;
+      }
+      if (this.details.cf_pass != "") {
+        this.conPasswordError = true;
+      }
+      this.check =
+        this.departmentError &&
+        this.roleError &&
+        this.shiftError &&
+        this.startDateError &&
+        this.firstNameError &&
+        this.lastNameError &&
+        this.identificationError &&
+        this.DOBError &&
+        this.genderError &&
+        this.phoneError &&
+        this.emailError &&
+        this.passwordError &&
+        this.conPasswordError;
+      console.log(this.check);
+      if (this.check) {
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_addEmployee.php", {
+            action: "addEmployee",
+            department: this.details.department,
+            roleID: this.details.roleID,
+            shift: this.details.shift,
+            startDate: this.details.startDate,
+            firstName: this.details.firstName,
+            lastName: this.details.lastName,
+            identification: this.details.identification,
+            DOB: this.details.DOB,
+            gender: this.details.gender,
+            phone: this.details.phone,
+            email: this.details.email,
+            password: this.details.password,
+            cf_pass: this.details.cf_pass,
+          })
+          .then(function(res) {
+            console.log(res.data);
+            //alert(res.data);
+          });
+      }
     },
   },
 };
