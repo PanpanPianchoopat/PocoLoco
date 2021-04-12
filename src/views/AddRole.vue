@@ -6,29 +6,139 @@
 
     <InnerFormContainer>
       <div class="input-row">
-        <div>
+        <!-- Department -->
+        <div v-if="departmentError">
           <h4>Department</h4>
-          <select :style="{ width: '300px', marginRight: '180px' }"></select>
+          <select
+            :style="{ width: '300px', marginRight: '180px' }"
+            v-model="details.departmentID"
+          >
+            <option value="">Choose department-</option>
+            <option value="1">Admin/Owner</option>
+            <option value="2">Receptionist</option>
+            <option value="3">Kitchen</option>
+            <option value="4">Housekeeping</option>
+            <option value="5">Security</option>
+            <option value="6">Accounts and Credits</option>
+            <option value="7">Maintenance</option>
+          </select>
         </div>
-        <div>
+
+        <!-- Department Error -->
+        <div v-else>
+          <h4 style="color:red">Department</h4>
+          <select
+            :style="{ width: '300px', marginRight: '180px' }"
+            v-model="details.departmentID"
+          >
+            <option value="">Choose department-</option>
+            <option value="1">Admin/Owner</option>
+            <option value="2">Receptionist</option>
+            <option value="3">Kitchen</option>
+            <option value="4">Housekeeping</option>
+            <option value="5">Security</option>
+            <option value="6">Accounts and Credits</option>
+            <option value="7">Maintenance</option>
+          </select>
+        </div>
+
+        <!-- Role Name -->
+        <div v-if="roleNameError">
           <h4>Role Name</h4>
-          <input type="text" />
+          <input
+            name="roleName"
+            type="text"
+            v-model="details.roleName"
+            placeholder="ex. Manager"
+            pattern="[a-zA-Z]+"
+            oninvalid="alert('Please enter a valid Role Name (only characters)')"
+            required
+          />
+        </div>
+        <!-- Role Name Error-->
+        <div v-else>
+          <h4 style="color:red">Role Name</h4>
+          <input
+            name="roleName"
+            type="text"
+            v-model="details.roleName"
+            placeholder="ex. Manager"
+            pattern="[a-zA-Z]+"
+            oninvalid="alert('Please enter a valid Role Name (only characters)')"
+            required
+          />
         </div>
       </div>
 
       <div class="input-row">
-        <div>
+        <!-- salary -->
+        <div v-if="salaryError">
           <h4>Salary</h4>
           <div class="input-row">
             <div :style="{ display: 'flex', flexDirection: 'row' }">
-              <input type="text" :style="{ marginRight: '10px' }" />
+              <input
+                type="number"
+                :style="{ marginRight: '10px' }"
+                v-model="details.salary"
+                onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+                placeholder="20000"
+                min="0"
+                oninvalid="alert('Please enter a valid Salary')"
+                required
+              />
               <p class="unit">Baht/month</p>
             </div>
           </div>
         </div>
-        <div>
+        <!-- salary Error-->
+        <div v-else>
+          <h4 style="color:red">Salary</h4>
+          <div class="input-row">
+            <div :style="{ display: 'flex', flexDirection: 'row' }">
+              <input
+                type="number"
+                :style="{ marginRight: '10px' }"
+                v-model="details.salary"
+                onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+                placeholder="20000"
+                min="0"
+                oninvalid="alert('Please enter a valid Salary')"
+                required
+              />
+              <p class="unit">Baht/month</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bonus Rate -->
+        <div v-if="bonusRateError">
           <h4>Bonus Rate</h4>
-          <input type="text" :style="{ width: '150px' }" />
+          <input
+            type="number"
+            :style="{ width: '150px' }"
+            v-model="details.bonusRate"
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+            placeholder="0.4"
+            step="0.01"
+            min="0"
+            oninvalid="alert('Please enter a valid Bonus Rate')"
+            required
+          />
+        </div>
+        <!-- Bonus Rate Error-->
+        <div v-else>
+          <h4 style="color:red">Bonus Rate</h4>
+          <input
+            type="number"
+            :style="{ width: '150px' }"
+            v-model="details.bonusRate"
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+            placeholder="0.4"
+            step="0.01"
+            min="0"
+            oninvalid="alert('Please enter a valid Bonus Rate')"
+            required
+          />
         </div>
       </div>
     </InnerFormContainer>
@@ -41,31 +151,123 @@
         }"
         >CANCEL</DefaultButton
       >
-      <DefaultButton :style="{ background: '#54CFD6' }">ADD</DefaultButton>
+      <DefaultButton :style="{ background: '#54CFD6' }" @click="addRoleFn"
+        >ADD</DefaultButton
+      >
     </div>
   </FormContainer>
 </template>
 
 <script>
-  import FormContainer from "../components/FormContainer.vue";
-  import DefaultButton from "../components/DefaultButton.vue";
-  import InnerFormContainer from "../components/InnerFormContainer.vue";
-  export default {
-    name: "AddRole",
-    components: { FormContainer, DefaultButton, InnerFormContainer },
-  };
+import FormContainer from "../components/FormContainer.vue";
+import DefaultButton from "../components/DefaultButton.vue";
+import InnerFormContainer from "../components/InnerFormContainer.vue";
+import axios from "axios";
+
+export default {
+  name: "AddRole",
+  components: { FormContainer, DefaultButton, InnerFormContainer },
+  data() {
+    return {
+      message: "Add New Role",
+      departmentError: true,
+      roleNameError: true,
+      salaryError: true,
+      bonusRateError: true,
+      check: false,
+
+      details: {
+        departmentID: "",
+        roleName: "",
+        salary: "",
+        bonusRate: "",
+      },
+      selected: "role",
+    };
+  },
+  methods: {
+    fetch() {
+      axios
+        .get("http://localhost:8080/PocoLoco_db/api_addRole.php")
+        .then((response) => {
+          console.log("SUCCESS");
+        })
+        .catch(() => {
+          console.log("ERROR");
+        });
+    },
+    validatecCheck() {
+      if (this.details.departmentID == "") {
+        this.departmentError = false;
+      }
+      if (this.details.departmentID != "") {
+        this.departmentError = true;
+      }
+      if (this.details.roleName == "") {
+        this.roleNameError = false;
+      }
+      if (this.details.roleName != "") {
+        this.roleNameError = true;
+      }
+      if (this.details.salary == "") {
+        this.salaryError = false;
+      }
+      if (this.details.salary != "") {
+        this.salaryError = true;
+      }
+      if (this.details.bonusRate == "") {
+        this.bonusRateError = false;
+      }
+      if (this.details.bonusRate != "") {
+        this.bonusRateError = true;
+      }
+      this.check =
+        this.departmentError &&
+        this.roleNameError &&
+        this.salaryError &&
+        this.bonusRateError;
+    },
+    addRoleFn(e) {
+      e.preventDefault();
+
+      this.validateCheck();
+
+      if (this.check) {
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_addRole.php", {
+            action: "addRole",
+            departmentID: this.details.departmentID,
+            roleName: this.details.roleName,
+            salary: this.details.salary,
+            bonusRate: this.details.bonusRate,
+          })
+          .then(function(res) {
+            console.log(res.data);
+          });
+      }
+    },
+  },
+};
 </script>
 
 <style>
+.unit {
+  margin-right: 80px;
+}
+@media (max-width: 1240px) {
+  .input-row {
+    flex-direction: column;
+  }
   .unit {
-    margin-right: 80px;
+    margin-right: 0;
   }
-  @media (max-width: 1240px) {
-    .input-row {
-      flex-direction: column;
-    }
-    .unit {
-      margin-right: 0;
-    }
-  }
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 </style>
