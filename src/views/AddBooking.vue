@@ -1,35 +1,14 @@
 <template>
   <FormContainer>
     <div class="form-header">
-      <h2>Add New Role</h2>
+      <h2>Add Booking</h2>
     </div>
 
     <InnerFormContainer>
+      <h3>Booking ID:</h3>
       <div class="input-group">
-        <div>
-          <h4>Department</h4>
-          <select :style="{ width: '300px', marginRight: '180px' }"></select>
-        </div>
-        <div>
-          <h4>Role Name</h4>
-          <input type="text" />
-        </div>
-      </div>
-
-      <div class="input-group">
-        <div>
-          <h4>Salary</h4>
-          <div class="input-row">
-            <div :style="{ display: 'flex', flexDirection: 'row' }">
-              <input type="text" :style="{ marginRight: '10px' }" />
-              <p class="unit">Baht/month</p>
-            </div>
-          </div>
-        </div>
-        <div>
-          <h4>Bonus Rate</h4>
-          <input type="text" :style="{ width: '150px' }" />
-        </div>
+        <h4>Customer ID</h4>
+        <input type="text" />
       </div>
     </InnerFormContainer>
     <div class="buttons">
@@ -51,8 +30,14 @@
   import DefaultButton from "../components/DefaultButton.vue";
   import InnerFormContainer from "../components/InnerFormContainer.vue";
   export default {
-    name: "AddRole",
+    name: "AddBooking",
     components: { FormContainer, DefaultButton, InnerFormContainer },
+    data() {
+      return {
+        inDate: null,
+        outDate: null,
+      };
+    },
   };
 </script>
 
@@ -65,26 +50,30 @@
     font-size: 36px;
     margin-bottom: 10px;
   }
+  h3 {
+    font-size: 24px;
+    padding-bottom: 15px;
+  }
   .input-group {
     width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: center;
   }
   input {
     width: 300px;
     height: 35px;
-    margin: 0 80px 40px 0;
+    margin-left: 10px;
+    align-self: center;
     padding-left: 10px;
   }
-  select {
-    width: 220px;
-    height: 40px;
-    margin: 0 180px 30px 0;
-    padding-left: 10px;
+  table,
+  th,
+  td {
+    border: 1px solid black;
+    margin: none;
   }
-  .unit {
-    margin-right: 80px;
-  }
+
   .buttons {
     display: flex;
     flex-direction: row;
@@ -100,14 +89,8 @@
     outline: 0;
   }
   @media (max-width: 1000px) {
-    .input-group {
-      flex-direction: column;
-    }
     .form-header {
       padding: 20px 0 10px 10%;
-    }
-    .unit {
-      margin-right: 0;
     }
   }
 </style>

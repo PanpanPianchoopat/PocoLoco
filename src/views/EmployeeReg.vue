@@ -17,26 +17,35 @@
         </div>
       </div>
 
-      <h4>Start Date</h4>
-      <div class="flex x-full">
-        <v-date-picker
-          v-model="startDate"
-          :masks="{ input: ['YYYY-MM-DD'] }"
-          mode="single"
-          class="flex-grow"
-        >
-          <template v-slot="{ inputValue, inputEvents }">
-            <div :style="{ display: 'flex', flexDirection: 'row' }">
-              <input
-                :value="inputValue"
-                v-on="inputEvents"
-                :style="{ width: '150px', marginRight: '0' }"
-              />
-              <i class="fa fa-calendar fa-2x"></i>
-            </div>
-          </template>
-        </v-date-picker>
+      <div class="input-group">
+        <div>
+          <h4>Start Date</h4>
+          <div class="flex x-full">
+            <v-date-picker
+              v-model="startDate"
+              :masks="{ input: ['YYYY-MM-DD'] }"
+              mode="single"
+              class="flex-grow"
+            >
+              <template v-slot="{ inputValue, inputEvents }">
+                <div :style="{ display: 'flex', flexDirection: 'row' }">
+                  <input
+                    :value="inputValue"
+                    v-on="inputEvents"
+                    :style="{ width: '150px', marginRight: '0' }"
+                  />
+                  <i class="fa fa-calendar fa-2x"></i>
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
+        </div>
+        <div>
+          <h4>Role</h4>
+          <select></select>
+        </div>
       </div>
+
       <hr />
 
       <div class="input-group">
@@ -129,7 +138,7 @@
   };
 </script>
 
-<style>
+<style scoped>
   .form-header {
     padding: 90px 0 10px 10%;
   }
@@ -151,15 +160,11 @@
     color: black;
     margin: 40px auto;
   }
-  .first-element {
-    width: 350px;
-  }
   .input-group {
     width: 100%;
     display: flex;
     flex-direction: row;
   }
-
   input {
     width: 300px;
     height: 35px;
