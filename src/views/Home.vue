@@ -6,10 +6,19 @@
 </template>
 
 <script>
-  import Navbar from "../components/Navbar.vue";
-  import Container from "../components/Container.vue";
-  export default {
-    name: "Home",
-    components: { Navbar, Container },
-  };
+import Navbar from "../components/Navbar.vue";
+import Container from "../components/Container.vue";
+export default {
+  name: "Home",
+  components: { Navbar, Container },
+  data() {
+    return {
+      employeeID: "",
+    };
+  },
+  created() {
+    this.employeeID = this.$route.params.employeeID;
+    console.log(this.$route.params);
+  },
+};
 </script>

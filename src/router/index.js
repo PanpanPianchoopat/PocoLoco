@@ -9,6 +9,7 @@ import AddPromo from "../views/AddPromo.vue";
 import AddBooking from "../views/AddBooking.vue";
 import AddBookingDetail from "../views/AddBookingDetail.vue";
 
+
 const routes = [
   {
     path: "/Home",

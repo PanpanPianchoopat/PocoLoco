@@ -8,7 +8,12 @@
         <i class="fa fa-user fa-3x"></i>
       </span>
 
-      <input class="login-input" type="text" placeholder="Username" />
+      <input
+        v-model="employeeID"
+        class="login-input"
+        type="text"
+        placeholder="Username"
+      />
     </div>
 
     <div class="input-icons">
@@ -17,7 +22,12 @@
       >
         <i class="fa fa-lock fa-3x"></i>
       </span>
-      <input class="login-input" type="password" placeholder="Password" />
+      <input
+        v-model="password"
+        class="login-input"
+        type="password"
+        placeholder="Password"
+      />
     </div>
     <DefaultButton
       :style="{
@@ -28,46 +38,71 @@
         width: '245px',
         height: '60px',
       }"
-      @click="this.$router.push({ name: 'Home' })"
+      @click="goLogin"
       >LOGIN
     </DefaultButton>
   </div>
 </template>
 
 <script>
-  import DefaultButton from "../components/DefaultButton.vue";
+import DefaultButton from "../components/DefaultButton.vue";
+import axios from "axios";
 
-  export default {
-    name: "Login",
-    components: { DefaultButton },
-    data() {
-      return {
-        title: "Login",
-      };
+export default {
+  name: "Login",
+  components: { DefaultButton },
+  data() {
+    return {
+      title: "Login",
+      employeeID: "",
+      password: "",
+    };
+  },
+
+  methods: {
+    goLogin() {
+      axios
+        .post("http://localhost:8080/PocoLoco_db/api_login.php", {
+          action: "login",
+          employeeID: this.employeeID,
+          password: this.password,
+        })
+        .then(
+          function(res) {
+            console.log(res);
+            if (res.data.login == 1) {
+              this.$router.push({
+                name: "Home",
+                params: { employeeID: res.data.employeeID },
+              });
+            }
+          }.bind(this)
+        );
     },
-  };
+  },
+};
 </script>
 
 <style>
-  .login {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    background: aliceblue;
-  }
-  h1 {
-    font-size: 100px;
-    line-height: 117px;
-  }
-  .login-input {
-    width: 440px;
-    height: 65px;
-    padding: 0 100px;
-    margin: 30px;
-    font-size: 30px;
-    outline: none;
-    z-index: 1;
-  }
+.login {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background: aliceblue;
+}
+h1 {
+  font-size: 100px;
+  line-height: 117px;
+}
+.login-input {
+  width: 440px;
+  height: 65px;
+  padding: 0 100px;
+  margin: 30px;
+  font-size: 30px;
+  outline: none;
+  z-index: 1;
+}
 </style>

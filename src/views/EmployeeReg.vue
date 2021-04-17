@@ -409,22 +409,7 @@ export default {
     };
   },
 
-  created() {
-    this.fetch();
-  },
-
   methods: {
-    fetch() {
-      axios
-        .get("http://localhost:8080/PocoLoco_db/api_addEmployee.php")
-        .then((response) => {
-          console.log("SUCCESSS");
-        })
-        .catch(() => {
-          console.log("ERROR");
-        });
-    },
-
     getRole() {
       axios
         .post("http://localhost:8080/PocoLoco_db/api_addEmployee.php", {
@@ -440,20 +425,6 @@ export default {
 
     addEmployee(e) {
       e.preventDefault();
-      // this.check =
-      //   this.details.department != "" &&
-      //   this.details.roleID != "" &&
-      //   this.details.startDate != "" &&
-      //   this.details.shift != "" &&
-      //   this.details.firstName != "" &&
-      //   this.details.lastName != "" &&
-      //   this.details.identification != "" &&
-      //   this.details.DOB != "" &&
-      //   this.details.gender != "" &&
-      //   this.details.phone != "" &&
-      //   this.details.email != "" &&
-      //   this.details.password != "" &&
-      //   this.details.cf_pass != "";
 
       if (this.details.department == "") {
         this.departmentError = false;
