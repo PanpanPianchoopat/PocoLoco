@@ -5,16 +5,11 @@
     </div>
 
     <InnerFormContainer>
-      <div class="input-group">
-        <div>
-          <h4>Department</h4>
-          <select :style="{ width: '300px', marginRight: '180px' }"></select>
-        </div>
-        <div>
-          <h4>Role Name</h4>
-          <input type="text" />
-        </div>
-      </div>
+      <h4>Department</h4>
+      <select :style="{ width: '300px', marginRight: '180px' }"></select>
+
+      <h4>Role Name</h4>
+      <input type="text" />
 
       <div class="input-group">
         <div>

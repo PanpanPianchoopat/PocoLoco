@@ -41,7 +41,7 @@
           </div>
         </div>
         <div>
-          <h4>Role</h4>
+          <h4>Shift</h4>
           <select></select>
         </div>
       </div>
