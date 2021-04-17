@@ -576,7 +576,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .form-header {
   padding: 90px 0 10px 10%;
 }
@@ -598,15 +598,11 @@ hr {
   color: black;
   margin: 40px auto;
 }
-.first-element {
-  width: 350px;
-}
 .input-group {
   width: 100%;
   display: flex;
   flex-direction: row;
 }
-
 input {
   width: 300px;
   height: 35px;
@@ -633,12 +629,7 @@ i {
 *:focus {
   outline: 0;
 }
-@media (max-width: 1000px) {
-  .input-group {
-    flex-direction: column;
-  }
-  .form-header {
-    padding: 20px 0 10px 10%;
-  }
+.form-header {
+  padding: 20px 0 10px 10%;
 }
 </style>

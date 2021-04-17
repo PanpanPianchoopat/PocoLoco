@@ -2,7 +2,6 @@
   <FormContainer>
     <div class="form-header">
       <h2>Add Booking Detail</h2>
-      <b>Booking ID:</b>
     </div>
 
     <InnerFormContainer>
@@ -17,15 +16,9 @@
         </div>
       </div>
 
-      <div class="input-group">
-        <div>
-          <h4>Room Type</h4>
-          <select></select>
-        </div>
-        <div>
-          <h4>Room Number</h4>
-          <select></select>
-        </div>
+      <div>
+        <h4>Room Type</h4>
+        <select></select>
       </div>
 
       <div class="input-group">
@@ -105,4 +98,65 @@
   };
 </script>
 
-<style></style>
+<style scoped>
+  .form-header {
+    padding: 90px 0 10px 10%;
+  }
+  h2 {
+    color: white;
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  h3 {
+    font-size: 24px;
+    padding-bottom: 15px;
+  }
+  b {
+    color: white;
+    font-size: 18px;
+  }
+  hr {
+    width: 80%;
+    color: black;
+    margin: 40px auto;
+  }
+  .input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  input {
+    width: 300px;
+    height: 35px;
+    margin: 0 80px 40px 0;
+    padding-left: 10px;
+  }
+  select {
+    width: 220px;
+    height: 40px;
+    margin: 0 180px 30px 0;
+    padding-left: 10px;
+  }
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 45px 0;
+  }
+  i {
+    color: #0a96b7;
+    margin: 5px 0 0 -35px;
+    padding-right: 240px;
+  }
+  *:focus {
+    outline: 0;
+  }
+  @media (max-width: 1000px) {
+    .input-group {
+      flex-direction: column;
+    }
+    .form-header {
+      padding: 20px 0 10px 10%;
+    }
+  }
+</style>
