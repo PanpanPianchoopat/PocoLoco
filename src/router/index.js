@@ -6,8 +6,8 @@ import EmployeeReg from "../views/EmployeeReg.vue";
 import CustomerReg from "../views/CustomerReg.vue";
 import AddRole from "../views/AddRole.vue";
 import AddPromo from "../views/AddPromo.vue";
-import AddBookingDetail from "../views/AddBookingDetail.vue";
 import AddBooking from "../views/AddBooking.vue";
+import AddBookingDetail from "../views/AddBookingDetail.vue";
 
 const routes = [
   {
@@ -46,14 +46,14 @@ const routes = [
     component: AddPromo,
   },
   {
-    path: "/AddBookingDetail",
-    name: "AddBookingDetail",
-    component: AddBookingDetail,
-  },
-  {
     path: "/AddBooking",
     name: "AddBooking",
     component: AddBooking,
+  },
+  {
+    path: "/AddBookingDetail",
+    name: "AddBookingDetail",
+    component: AddBookingDetail,
   },
 ];
 
