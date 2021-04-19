@@ -20,6 +20,7 @@
           <tr>
             <th>Booking Detail ID</th>
             <th>Room Number</th>
+            <th>Room Type</th>
             <th>Manage</th>
           </tr>
           <!-- detail -->
@@ -33,6 +34,9 @@
 
             <!-- Room Number -->
             <td>{{ detail.roomID }}</td>
+
+            <!-- Room Type -->
+            <td>{{ detail.roomType }}</td>
 
             <!-- Select Button -->
             <td>
@@ -141,18 +145,22 @@ export default {
     },
 
     addBooking() {
-      axios
-        .post("http://localhost:8080/PocoLoco_db/api_booking.php", {
-          action: "addBooking",
-          bookingID: this.bookingID,
-          customerID: this.customerID,
-        })
-        .then(
-          function(res) {
-            console.log(res);
-            this.message = res.data.message;
-          }.bind(this)
-        );
+      if (this.customerID != "") {
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_booking.php", {
+            action: "addBooking",
+            bookingID: this.bookingID,
+            customerID: this.customerID,
+          })
+          .then(
+            function(res) {
+              console.log(res);
+              this.message = res.data.message;
+            }.bind(this)
+          );
+      } else {
+        this.message = "Please fill Customer ID";
+      }
     },
   },
 };
