@@ -600,7 +600,12 @@ i {
 *:focus {
   outline: 0;
 }
-.form-header {
-  padding: 20px 0 10px 10%;
+@media (max-width: 1000px) {
+  .input-group {
+    flex-direction: column;
+  }
+  .form-header {
+    padding: 20px 0 10px 10%;
+  }
 }
 </style>
