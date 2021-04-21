@@ -9,6 +9,7 @@ import AddPromo from "../views/AddPromo.vue";
 import AddBooking from "../views/AddBooking.vue";
 import AddBookingDetail from "../views/AddBookingDetail.vue";
 import AddNewService from "../views/AddNewService.vue";
+import AddExpense from "../views/AddExpense.vue";
 
 const routes = [
   {
@@ -60,6 +61,11 @@ const routes = [
     path: "/AddNewService",
     name: "AddNewService",
     component: AddNewService,
+  },
+  {
+    path: "/AddExpense",
+    name: "AddExpense",
+    component: AddExpense,
   },
 ];
 
