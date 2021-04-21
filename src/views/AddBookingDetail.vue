@@ -89,7 +89,7 @@
         </div>
       </div>
 
-      <!-- Room Number -->
+      <!-- Room Number Table -->
       <div>
         <table style="width:100%">
           <!-- head -->
