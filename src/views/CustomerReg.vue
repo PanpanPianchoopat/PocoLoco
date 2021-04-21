@@ -152,7 +152,7 @@
           marginRight: '110px',
           border: '3px solid white',
         }"
-        >CANCEL</DefaultButton
+         @click="resetData">CANCEL</DefaultButton
       >
       <DefaultButton :style="{ background: '#54CFD6' }" @click="submitData"
         >ADD</DefaultButton
