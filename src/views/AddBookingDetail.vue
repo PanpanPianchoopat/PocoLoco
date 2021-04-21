@@ -67,6 +67,39 @@
           </div>
         </div>
       </div>
+
+      <!-- Table -->
+      <table>
+        <tr>
+          <th>Room Number</th>
+          <th>Room Type</th>
+          <th>Select</th>
+        </tr>
+
+        <tr
+          v-for="(room, i) in sampleRooms"
+          :key="i"
+          class="row"
+          v-bind:style="[
+            selectedRooms.includes(room.roomNumber)
+              ? { background: 'pink' }
+              : {},
+          ]"
+        >
+          <td>{{ room.roomNumber }}</td>
+          <td>{{ room.type }}</td>
+          <td>
+            <input
+              type="checkbox"
+              :id="room.roomNumber"
+              :value="room.roomNumber"
+              v-model="selectedRooms"
+              class="checkbox"
+            />
+            <label :id="room.roomNumber" for="i">{{ checked }}</label>
+          </td>
+        </tr>
+      </table>
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -86,11 +119,20 @@
   import FormContainer from "../components/FormContainer.vue";
   import DefaultButton from "../components/DefaultButton.vue";
   import InnerFormContainer from "../components/InnerFormContainer.vue";
+
+  const sampleRooms = [
+    { roomNumber: "A-123", type: "suite" },
+    { roomNumber: "A-222", type: "suite" },
+    { roomNumber: "A-463", type: "suite" },
+    { roomNumber: "A-552", type: "suite" },
+  ];
   export default {
     name: "AddBookingDetail",
     components: { FormContainer, DefaultButton, InnerFormContainer },
     data() {
       return {
+        sampleRooms,
+        selectedRooms: [],
         inDate: null,
         outDate: null,
       };
@@ -137,16 +179,44 @@
     margin: 0 180px 30px 0;
     padding-left: 10px;
   }
-  .buttons {
-    display: flex;
-    flex-direction: row;
+  table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin-top: 25px;
+  }
+  th {
+    height: 35px;
+    text-align: center;
+    background-color: #eeeeee;
+    border-bottom: 1px solid black;
+  }
+  td {
+    text-align: center;
     justify-content: center;
-    margin: 45px 0;
+    align-items: center;
+  }
+  .row:hover {
+    cursor: pointer;
+    background: #f0f0f0;
+  }
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    margin: 5px auto 0 auto;
+  }
+  .checkbox:checked:before {
+    background-color: green;
   }
   i {
     color: #0a96b7;
     margin: 5px 0 0 -35px;
     padding-right: 240px;
+  }
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 45px 0;
   }
   *:focus {
     outline: 0;
