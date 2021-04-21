@@ -14,39 +14,43 @@
 
       <!-- Table -->
       <!-- ฺBooking Detail -->
-      <div>
-        <table style="width:100%">
-          <!-- head -->
-          <tr>
-            <th>Booking Detail ID</th>
-            <th>Room Number</th>
-            <th>Room Type</th>
-            <th>Manage</th>
-          </tr>
-          <!-- detail -->
-          <tr
-            v-for="(detail, index) in bookingDetail_db"
-            v-bind:key="index"
-            :value="detail"
-          >
-            <!-- BookingDetail ID -->
-            <td>{{ detail.bookingDetailID }}</td>
 
-            <!-- Room Number -->
-            <td>{{ detail.roomID }}</td>
+      <table>
+        <tr>
+          <th>Booking Detail ID</th>
+          <th>Room Number</th>
+          <th>Room Type</th>
+          <th>Manage</th>
+        </tr>
 
-            <!-- Room Type -->
-            <td>{{ detail.roomType }}</td>
+        <tr
+          v-for="(detail, index) in bookingDetail_db"
+          v-bind:key="index"
+          :value="detail"
+          class="row"
+        >
+          <!-- BookingDetail ID -->
+          <td class="idCell">{{ detail.bookingDetailID }}</td>
 
-            <!-- Select Button -->
-            <td>
-              <button @click="deleteDetail(detail.bookingDetailID)">
-                Delete
+          <!-- Room Number -->
+          <td class="idCell">{{ detail.roomID }}</td>
+
+          <!-- Room Type -->
+          <td class="manage">{{ detail.roomType }}</td>
+
+          <!-- Select Button -->
+          <td>
+            <div class="manage">
+              <button
+                class="manage-button"
+                @click="deleteDetail(detail.bookingDetailID)"
+              >
+                <i class="fa fa-trash fa-2x"></i>
               </button>
-            </td>
-          </tr>
-        </table>
-      </div>
+            </div>
+          </td>
+        </tr>
+      </table>
 
       <!-- Add Booking Detail -->
       <div class="buttons">
@@ -202,13 +206,36 @@ input {
   align-self: center;
   padding-left: 10px;
 }
-table,
-th,
-td {
+table {
   border: 1px solid black;
-  margin: none;
+  border-collapse: collapse;
+  margin-top: 25px;
 }
-
+th {
+  height: 35px;
+  padding-left: 50px;
+  background-color: #eeeeee;
+  border-bottom: 1px solid black;
+}
+.row:hover {
+  cursor: pointer;
+  background: #f0f0f0;
+}
+.idCell {
+  padding-left: 50px;
+}
+.manage-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.manage {
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 .buttons {
   display: flex;
   flex-direction: row;
@@ -216,9 +243,15 @@ td {
   margin: 45px 0;
 }
 i {
+  color: #5f5f5f;
+}
+i:hover {
   color: #0a96b7;
-  margin: 5px 0 0 -35px;
-  padding-right: 240px;
+}
+.vl {
+  border-left: 3px solid #eeeeee;
+  height: 25px;
+  margin: 0 15px;
 }
 *:focus {
   outline: 0;
