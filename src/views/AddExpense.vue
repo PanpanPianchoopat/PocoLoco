@@ -120,10 +120,6 @@ export default {
   components: { FormContainer, DefaultButton, InnerFormContainer },
   data() {
     return {
-      expenseDate: null,
-      customer: "",
-      message: "New Servise",
-
       roomNumberError: true,
       detailError: true,
       expenseError: true,
@@ -140,12 +136,37 @@ export default {
   methods: {
     submitData(e) {
       e.preventDefault();
+      this.validate();
+      if (this.check) {
+        // Save Data
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
+            roomNumber: this.form.roomNumber,
+            detail: this.form.detail,
+            expenseDate: this.form.expenseDate,
+            expense: this.form.expense,
+            action: "insert",
+          })
+          .then(
+            function(res) {
+              if (res.data.success == true) {
+                alert("Saved Successful");
+                this.resetData();
+              } else {
+                this.message = res.data.message;
+              }
+            }.bind(this)
+          );
+      }
+    },
+
+    validate() {
       this.check =
         this.form.roomNumber != "" &&
         this.form.detail != "" &&
         this.form.expense != "" &&
         this.form.expenseDate != "";
-        
+
       if (this.form.roomNumber == "") {
         this.roomNumberError = false;
       }
@@ -170,22 +191,8 @@ export default {
       if (this.form.expenseDate != "") {
         this.expenseDateError = true;
       }
-      if (this.check) {
-        // Save Data
-        axios
-          .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
-            roomNumber: this.form.roomNumber,
-            detail: this.form.detail,
-            expenseDate: this.form.expenseDate,
-            expense: this.form.expense,
-            action: "insert",
-          })
-          .then(function(res) {
-            console.log(res);
-            //app.resetData(); //app คือ method เรียก method
-          });
-      }
     },
+
     resetData(e) {
       this.form.roomNumber = "";
       this.form.detail = "";
