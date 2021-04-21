@@ -155,12 +155,22 @@ export default {
           .then(
             function(res) {
               console.log(res);
-              this.message = res.data.message;
+              if (res.data.success == true) {
+                this.getBookingID();
+                alert("Booking Saved Successful");
+              } else {
+                this.message = res.data.message;
+              }
+              this.resetData();
             }.bind(this)
           );
       } else {
         this.message = "Please fill Customer ID";
       }
+    },
+
+    resetData() {
+      this.customerID = "";
     },
   },
 };
