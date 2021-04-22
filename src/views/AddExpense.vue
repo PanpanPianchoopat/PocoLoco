@@ -10,8 +10,9 @@
       <!-- Room number -->
       <div class="input-group" v-if="roomNumberError">
         <h4>Room Number</h4>
-        <input type="text" v-model="form.roomNumber" />
+        <input type="number" v-model="form.roomNumber" />
       </div>
+
       <!-- Room number Error -->
       <div class="input-group" v-else>
         <h4 style="color:red">Room Number</h4>
@@ -51,7 +52,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="form.expenseDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="dateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -73,7 +75,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="form.expenseDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="dateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -130,6 +133,10 @@ export default {
         detail: "",
         expenseDate: "",
         expense: "",
+      },
+      dateConfig: {
+        type: "string",
+        mask: "YYYY-MM-DD",
       },
     };
   },
@@ -248,7 +255,7 @@ textarea {
   margin: 45px 0;
 }
 i {
-  color: #0a96b7;
+  color: var(--primary-blue);
   margin: 15px 0 0 -35px;
 }
 *:focus {

@@ -124,7 +124,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="details.startDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="startDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -148,7 +149,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="details.startDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="startDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -172,7 +174,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="details.endDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="endDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -195,7 +198,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="details.endDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="endDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -284,6 +288,15 @@ export default {
         discount: "",
       },
       selected: "promotion",
+
+      startDateConfig: {
+        type: "string",
+        mask: "YYYY-MM-DD",
+      },
+      endDateConfig: {
+        type: "string",
+        mask: "YYYY-MM-DD",
+      },
     };
   },
 
@@ -412,51 +425,51 @@ export default {
 </script>
 
 <style scoped>
-  .form-header {
-    padding: 90px 0 10px 10%;
-  }
-  h2 {
-    color: white;
-    font-size: 36px;
-    margin-bottom: 10px;
-  }
+.form-header {
+  padding: 90px 0 10px 10%;
+}
+h2 {
+  color: white;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+input {
+  width: 300px;
+  height: 35px;
+  margin: 0 80px 40px 0;
+  padding-left: 10px;
+}
+select {
+  width: 220px;
+  height: 40px;
+  margin: 0 180px 30px 0;
+  padding-left: 10px;
+}
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 45px 0;
+}
+i {
+  color: #0a96b7;
+  margin: 5px 0 0 -35px;
+  padding-right: 240px;
+}
+*:focus {
+  outline: 0;
+}
+@media (max-width: 1000px) {
   .input-group {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+    flex-direction: column;
   }
-  input {
-    width: 300px;
-    height: 35px;
-    margin: 0 80px 40px 0;
-    padding-left: 10px;
+  .form-header {
+    padding: 20px 0 10px 10%;
   }
-  select {
-    width: 220px;
-    height: 40px;
-    margin: 0 180px 30px 0;
-    padding-left: 10px;
-  }
-  .buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin: 45px 0;
-  }
-  i {
-    color: #0a96b7;
-    margin: 5px 0 0 -35px;
-    padding-right: 240px;
-  }
-  *:focus {
-    outline: 0;
-  }
-  @media (max-width: 1000px) {
-    .input-group {
-      flex-direction: column;
-    }
-    .form-header {
-      padding: 20px 0 10px 10%;
-    }
-  }
+}
 </style>

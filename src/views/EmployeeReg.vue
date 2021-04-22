@@ -73,7 +73,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="details.startDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="startDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -96,7 +97,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="details.startDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="startDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -203,7 +205,8 @@
             <div class="flex x-full">
               <v-date-picker
                 v-model="details.DOB"
-                :masks="{ input: ['YYYY-MM-DD'] }"
+                :masks="{ input: ['DD/MM/YYYY'] }"
+                :model-config="birthDateConfig"
                 mode="single"
                 class="flex-group"
               >
@@ -226,7 +229,8 @@
             <div class="flex x-full">
               <v-date-picker
                 v-model="details.DOB"
-                :masks="{ input: ['YYYY-MM-DD'] }"
+                :masks="{ input: ['DD/MM/YYYY'] }"
+                :model-config="birthDateConfig"
                 mode="single"
                 class="flex-group"
               >
@@ -406,6 +410,14 @@ export default {
         cf_pass: "",
       },
       selected: "role",
+      startDateConfig: {
+        type: "string",
+        mask: "YYYY-MM-DD",
+      },
+      birthDateConfig: {
+        type: "string",
+        mask: "YYYY-MM-DD",
+      },
     };
   },
 
