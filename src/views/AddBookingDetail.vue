@@ -5,6 +5,10 @@
     </div>
 
     <InnerFormContainer>
+      <!-- show data -->
+      <div>
+        {{ details }}
+      </div>
       <div class="input-group">
         <div>
           <h4>Guest's First Name</h4>
@@ -116,13 +120,11 @@
 
             <!-- Select Button -->
             <td>
+              <!-- @change="checkOne(details.roomNumber[details.roomNumber.length - 1])" -->
               <input
                 type="checkbox"
                 v-model="details.roomNumber"
                 :value="room.roomID"
-                @change="
-                  checkOne(details.roomNumber[details.roomNumber.length - 1])
-                "
               />
             </td>
           </tr>
@@ -195,13 +197,11 @@ export default {
         .then(
           function(res) {
             this.typeDB = res.data;
-            console.log(res);
           }.bind(this)
         );
     },
 
     validate() {
-      console.log("validate");
       if (
         this.details.guestFirstName != "" &&
         this.details.guestLastName != "" &&
@@ -214,7 +214,6 @@ export default {
     },
 
     getRoomNumber() {
-      console.log("getRoomNumber");
       axios
         .post("http://localhost:8080/PocoLoco_db/api_bookingDetail.php", {
           action: "getRoomNumber",
@@ -238,7 +237,7 @@ export default {
           bookingID: this.details.bookingID,
           guestFirstName: this.details.guestFirstName,
           guestLastName: this.details.guestLastName,
-          roomNumber: this.details.roomNumber[0],
+          roomNumber: this.details.roomNumber,
           checkIn: this.details.checkIn,
           checkOut: this.details.checkOut,
         })
@@ -246,6 +245,7 @@ export default {
           function(res) {
             console.log(res);
             if (res.data.success == true) {
+              alert("Saved Successful");
               this.$router.push({
                 name: "AddBooking",
                 params: { bookingID: this.$bookingID },
