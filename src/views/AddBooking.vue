@@ -113,6 +113,9 @@
     padding-left: 10px;
   }
   table {
+    width: 100%;
+    max-width: 500px;
+    align-self: center;
     border: 1px solid black;
     border-collapse: collapse;
     margin-top: 25px;
