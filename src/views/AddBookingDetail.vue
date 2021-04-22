@@ -27,7 +27,7 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="inDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
               :model-config="inDateConfig"
               mode="single"
               class="flex-grow"
@@ -50,7 +50,7 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="outDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
               :model-config="outDateConfig"
               mode="single"
               class="flex-grow"
