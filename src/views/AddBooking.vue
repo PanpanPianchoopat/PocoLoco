@@ -80,7 +80,7 @@
         }"
         >CANCEL</DefaultButton
       >
-      <DefaultButton @click="addBooking" :style="{ background: '#54CFD6' }"
+      <DefaultButton @click="addBooking"
         >ADD</DefaultButton
       >
     </div>
@@ -258,7 +258,7 @@ i {
   padding: 0 20px;
 }
 i:hover {
-  color: #0a96b7;
+  color: var(--primary-blue);
 }
 .vl {
   border-left: 3px solid #eeeeee;

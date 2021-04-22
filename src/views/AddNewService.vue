@@ -74,9 +74,7 @@
         }"
         >CANCEL</DefaultButton
       >
-      <DefaultButton :style="{ background: '#54CFD6' }" @click="addNewService"
-        >ADD</DefaultButton
-      >
+      <DefaultButton @click="addNewService">ADD</DefaultButton>
     </div>
   </FormContainer>
 </template>
@@ -198,7 +196,7 @@ select {
   margin: 45px 0;
 }
 i {
-  color: #0a96b7;
+  color: var(--primary-blue);
   margin: 5px 0 0 -35px;
   padding-right: 240px;
 }

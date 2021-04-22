@@ -105,9 +105,7 @@
         @click="resetData"
         >CANCEL</DefaultButton
       >
-      <DefaultButton :style="{ background: '#54CFD6' }" @click="submitData"
-        >ADD</DefaultButton
-      >
+      <DefaultButton @click="submitData">ADD</DefaultButton>
     </div>
   </FormContainer>
 </template>

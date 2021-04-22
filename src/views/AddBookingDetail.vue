@@ -151,11 +151,7 @@
         }"
         >CANCEL</DefaultButton
       >
-      <DefaultButton
-        @click="addBookingDetail"
-        :style="{ background: '#54CFD6' }"
-        >ADD</DefaultButton
-      >
+      <DefaultButton @click="addBookingDetail">ADD</DefaultButton>
     </div>
   </FormContainer>
 </template>
@@ -345,11 +341,9 @@ td {
   height: 20px;
   margin: 5px auto 0 auto;
 }
-.checkbox:checked:before {
-  background-color: green;
-}
+
 i {
-  color: #0a96b7;
+  color: var(--primary-blue);
   margin: 5px 0 0 -35px;
   padding-right: 240px;
 }
