@@ -23,7 +23,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="startDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="startDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -68,7 +69,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="birthDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="birthDateConfig"
               mode="single"
               class="flex-group"
             >
@@ -133,6 +135,14 @@
       return {
         startDate: null,
         birthDate: null,
+        startDateConfig: {
+          type: "string",
+          mask: "YYYY-MM-DD",
+        },
+        birthDateConfig: {
+          type: "string",
+          mask: "YYYY-MM-DD",
+        },
       };
     },
   };

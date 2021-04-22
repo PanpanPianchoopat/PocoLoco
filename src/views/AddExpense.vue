@@ -31,7 +31,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="expenseDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="dateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -74,6 +75,10 @@
     data() {
       return {
         expenseDate: null,
+        dateConfig: {
+          type: "string",
+          mask: "YYYY-MM-DD",
+        },
       };
     },
   };

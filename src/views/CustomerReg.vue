@@ -24,7 +24,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="birthDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="dateConfig"
               mode="single"
               class="flex-group"
             >
@@ -80,6 +81,10 @@
     data() {
       return {
         birthDate: null,
+        dateConfig: {
+          type: "string",
+          mask: "YYYY-MM-DD",
+        },
       };
     },
   };

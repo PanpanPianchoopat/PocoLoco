@@ -25,7 +25,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="startDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="startDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -47,7 +48,8 @@
           <div class="flex x-full">
             <v-date-picker
               v-model="endDate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="endDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -94,6 +96,14 @@
       return {
         startDate: null,
         endDate: null,
+        startDateConfig: {
+          type: "string",
+          mask: "YYYY-MM-DD",
+        },
+        endDateConfig: {
+          type: "string",
+          mask: "YYYY-MM-DD",
+        },
       };
     },
   };
