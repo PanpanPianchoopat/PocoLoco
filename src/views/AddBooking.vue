@@ -5,6 +5,7 @@
     </div>
 
     <InnerFormContainer>
+      
       <h3>Booking ID: {{ bookingID }}</h3>
       <div class="input-group">
         <h4>Customer ID</h4>
@@ -19,7 +20,7 @@
         <tr>
           <th>Booking Detail ID</th>
           <th>Room Number</th>
-          <th>Room Type</th>
+          <th>Type</th>
           <th>Manage</th>
         </tr>
 
@@ -36,11 +37,11 @@
           <td class="idCell">{{ detail.roomID }}</td>
 
           <!-- Room Type -->
-          <td class="manage">{{ detail.roomType }}</td>
+          <td class="idCell">{{ detail.roomType }}</td>
 
           <!-- Select Button -->
           <td>
-            <div class="manage">
+            <div class="idCell">
               <button
                 class="manage-button"
                 @click="deleteDetail(detail.bookingDetailID)"
