@@ -12,20 +12,20 @@
       </div>
 
       <!-- Table -->
-      <table>
+      <table v-bind:style="sampleID.length !== 0 ? {} : { display: 'none' }">
         <tr>
           <th>Booking Detail ID</th>
+          <th>Room Number</th>
+          <th>Type</th>
           <th>Manage</th>
         </tr>
 
         <tr v-for="(item, i) in sampleID" :key="i" class="row">
-          <td class="idCell">{{ item.id }}</td>
+          <td>{{ item.id }}</td>
+          <td>{{ item.roomNumber }}</td>
+          <td>{{ item.roomType }}</td>
           <td>
             <div class="manage">
-              <button class="manage-button">
-                <i class="fa fa-pencil fa-2x"></i>
-              </button>
-              <div class="vl" />
               <button class="manage-button">
                 <i class="fa fa-trash fa-2x"></i>
               </button>
@@ -33,6 +33,16 @@
           </td>
         </tr>
       </table>
+
+      <div
+        :style="{
+          display: 'flex',
+          justifyContent: 'center',
+          paddingTop: '25px',
+        }"
+      >
+        <AddButton />
+      </div>
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -52,28 +62,20 @@
   import FormContainer from "../components/FormContainer.vue";
   import DefaultButton from "../components/DefaultButton.vue";
   import InnerFormContainer from "../components/InnerFormContainer.vue";
+  import AddButton from "../components/AddButton.vue";
 
   const sampleID = [
-    { id: 1000020023654800 },
-    { id: 1000020023654801 },
-    { id: 1000020023654802 },
-    { id: 1000020023654803 },
-    { id: 1000020023654804 },
-    { id: 1000020023654805 },
-    { id: 1000020023654806 },
-    { id: 1000020023654807 },
-    { id: 1000020023654808 },
-    { id: 1000020023654809 },
-    { id: 1000020023654810 },
-    { id: 1000020023654811 },
-    { id: 1000020023654812 },
-    { id: 1000020023654813 },
-    { id: 1000020023654814 },
+    //{ id: 1000020023, roomNumber: "1623", roomType: "suite" },
+    //{ id: 1000020024, roomNumber: "1023", roomType: "grand ballroom" },
+    //{ id: 1000020025, roomNumber: "1235", roomType: "standard" },
+    //{ id: 1000020026, roomNumber: "1236", roomType: "seminar" },
+    //{ id: 1000020027, roomNumber: "5643", roomType: "suite" },
+    //{ id: 1000020028, roomNumber: "1234", roomType: "standard" },
   ];
 
   export default {
     name: "AddBooking",
-    components: { FormContainer, DefaultButton, InnerFormContainer },
+    components: { FormContainer, DefaultButton, InnerFormContainer, AddButton },
     data() {
       return {
         sampleID,
@@ -115,16 +117,18 @@
   }
   th {
     height: 35px;
-    padding-left: 50px;
+    text-align: center;
     background-color: #eeeeee;
     border-bottom: 1px solid black;
+  }
+  td {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
   }
   .row:hover {
     cursor: pointer;
     background: #f0f0f0;
-  }
-  .idCell {
-    padding-left: 50px;
   }
   .manage-button {
     border: none;
@@ -146,6 +150,7 @@
   }
   i {
     color: #5f5f5f;
+    padding: 0 20px;
   }
   i:hover {
     color: #0a96b7;
@@ -161,6 +166,24 @@
   @media (max-width: 1000px) {
     .form-header {
       padding: 20px 0 10px 10%;
+    }
+    input {
+      width: 180px;
+    }
+  }
+  @media (max-width: 700px) {
+    th {
+      height: 35px;
+      text-align: center;
+      background-color: #eeeeee;
+      border-bottom: 1px solid black;
+      font-size: 14px;
+    }
+    td {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
     }
   }
 </style>
