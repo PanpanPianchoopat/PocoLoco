@@ -12,7 +12,7 @@
             border: '3px solid #777777',
             color: '#777777',
           }"
-          @click="visible = !visible"
+          @click="returnPop()"
           >CANCEL</DefaultButton
         >
         <DefaultButton
@@ -34,6 +34,11 @@
     name: "Popup",
     props: ["visible"],
     components: { DefaultButton },
+    methods: {
+      returnPop(){
+        this.$emit("popReturn", false)
+      }
+    },
     data() {
       return {};
     },
