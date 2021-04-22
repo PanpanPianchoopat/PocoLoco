@@ -10,7 +10,7 @@
   :root {
     --primary-blue: #0a96b7;
     --button-blue: #54cfd6;
-    --primary-yellow: #ffa360;
+    --primary-yellow: #fda462;
     --primary-red: #ff8b8b;
   }
   #app {

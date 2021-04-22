@@ -17,7 +17,8 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-    margin: 0 60px 0 260px;
+    margin: 0 60px 0 200px;
+    padding: 0 60px;
     flex-wrap: wrap;
     background: #f8f8f8;
   }
