@@ -4,7 +4,16 @@
       <h2>Add Booking Detail</h2>
     </div>
 
-    <InnerFormContainer>
+    <InnerFormContainer
+      class="styled-inner"
+      :style="
+        sampleRooms.length === 0
+          ? { height: '500px' }
+          : windowWidth <= 1000
+          ? { height: '1100px', position: 'relative' }
+          : { height: '800px', position: 'relative' }
+      "
+    >
       <div :style="{ alignSelf: 'center', paddingLeft: '60px' }">
         <div class="input-group">
           <div>
@@ -75,22 +84,19 @@
       <table v-bind:style="sampleRooms.length !== 0 ? {} : { display: 'none' }">
         <tr>
           <th>Room Number</th>
-          <th>Room Type</th>
           <th>Select</th>
         </tr>
 
         <tr
-          v-for="(room, i) in sampleRooms"
+          v-for="(room, i) in sampleRooms.slice(
+            currentPage * numberPerPage - numberPerPage,
+            currentPage * numberPerPage
+          )"
           :key="i"
           class="row"
-          v-bind:style="[
-            selectedRooms.includes(room.roomNumber)
-              ? { background: 'pink' }
-              : {},
-          ]"
         >
           <td>{{ room.roomNumber }}</td>
-          <td>{{ room.type }}</td>
+
           <td>
             <input
               type="checkbox"
@@ -103,6 +109,19 @@
           </td>
         </tr>
       </table>
+
+      <PaginationBar
+        :pageCount="Math.ceil(sampleRooms.length / numberPerPage)"
+        :paginationVisible="sampleRooms.length > numberPerPage"
+        @pageReturn="pageReturn"
+        :style="{
+          position: 'absolute',
+          bottom: '35px',
+          margin: '0 auto',
+          left: '0',
+          right: '0',
+        }"
+      />
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -122,22 +141,36 @@
   import FormContainer from "../components/FormContainer.vue";
   import DefaultButton from "../components/DefaultButton.vue";
   import InnerFormContainer from "../components/InnerFormContainer.vue";
+  import PaginationBar from "../components/PaginationBar.vue";
 
   const sampleRooms = [
-    { roomNumber: "A-123", type: "suite" },
-    { roomNumber: "A-222", type: "suite" },
-    { roomNumber: "A-463", type: "suite" },
-    { roomNumber: "A-552", type: "suite" },
+    { roomNumber: "1234", type: "suite" },
+    { roomNumber: "2345", type: "suite" },
+    { roomNumber: "1232", type: "suite" },
+    { roomNumber: "5555", type: "suite" },
+    { roomNumber: "6666", type: "suite" },
+    { roomNumber: "7777", type: "suite" },
+    { roomNumber: "8888", type: "suite" },
+    //{ roomNumber: "9999", type: "suite" },
+    //{ roomNumber: "1010", type: "suite" },
   ];
   export default {
     name: "AddBookingDetail",
-    components: { FormContainer, DefaultButton, InnerFormContainer },
+    components: {
+      FormContainer,
+      DefaultButton,
+      InnerFormContainer,
+      PaginationBar,
+    },
     data() {
       return {
+        windowWidth: window.innerWidth,
         sampleRooms,
         selectedRooms: [],
         inDate: new Date(),
         outDate: new Date(),
+        numberPerPage: 5,
+        currentPage: 1,
         inDateConfig: {
           type: "string",
           mask: "YYYY-MM-DD",
@@ -147,6 +180,24 @@
           mask: "YYYY-MM-DD",
         },
       };
+    },
+
+    mounted() {
+      this.$nextTick(() => {
+        window.addEventListener("resize", this.onResize);
+      });
+    },
+
+    beforeDestroy() {
+      window.removeEventListener("resize", this.onResize);
+    },
+    methods: {
+      pageReturn(page) {
+        this.currentPage = page;
+      },
+      onResize() {
+        this.windowWidth = window.innerWidth;
+      },
     },
   };
 </script>
@@ -192,11 +243,11 @@
   }
   table {
     width: 100%;
-    max-width: 470px;
+    max-width: 350px;
     align-self: center;
     border: 1px solid black;
     border-collapse: collapse;
-    margin-top: 25px;
+    margin-top: 30px;
   }
   th {
     height: 35px;

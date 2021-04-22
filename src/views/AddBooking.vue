@@ -4,14 +4,16 @@
       <h2>Add Booking</h2>
     </div>
 
-    <InnerFormContainer>
+    <InnerFormContainer :style="{ height: '560px', position: 'relative' }">
       <h3>Booking ID:</h3>
       <div class="input-group">
         <h4>Customer ID</h4>
         <input type="text" />
+        <AddButton />
       </div>
 
       <!-- Table -->
+
       <table
         v-bind:style="bookingDetails.length !== 0 ? {} : { display: 'none' }"
       >
@@ -22,7 +24,14 @@
           <th>Manage</th>
         </tr>
 
-        <tr v-for="(item, i) in bookingDetails" :key="i" class="row">
+        <tr
+          v-for="(item, i) in bookingDetails.slice(
+            currentPage * numberPerPage - numberPerPage,
+            currentPage * numberPerPage
+          )"
+          :key="i"
+          class="row"
+        >
           <td>{{ item.id }}</td>
           <td>{{ item.roomNumber }}</td>
           <td>{{ item.roomType }}</td>
@@ -36,17 +45,18 @@
         </tr>
       </table>
 
-      <PaginationBar></PaginationBar>
-
-      <div
+      <PaginationBar
+        :pageCount="Math.ceil(bookingDetails.length / numberPerPage)"
+        :paginationVisible="bookingDetails.length > numberPerPage"
+        @pageReturn="pageReturn"
         :style="{
-          display: 'flex',
-          justifyContent: 'center',
-          paddingTop: '25px',
+          position: 'absolute',
+          bottom: '35px',
+          margin: '0 auto',
+          left: '0',
+          right: '0',
         }"
-      >
-        <AddButton />
-      </div>
+      />
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -76,6 +86,14 @@
     { id: 1000020026, roomNumber: "1236", roomType: "seminar" },
     { id: 1000020027, roomNumber: "5643", roomType: "suite" },
     { id: 1000020028, roomNumber: "1234", roomType: "standard" },
+    //{ id: 1000020029, roomNumber: "1623", roomType: "suite" },
+    //{ id: 1000020030, roomNumber: "1023", roomType: "grand ballroom" },
+    //{ id: 1000020031, roomNumber: "1235", roomType: "standard" },
+    //{ id: 1000020032, roomNumber: "1236", roomType: "seminar" },
+    //{ id: 1000020033, roomNumber: "5643", roomType: "suite" },
+    //{ id: 1000020034, roomNumber: "1234", roomType: "standard" },
+    //{ id: 1000020035, roomNumber: "1623", roomType: "suite" },
+    //{ id: 1000020036, roomNumber: "1023", roomType: "grand ballroom" },
   ];
 
   export default {
@@ -90,19 +108,14 @@
     data() {
       return {
         bookingDetails,
+        numberPerPage: 5,
+        currentPage: 1,
       };
     },
 
     methods: {
-      next: function() {
-        if (this.currentPage * this.pageSize < this.bookingDetails.length) {
-          this.currentPage++;
-        }
-      },
-      prev: function() {
-        if (this.currentPage > 1) {
-          this.currentPage--;
-        }
+      pageReturn(page) {
+        this.currentPage = page;
       },
     },
   };
@@ -128,9 +141,9 @@
     justify-content: center;
   }
   input {
-    width: 300px;
+    width: 250px;
     height: 35px;
-    margin-left: 10px;
+    margin: 0 60px 0 10px;
     align-self: center;
     padding-left: 10px;
   }
@@ -155,7 +168,7 @@
   }
   .row:hover {
     cursor: pointer;
-    background: #f0f0f0;
+    background: var(--grey-highlight);
   }
   .manage-button {
     border: none;
@@ -211,6 +224,13 @@
       justify-content: center;
       align-items: center;
       font-size: 14px;
+    }
+    input {
+      width: 150px;
+      height: 30px;
+      margin: 0 10px 0 5px;
+      align-self: center;
+      padding-left: 10px;
     }
   }
 </style>
