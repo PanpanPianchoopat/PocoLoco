@@ -5,7 +5,6 @@
     </div>
 
     <InnerFormContainer>
-      
       <h3>Booking ID: {{ bookingID }}</h3>
       <div class="input-group">
         <h4>Customer ID</h4>
@@ -16,7 +15,9 @@
       <!-- Table -->
       <!-- ฺBooking Detail -->
 
-      <table>
+      <table
+        v-bind:style="bookingDetail_db.length !== 0 ? {} : { display: 'none' }"
+      >
         <tr>
           <th>Booking Detail ID</th>
           <th>Room Number</th>
@@ -31,17 +32,17 @@
           class="row"
         >
           <!-- BookingDetail ID -->
-          <td class="idCell">{{ detail.bookingDetailID }}</td>
+          <td>{{ detail.bookingDetailID }}</td>
 
           <!-- Room Number -->
-          <td class="idCell">{{ detail.roomID }}</td>
+          <td>{{ detail.roomID }}</td>
 
           <!-- Room Type -->
-          <td class="idCell">{{ detail.roomType }}</td>
+          <td>{{ detail.roomType }}</td>
 
           <!-- Select Button -->
           <td>
-            <div class="idCell">
+            <div class="manage">
               <button
                 class="manage-button"
                 @click="deleteDetail(detail.bookingDetailID)"
@@ -54,17 +55,20 @@
       </table>
 
       <!-- Add Booking Detail -->
-      <div class="buttons">
-        <DefaultButton
-          @click="
-            $router.push({
-              name: 'AddBookingDetail',
-              params: { bookingID },
-            })
-          "
-          :style="{ background: '#54CFD6' }"
-          >ADD</DefaultButton
-        >
+      <div
+        @click="
+          $router.push({
+            name: 'AddBookingDetail',
+            params: { bookingID },
+          })
+        "
+        :style="{
+          display: 'flex',
+          justifyContent: 'center',
+          paddingTop: '25px',
+        }"
+      >
+        <AddButton />
       </div>
     </InnerFormContainer>
     <div class="buttons">
@@ -87,11 +91,12 @@
 import FormContainer from "../components/FormContainer.vue";
 import DefaultButton from "../components/DefaultButton.vue";
 import InnerFormContainer from "../components/InnerFormContainer.vue";
+import AddButton from "../components/AddButton.vue";
 import axios from "axios";
 
 export default {
   name: "AddBooking",
-  components: { FormContainer, DefaultButton, InnerFormContainer },
+  components: { FormContainer, DefaultButton, InnerFormContainer, AddButton },
   data() {
     return {
       bookingID: "",
@@ -208,22 +213,27 @@ input {
   padding-left: 10px;
 }
 table {
+  width: 100%;
+  max-width: 500px;
+  align-self: center;
   border: 1px solid black;
   border-collapse: collapse;
   margin-top: 25px;
 }
 th {
   height: 35px;
-  padding-left: 50px;
+  text-align: center;
   background-color: #eeeeee;
   border-bottom: 1px solid black;
+}
+td {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 .row:hover {
   cursor: pointer;
   background: #f0f0f0;
-}
-.idCell {
-  padding-left: 50px;
 }
 .manage-button {
   border: none;
@@ -245,6 +255,7 @@ th {
 }
 i {
   color: #5f5f5f;
+  padding: 0 20px;
 }
 i:hover {
   color: #0a96b7;
@@ -260,6 +271,24 @@ i:hover {
 @media (max-width: 1000px) {
   .form-header {
     padding: 20px 0 10px 10%;
+  }
+  input {
+    width: 180px;
+  }
+}
+@media (max-width: 700px) {
+  th {
+    height: 35px;
+    text-align: center;
+    background-color: #eeeeee;
+    border-bottom: 1px solid black;
+    font-size: 14px;
+  }
+  td {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
   }
 }
 </style>
