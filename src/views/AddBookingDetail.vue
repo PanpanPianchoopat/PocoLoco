@@ -5,131 +5,142 @@
     </div>
 
     <InnerFormContainer>
-      <!-- show data -->
-      <div>
-        {{ details }}
-      </div>
-      <div class="input-group">
-        <div>
-          <h4>Guest's First Name</h4>
-          <input
-            v-model="details.guestFirstName"
-            @change="validate"
-            type="text"
-            placeholder="ex. Poco"
-          />
-        </div>
-        <div>
-          <h4>Guest's Last Name</h4>
-          <input
-            v-model="details.guestLastName"
-            @change="validate"
-            type="text"
-            placeholder="ex. Loco"
-          />
-        </div>
-      </div>
+      <div :style="{ alignSelf: 'center', paddingLeft: '60px' }">
+        <div class="input-group">
+          <!-- Guest's First Name -->
+          <div>
+            <h4>Guest's First Name</h4>
+            <input
+              v-model="details.guestFirstName"
+              @change="validate"
+              type="text"
+              placeholder="ex. Poco"
+            />
+          </div>
 
-      <div>
-        <h4>Room Type</h4>
-        <select v-model="details.roomType" @change="validate">
-          <option disabled value>Room Type</option>
-          <option
-            v-for="(room, index) in typeDB"
-            v-bind:key="index"
-            :value="room.roomTypeID"
-          >
-            {{ room.roomType }}
-          </option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <div>
-          <h4>Check In Date</h4>
-          <div class="flex x-full">
-            <v-date-picker
-              v-model="details.checkIn"
-              @click="validate"
-              :masks="{ input: ['YYYY-MM-DD'] }"
-              mode="single"
-              class="flex-grow"
-            >
-              <template v-slot="{ inputValue, inputEvents }">
-                <div :style="{ display: 'flex', flexDirection: 'row' }">
-                  <input
-                    :value="inputValue"
-                    v-on="inputEvents"
-                    :style="{ width: '150px', marginRight: '0' }"
-                  />
-                  <i class="fa fa-calendar fa-2x"></i>
-                </div>
-              </template>
-            </v-date-picker>
+          <!-- Guest's Last Name -->
+          <div>
+            <h4>Guest's Last Name</h4>
+            <input
+              v-model="details.guestLastName"
+              @change="validate"
+              type="text"
+              placeholder="ex. Loco"
+            />
           </div>
         </div>
+
+        <!-- Room Type -->
         <div>
-          <h4>Check Out Date</h4>
-          <div class="flex x-full">
-            <v-date-picker
-              v-model="details.checkOut"
-              :masks="{ input: ['YYYY-MM-DD'] }"
-              mode="single"
-              class="flex-grow"
-              @click="validate"
+          <h4>Room Type</h4>
+          <select v-model="details.roomType" @change="validate">
+            <option disabled value>Room Type</option>
+            <option
+              v-for="(room, index) in typeDB"
+              v-bind:key="index"
+              :value="room.roomTypeID"
             >
-              <template v-slot="{ inputValue, inputEvents }">
-                <div :style="{ display: 'flex', flexDirection: 'row' }">
-                  <input
-                    :value="inputValue"
-                    v-on="inputEvents"
-                    :style="{ width: '150px', marginRight: '0' }"
-                  />
-                  <i class="fa fa-calendar fa-2x"></i>
-                </div>
-              </template>
-            </v-date-picker>
+              {{ room.roomType }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Check In Date -->
+        <div class="input-group">
+          <div>
+            <h4>Check In Date</h4>
+            <div class="flex x-full">
+              <v-date-picker
+                v-model="details.checkIn"
+                @click="validate"
+                :masks="{ input: ['DD/MM/YYYY'] }"
+                :model-config="inDateConfig"
+                mode="single"
+                class="flex-grow"
+              >
+                <template v-slot="{ inputValue, inputEvents }">
+                  <div :style="{ display: 'flex', flexDirection: 'row' }">
+                    <input
+                      :value="inputValue"
+                      v-on="inputEvents"
+                      :style="{ width: '150px', marginRight: '0' }"
+                    />
+                    <i class="fa fa-calendar fa-2x"></i>
+                  </div>
+                </template>
+              </v-date-picker>
+            </div>
+          </div>
+
+          <!-- Check Out Date -->
+          <div>
+            <h4>Check Out Date</h4>
+            <div class="flex x-full">
+              <v-date-picker
+                v-model="details.checkOut"
+                :masks="{ input: ['DD/MM/YYYY'] }"
+                :model-config="outDateConfig"
+                mode="single"
+                class="flex-grow"
+                @click="validate"
+              >
+                <template v-slot="{ inputValue, inputEvents }">
+                  <div :style="{ display: 'flex', flexDirection: 'row' }">
+                    <input
+                      :value="inputValue"
+                      v-on="inputEvents"
+                      :style="{ width: '150px', marginRight: '0' }"
+                    />
+                    <i class="fa fa-calendar fa-2x"></i>
+                  </div>
+                </template>
+              </v-date-picker>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Room Number Table -->
-      <div>
-        <table style="width:100%">
-          <!-- head -->
-          <tr>
-            <th>Room Number</th>
-            <th>Room Type</th>
-            <th>Select</th>
-          </tr>
-          <!-- row -->
-          <tr v-for="(room, index) in roomDB" v-bind:key="index" :value="room">
-            <!-- room number -->
-            <td>{{ room.roomID }}</td>
+      <table v-bind:style="roomDB.length !== 0 ? {} : { display: 'none' }">
+        <tr>
+          <th>Room Number</th>
+          <!-- <th>Room Type</th> -->
+          <th>Select</th>
+        </tr>
 
-            <!-- room type in table -->
-            <div
-              v-for="(type, index) in typeDB"
-              v-bind:key="index"
-              :value="type"
-            >
-              <td v-if="details.roomType == type.roomTypeID">
-                {{ type.roomType }}
-              </td>
-            </div>
+        <tr
+          v-for="(room, index) in roomDB"
+          v-bind:key="index"
+          :value="room"
+          :style="[
+            details.roomNumber.includes(room.roomID)
+              ? { background: 'pink' }
+              : {},
+          ]"
+        >
+          <!-- room number -->
+          <td>{{ room.roomID }}</td>
 
-            <!-- Select Button -->
-            <td>
-              <!-- @change="checkOne(details.roomNumber[details.roomNumber.length - 1])" -->
-              <input
-                type="checkbox"
-                v-model="details.roomNumber"
-                :value="room.roomID"
-              />
+          <!-- room type in table -->
+          <!-- <td>{{ room.roomType }}</td> -->
+          <!-- <div v-for="(type, index) in typeDB" v-bind:key="index" :value="type">
+            <td v-if="details.roomType == type.roomTypeID">
+              {{ type.roomType }}
             </td>
-          </tr>
-        </table>
-      </div>
+          </div> -->
+
+          <!-- Select Button -->
+          <td>
+            <!-- @change="checkOne(details.roomNumber[details.roomNumber.length - 1])" -->
+            <input
+              type="checkbox"
+              v-model="details.roomNumber"
+              :value="room.roomID"
+              class="checkbox"
+            />
+          </td>
+        </tr>
+      </table>
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -168,9 +179,18 @@ export default {
         guestFirstName: "",
         guestLastName: "",
         roomType: "",
+        typeName: "",
         roomNumber: [],
         checkIn: "",
         checkOut: "",
+      },
+      inDateConfig: {
+        type: "string",
+        mask: "YYYY-MM-DD",
+      },
+      outDateConfig: {
+        type: "string",
+        mask: "YYYY-MM-DD",
       },
     };
   },
@@ -297,16 +317,47 @@ select {
   margin: 0 180px 30px 0;
   padding-left: 10px;
 }
-.buttons {
-  display: flex;
-  flex-direction: row;
+table {
+  width: 100%;
+  max-width: 470px;
+  align-self: center;
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-top: 25px;
+}
+th {
+  height: 35px;
+  text-align: center;
+  background-color: #eeeeee;
+  border-bottom: 1px solid black;
+}
+td {
+  text-align: center;
   justify-content: center;
-  margin: 45px 0;
+  align-items: center;
+}
+.row:hover {
+  cursor: pointer;
+  background: #f0f0f0;
+}
+.checkbox {
+  width: 20px;
+  height: 20px;
+  margin: 5px auto 0 auto;
+}
+.checkbox:checked:before {
+  background-color: green;
 }
 i {
   color: #0a96b7;
   margin: 5px 0 0 -35px;
   padding-right: 240px;
+}
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 45px 0;
 }
 *:focus {
   outline: 0;
