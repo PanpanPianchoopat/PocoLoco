@@ -32,7 +32,7 @@
     display: flex;
     padding-top: 60px;
     flex-direction: column;
-    background-color: #0a96b7;
+    background-color: var(--primary-blue);
   }
 
   #nav a {
@@ -52,7 +52,7 @@
   .circle {
     width: 90px;
     height: 90px;
-    background: #ffa360;
+    background: var(--primary-yellow);
     display: flex;
     justify-content: center;
     align-self: center;

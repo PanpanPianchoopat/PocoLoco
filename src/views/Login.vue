@@ -21,7 +21,7 @@
     </div>
     <DefaultButton
       :style="{
-        background: '#0a96b7',
+        background: 'var(--primary-blue)',
         alignSelf: 'center',
         margin: '50px',
         fontSize: '30px',

@@ -19,6 +19,6 @@
     flex-wrap: wrap;
     overflow: auto;
     padding: 45px auto;
-    background: #0a96b7;
+    background: var(--primary-blue);
   }
 </style>

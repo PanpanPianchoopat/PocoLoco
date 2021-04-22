@@ -36,6 +36,8 @@
         </tr>
       </table>
 
+      <PaginationBar></PaginationBar>
+
       <div
         :style="{
           display: 'flex',
@@ -55,7 +57,7 @@
         }"
         >CANCEL</DefaultButton
       >
-      <DefaultButton :style="{ background: '#54CFD6' }">ADD</DefaultButton>
+      <DefaultButton>ADD</DefaultButton>
     </div>
   </FormContainer>
 </template>
@@ -65,23 +67,43 @@
   import DefaultButton from "../components/DefaultButton.vue";
   import InnerFormContainer from "../components/InnerFormContainer.vue";
   import AddButton from "../components/AddButton.vue";
+  import PaginationBar from "../components/PaginationBar.vue";
 
   const bookingDetails = [
     { id: 1000020023, roomNumber: "1623", roomType: "suite" },
     { id: 1000020024, roomNumber: "1023", roomType: "grand ballroom" },
-    //{ id: 1000020025, roomNumber: "1235", roomType: "standard" },
-    //{ id: 1000020026, roomNumber: "1236", roomType: "seminar" },
-    //{ id: 1000020027, roomNumber: "5643", roomType: "suite" },
-    //{ id: 1000020028, roomNumber: "1234", roomType: "standard" },
+    { id: 1000020025, roomNumber: "1235", roomType: "standard" },
+    { id: 1000020026, roomNumber: "1236", roomType: "seminar" },
+    { id: 1000020027, roomNumber: "5643", roomType: "suite" },
+    { id: 1000020028, roomNumber: "1234", roomType: "standard" },
   ];
 
   export default {
     name: "AddBooking",
-    components: { FormContainer, DefaultButton, InnerFormContainer, AddButton },
+    components: {
+      FormContainer,
+      DefaultButton,
+      InnerFormContainer,
+      AddButton,
+      PaginationBar,
+    },
     data() {
       return {
         bookingDetails,
       };
+    },
+
+    methods: {
+      next: function() {
+        if (this.currentPage * this.pageSize < this.bookingDetails.length) {
+          this.currentPage++;
+        }
+      },
+      prev: function() {
+        if (this.currentPage > 1) {
+          this.currentPage--;
+        }
+      },
     },
   };
 </script>
@@ -158,7 +180,7 @@
     padding: 0 20px;
   }
   i:hover {
-    color: #0a96b7;
+    color: var(--primary-blue);
   }
   .vl {
     border-left: 3px solid #eeeeee;

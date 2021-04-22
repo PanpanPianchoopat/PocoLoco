@@ -36,7 +36,7 @@
         }"
         >CANCEL</DefaultButton
       >
-      <DefaultButton :style="{ background: '#54CFD6' }">ADD</DefaultButton>
+      <DefaultButton>ADD</DefaultButton>
     </div>
   </FormContainer>
 </template>
@@ -87,7 +87,7 @@
     margin: 45px 0;
   }
   i {
-    color: #0a96b7;
+    color: var(--primary-blue);
     margin: 5px 0 0 -35px;
     padding-right: 240px;
   }

@@ -15,7 +15,7 @@
     height: 50px;
     width: 190px;
     font-size: 20px;
-    background: #fda462;
+    background: var(--button-blue);
     color: white;
     border: none;
     outline: none;

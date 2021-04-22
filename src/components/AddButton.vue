@@ -17,7 +17,7 @@
     width: 60px;
     height: 60px;
     border-radius: 50px;
-    background: #54cfd6;
+    background: var(--button-blue);
     outline: none;
     border: none;
     align-items: center;
