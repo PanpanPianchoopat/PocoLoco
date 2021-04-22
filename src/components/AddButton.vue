@@ -1,6 +1,6 @@
 <template>
   <button class="add-button">
-    <span style="color: white;">
+    <span :style="{ color: 'white' }">
       <i class="fa fa-plus fa-3x"></i>
     </span>
   </button>
@@ -20,6 +20,7 @@
     background: #54cfd6;
     outline: none;
     border: none;
+    align-items: center;
   }
   .add-button:hover {
     cursor: pointer;

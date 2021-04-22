@@ -28,6 +28,7 @@
             <v-date-picker
               v-model="inDate"
               :masks="{ input: ['YYYY-MM-DD'] }"
+              :model-config="inDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -50,6 +51,7 @@
             <v-date-picker
               v-model="outDate"
               :masks="{ input: ['YYYY-MM-DD'] }"
+              :model-config="outDateConfig"
               mode="single"
               class="flex-grow"
             >
@@ -69,7 +71,7 @@
       </div>
 
       <!-- Table -->
-      <table>
+      <table v-bind:style="sampleRooms.length !== 0 ? {} : { display: 'none' }">
         <tr>
           <th>Room Number</th>
           <th>Room Type</th>
@@ -133,8 +135,16 @@
       return {
         sampleRooms,
         selectedRooms: [],
-        inDate: null,
-        outDate: null,
+        inDate: new Date(),
+        outDate: new Date(),
+        inDateConfig: {
+          type: "string",
+          mask: "YYYY-MM-DD",
+        },
+        outDateConfig: {
+          type: "string",
+          mask: "YYYY-MM-DD",
+        },
       };
     },
   };

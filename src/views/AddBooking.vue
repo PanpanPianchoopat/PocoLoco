@@ -12,7 +12,9 @@
       </div>
 
       <!-- Table -->
-      <table v-bind:style="sampleID.length !== 0 ? {} : { display: 'none' }">
+      <table
+        v-bind:style="bookingDetails.length !== 0 ? {} : { display: 'none' }"
+      >
         <tr>
           <th>Booking Detail ID</th>
           <th>Room Number</th>
@@ -20,7 +22,7 @@
           <th>Manage</th>
         </tr>
 
-        <tr v-for="(item, i) in sampleID" :key="i" class="row">
+        <tr v-for="(item, i) in bookingDetails" :key="i" class="row">
           <td>{{ item.id }}</td>
           <td>{{ item.roomNumber }}</td>
           <td>{{ item.roomType }}</td>
@@ -64,9 +66,9 @@
   import InnerFormContainer from "../components/InnerFormContainer.vue";
   import AddButton from "../components/AddButton.vue";
 
-  const sampleID = [
-    //{ id: 1000020023, roomNumber: "1623", roomType: "suite" },
-    //{ id: 1000020024, roomNumber: "1023", roomType: "grand ballroom" },
+  const bookingDetails = [
+    { id: 1000020023, roomNumber: "1623", roomType: "suite" },
+    { id: 1000020024, roomNumber: "1023", roomType: "grand ballroom" },
     //{ id: 1000020025, roomNumber: "1235", roomType: "standard" },
     //{ id: 1000020026, roomNumber: "1236", roomType: "seminar" },
     //{ id: 1000020027, roomNumber: "5643", roomType: "suite" },
@@ -78,7 +80,7 @@
     components: { FormContainer, DefaultButton, InnerFormContainer, AddButton },
     data() {
       return {
-        sampleID,
+        bookingDetails,
       };
     },
   };
