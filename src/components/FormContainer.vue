@@ -10,7 +10,7 @@
   };
 </script>
 
-<style>
+<style scoped>
   .form-container {
     display: flex;
     flex-direction: column;
