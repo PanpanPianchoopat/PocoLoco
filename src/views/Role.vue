@@ -1,6 +1,6 @@
 <template>
-  <Navbar />
-  <Container>
+  <Container v-bind:isNavVisible="isOpen">
+    <Navbar />
     <h3>Role</h3>
     <div class="menu-bar">
       <div>
@@ -67,8 +67,8 @@
         position: 'fixed',
         bottom: '50px',
         margin: '0 auto',
-        left: '200px',
         right: '0',
+        left: '60px',
       }"
     />
     <Popup v-bind:visible="visible" @popReturn="popReturn">
@@ -149,6 +149,7 @@
         role: null,
         salary: 0,
         bonusRate: 0,
+        navOpen: true,
       };
     },
     methods: {
@@ -168,6 +169,9 @@
       goToAddRole() {
         this.$router.push("/AddRole");
       },
+      navReturn(isOpen) {
+        this.navOpen = isOpen;
+      },
     },
   };
 </script>
@@ -185,7 +189,7 @@
   .search-field {
     width: 225px;
     height: 30px;
-    padding-left: 40px;
+    padding-left: 45px;
     font-size: 18px;
     outline: none;
     z-index: 1;
@@ -203,11 +207,12 @@
     flex-direction: row;
   }
   table {
-    margin-top: 35px;
-    width: 70%;
+    width: 90%;
     max-width: 1000;
+    margin: 35px 180px 0 0;
     border: 1px solid black;
     border-collapse: collapse;
+    align-self: center;
   }
   .manage {
     height: 35px;
@@ -242,13 +247,10 @@
   input {
     width: 250px;
     height: 35px;
-
     align-self: center;
     padding-left: 10px;
+    color: var(--header-color);
   }
-
-  /* unused */
-
   th {
     height: 35px;
     text-align: center;
@@ -264,14 +266,6 @@
     cursor: pointer;
     background: var(--grey-highlight);
   }
-
-  .buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin: 45px 0;
-  }
-
   *:focus {
     outline: 0;
   }
@@ -279,27 +273,20 @@
     .search-field {
       width: 180px;
     }
+    .vl {
+      margin: 0 5px;
+    }
+    table {
+      width: 85%;
+    }
   }
   @media (max-width: 700px) {
-    th {
-      height: 35px;
-      text-align: center;
-      background-color: #eeeeee;
-      border-bottom: 1px solid black;
-      font-size: 14px;
+    table {
+      width: 80%;
     }
-    td {
-      text-align: center;
-      justify-content: center;
-      align-items: center;
-      font-size: 14px;
-    }
-    input {
+    .search-field {
       width: 150px;
-      height: 30px;
-      margin: 0 10px 0 5px;
-      align-self: center;
-      padding-left: 10px;
+      font-size: 16px;
     }
   }
 </style>
