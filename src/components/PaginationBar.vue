@@ -42,20 +42,17 @@
         if (this.currentPage > 1) {
           this.currentPage = this.currentPage - 1;
           this.$emit("pageReturn", this.currentPage);
-          console.log(this.currentPage);
         }
       },
       next() {
         if (this.currentPage != this.pageCount) {
           this.currentPage = this.currentPage + 1;
           this.$emit("pageReturn", this.currentPage);
-          console.log(this.currentPage);
         }
       },
       setCurrentPage(page) {
         this.currentPage = page;
         this.$emit("pageReturn", this.currentPage);
-        console.log(this.currentPage);
       },
     },
   };
