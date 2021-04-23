@@ -207,6 +207,34 @@ export default {
   methods: {
     submitData(e) {
       e.preventDefault();
+      this.validate();
+      if (this.check) {
+        // Save Data
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_addCustomer.php", {
+            firstName: this.form.firstName,
+            lastName: this.form.lastName,
+            DOB: this.form.DOB,
+            gender: this.form.gender,
+            phone: this.form.phone,
+            email: this.form.email,
+            address: this.form.address,
+            action: "insert",
+          })
+          .then(
+            function(res) {
+              if (res.data.success == true) {
+                alert("Saved Successful");
+                this.resetData();
+              } else {
+                this.message = res.data.message;
+              }
+            }.bind(this)
+          );
+      }
+    },
+
+    validate() {
       this.check =
         this.form.firstName != "" &&
         this.form.lastName != "" &&
@@ -264,26 +292,8 @@ export default {
       if (this.form.address != "") {
         this.addressError = true;
       }
-      if (this.check) {
-        // Save Data
-        console.log("555555555555");
-        axios
-          .post("http://localhost:8080/PocoLoco_db/api_addCustomer.php", {
-            firstName: this.form.firstName,
-            lastName: this.form.lastName,
-            DOB: this.form.DOB,
-            gender: this.form.gender,
-            phone: this.form.phone,
-            email: this.form.email,
-            address: this.form.address,
-            action: "insert",
-          })
-          .then(function(res) {
-            console.log(res);
-            //app.resetData(); //app คือ method เรียก method
-          });
-      }
     },
+
     resetData(e) {
       this.form.id = "";
       this.form.firstName = "";
