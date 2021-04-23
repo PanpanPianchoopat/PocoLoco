@@ -49,6 +49,9 @@
     cursor: pointer;
     opacity: 0.7;
   }
+  *:focus {
+    outline: 0;
+  }
   @media (max-width: 768px) {
     .default-button-style {
       height: 40px;
