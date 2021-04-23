@@ -1,6 +1,7 @@
 <template>
-  <Container v-bind:isNavVisible="isOpen">
+  <Container>
     <Navbar />
+
     <h3>Role</h3>
     <div class="menu-bar">
       <div>
@@ -63,38 +64,48 @@
       :pageCount="Math.ceil(sampleRole.length / numberPerPage)"
       :paginationVisible="sampleRole.length > numberPerPage"
       @pageReturn="pageReturn"
-      :style="{
-        position: 'fixed',
-        bottom: '50px',
-        margin: '0 auto',
-        right: '0',
-        left: '60px',
-      }"
+      :style="
+        windowWidth <= 1000
+          ? {
+              position: 'fixed',
+              bottom: '50px',
+              margin: '0 auto',
+              right: '0',
+              left: '60px',
+            }
+          : {
+              position: 'fixed',
+              bottom: '50px',
+              margin: '0 auto',
+              right: '0',
+              left: '200px',
+            }
+      "
     />
-    <Popup v-bind:visible="visible" @popReturn="popReturn">
-      <div class="popup-head">
-        <div>Department: {{ department }}</div>
-        <div>Role: {{ role }}</div>
-      </div>
-      <p>Salary</p>
-      <div :style="{ paddingBottom: '20px' }">
-        <input
-          type="text"
-          :value="salary"
-          :placeholder="salary"
-          :style="{ marginRight: '10px' }"
-        />
-        Baht
-      </div>
-      <p>Bonus Rate</p>
+  </Container>
+  <Popup v-bind:visible="visible" @popReturn="popReturn">
+    <div class="popup-head">
+      <div>Department: {{ department }}</div>
+      <div>Role: {{ role }}</div>
+    </div>
+    <p>Salary</p>
+    <div :style="{ paddingBottom: '20px' }">
       <input
         type="text"
-        :value="bonusRate"
-        :placeholder="bonusRate"
-        :style="{ width: '95%' }"
+        :value="salary"
+        :placeholder="salary"
+        :style="{ marginRight: '10px' }"
       />
-    </Popup>
-  </Container>
+      Baht
+    </div>
+    <p>Bonus Rate</p>
+    <input
+      type="text"
+      :value="bonusRate"
+      :placeholder="bonusRate"
+      :style="{ width: '95%' }"
+    />
+  </Popup>
 </template>
 
 <script>
@@ -108,6 +119,25 @@
   const sampleRole = [
     { id: 11, name: "Manager", dept: "Kitchen", salary: 30000, bonus: 0.8 },
     { id: 12, name: "Chef", dept: "Kitchen", salary: 40000, bonus: 0.9 },
+    { id: 13, name: "Waiter", dept: "Kitchen", salary: 50000, bonus: 0.1 },
+    {
+      id: 21,
+      name: "Manager",
+      dept: "Housekeeping",
+      salary: 30000,
+      bonus: 0.1,
+    },
+    { id: 22, name: "Maid", dept: "Housekeeping", salary: 30000, bonus: 0.1 },
+    { id: 31, name: "Manager", dept: "Hospitality", salary: 30000, bonus: 0.1 },
+    {
+      id: 32,
+      name: "Receptionist",
+      dept: "Hospitality",
+      salary: 30000,
+      bonus: 0.1,
+    },
+    { id: 11, name: "Manager", dept: "Kitchen", salary: 30000, bonus: 0.1 },
+    { id: 12, name: "Chef", dept: "Kitchen", salary: 30000, bonus: 0.1 },
     { id: 13, name: "Waiter", dept: "Kitchen", salary: 50000, bonus: 0.1 },
     {
       id: 21,
@@ -142,7 +172,7 @@
     data() {
       return {
         sampleRole,
-        numberPerPage: 8,
+        numberPerPage: 4,
         currentPage: 1,
         visible: false,
         department: null,
@@ -150,7 +180,17 @@
         salary: 0,
         bonusRate: 0,
         navOpen: true,
+        windowWidth: self.innerWidth,
+        windowHeight: self.innerHeight,
       };
+    },
+    mounted() {
+      this.$nextTick(() => {
+        self.addEventListener("resize", this.onResize);
+      });
+    },
+    beforeDestroy() {
+      self.removeEventListener("resize", this.onResize);
     },
     methods: {
       pageReturn(page) {
@@ -171,6 +211,14 @@
       },
       navReturn(isOpen) {
         this.navOpen = isOpen;
+      },
+      onResize() {
+        this.windowWidth = self.innerWidth;
+        this.windowHeight = self.innerHeight;
+        this.numberPerPage = Math.floor((this.windowHeight - 450) / 35);
+        if (this.windowWidth <= 1000) {
+          this.visible = false;
+        }
       },
     },
   };
@@ -207,12 +255,12 @@
     flex-direction: row;
   }
   table {
-    width: 90%;
+    width: 75%;
     max-width: 1000;
-    margin: 35px 180px 0 0;
+    margin-top: 50px;
     border: 1px solid black;
     border-collapse: collapse;
-    align-self: center;
+    align-self: flex-start;
   }
   .manage {
     height: 35px;
