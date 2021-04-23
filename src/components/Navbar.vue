@@ -1,22 +1,59 @@
 <template>
-  <div id="nav">
-    <div class="circle">
+  <div id="nav" :style="visible ? {} : { width: '60px' }">
+    <button
+      class="close"
+      @click="returnVisible"
+      :style="visible ? {} : { left: '15px' }"
+    >
+      <i
+        class="fa fa-times fa-2x"
+        :style="visible ? {} : { display: 'none' }"
+      ></i>
+      <i
+        class="fa fa-bars fa-2x"
+        :style="!visible ? { paddingTop: '10px' } : { display: 'none' }"
+      ></i>
+    </button>
+    <div class="circle" :style="visible ? {} : { display: 'none' }">
       <img src="../assets/owner.png" />
     </div>
-    <div class="info">
+    <div class="info" :style="visible ? {} : { display: 'none' }">
       <b>Role Name</b>
       <b>Employee ID</b>
     </div>
-    <div class="menu">
+    <div class="menu" :style="visible ? {} : { display: 'none' }">
       <router-link :to="{ name: 'Home' }">Home</router-link>
       <router-link :to="{ name: 'About' }">About</router-link>
+      <router-link :to="{ name: 'Role' }">Role</router-link>
     </div>
+    <button class="logout-button" :style="visible ? {} : { display: 'none' }">
+      <div class="logout-text">
+        <i
+          class="fa fa-sign-out fa-2x"
+          :style="visible ? { paddingRight: '5px' } : {}"
+        >
+        </i>
+        <div>Logout</div>
+      </div>
+    </button>
   </div>
 </template>
 
 <script>
   export default {
     name: "Navbar",
+    data() {
+      return {
+        visible: false,
+      };
+    },
+    methods: {
+      returnVisible() {
+        this.visible = !this.visible;
+        console.log(this.visible);
+        this.$emit("NavReturn", this.visible);
+      },
+    },
   };
 </script>
 
@@ -33,8 +70,8 @@
     padding-top: 60px;
     flex-direction: column;
     background-color: var(--primary-blue);
+    transition: width 0.25s;
   }
-
   #nav a {
     font-weight: bold;
     color: #fcfcfc;
@@ -44,11 +81,39 @@
     padding-left: 40px;
   }
 
-  #nav a.router-link-exact-active {
-    color: #0b2e4f;
+  #nav a:hover {
     background: white;
     border-radius: 50px;
+    opacity: 0.85;
+    z-index: 10;
+    color: var(--text-color);
   }
+
+  #nav a.router-link-exact-active {
+    color: var(--text-color);
+    background: white;
+    border-radius: 50px;
+    z-index: 10;
+  }
+  .close {
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+    position: fixed;
+    top: 5px;
+    left: 165px;
+    z-index: 10;
+    cursor: pointer;
+  }
+  .close:hover {
+    opacity: 0.7;
+  }
+  i {
+    color: white;
+    cursor: pointer;
+  }
+
   .circle {
     width: 90px;
     height: 90px;
@@ -79,5 +144,32 @@
     flex-direction: column;
     padding: 45px 0 0 20px;
     margin-right: -20px;
+  }
+  .logout-button {
+    width: 120px;
+    left: 40px;
+    bottom: 30px;
+    height: 35px;
+    position: fixed;
+    z-index: 10;
+    background: none;
+    border: none;
+  }
+  .logout-button:hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  .logout-text {
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  *:focus {
+    outline: 0;
   }
 </style>
