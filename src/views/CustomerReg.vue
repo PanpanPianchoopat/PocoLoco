@@ -64,6 +64,7 @@
           marginRight: '110px',
           border: '3px solid white',
         }"
+        @click="backToCustomer()"
         >CANCEL</DefaultButton
       >
       <DefaultButton>ADD</DefaultButton>
@@ -78,6 +79,11 @@
   export default {
     name: "CustomerReg",
     components: { FormContainer, DefaultButton, InnerFormContainer },
+    methods: {
+      backToCustomer() {
+        this.$router.push("/Customer");
+      }
+    },
     data() {
       return {
         birthDate: null,
