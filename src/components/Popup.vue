@@ -11,6 +11,7 @@
             marginRight: '40px',
             border: '3px solid #777777',
             color: '#777777',
+            fontSize: '15px',
           }"
           @click="returnPop()"
           >CANCEL</DefaultButton
@@ -20,6 +21,7 @@
             height: '40px',
             width: '110px',
             background: 'var(--primary-yellow)',
+            fontSize: '15px',
           }"
           >SAVE</DefaultButton
         >
@@ -35,9 +37,9 @@
     props: ["visible"],
     components: { DefaultButton },
     methods: {
-      returnPop(){
-        this.$emit("popReturn", false)
-      }
+      returnPop() {
+        this.$emit("popReturn", false);
+      },
     },
     data() {
       return {};
@@ -60,16 +62,18 @@
   }
 
   .box {
-    width: 420px;
+    width: 415px;
     margin-left: -200px;
     background-color: white;
     z-index: 10;
+    border-radius: 24px;
+    padding: 40px 50px;
   }
 
   .buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 45px 0;
+    margin-top: 75px;
   }
 </style>
