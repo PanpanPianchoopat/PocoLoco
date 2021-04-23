@@ -3,7 +3,6 @@
     <div class="form-header">
       <h2>Add Booking Detail</h2>
     </div>
-
     <InnerFormContainer
       class="styled-inner"
       :style="
@@ -164,7 +163,7 @@
     },
     data() {
       return {
-        windowWidth: window.innerWidth,
+        windowWidth: self.innerWidth,
         sampleRooms,
         selectedRooms: [],
         inDate: new Date(),
@@ -196,7 +195,7 @@
         this.currentPage = page;
       },
       onResize() {
-        this.windowWidth = window.innerWidth;
+        this.windowWidth = self.innerWidth;
       },
     },
   };
