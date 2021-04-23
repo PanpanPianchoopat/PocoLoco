@@ -1,32 +1,53 @@
 <template>
-  <div id="nav" :style="visible ? {} : { width: '60px' }">
+  <div
+    id="nav"
+    :style="windowWidth <= 1000 ? (visible ? {} : { width: '60px' }) : {}"
+  >
     <button
       class="close"
       @click="returnVisible"
-      :style="visible ? {} : { left: '15px' }"
+      :style="
+        windowWidth <= 1000
+          ? visible
+            ? {}
+            : { left: '15px', top: '15px' }
+          : { display: 'none' }
+      "
     >
       <i
         class="fa fa-times fa-2x"
-        :style="visible ? {} : { display: 'none' }"
+        :style="windowWidth <= 1000 && visible ? {} : { display: 'none' }"
       ></i>
       <i
         class="fa fa-bars fa-2x"
-        :style="!visible ? { paddingTop: '10px' } : { display: 'none' }"
+        :style="!visible ? {} : { display: 'none' }"
       ></i>
     </button>
-    <div class="circle" :style="visible ? {} : { display: 'none' }">
+    <div
+      class="circle"
+      :style="visible || windowWidth > 1000 ? {} : { display: 'none' }"
+    >
       <img src="../assets/owner.png" />
     </div>
-    <div class="info" :style="visible ? {} : { display: 'none' }">
+    <div
+      class="info"
+      :style="visible || windowWidth > 1000 ? {} : { display: 'none' }"
+    >
       <b>Role Name</b>
       <b>Employee ID</b>
     </div>
-    <div class="menu" :style="visible ? {} : { display: 'none' }">
+    <div
+      class="menu"
+      :style="visible || windowWidth > 1000 ? {} : { display: 'none' }"
+    >
       <router-link :to="{ name: 'Home' }">Home</router-link>
       <router-link :to="{ name: 'About' }">About</router-link>
       <router-link :to="{ name: 'Role' }">Role</router-link>
     </div>
-    <button class="logout-button" :style="visible ? {} : { display: 'none' }">
+    <button
+      class="logout-button"
+      :style="visible || windowWidth > 1000 ? {} : { display: 'none' }"
+    >
       <div class="logout-text">
         <i
           class="fa fa-sign-out fa-2x"
@@ -44,14 +65,28 @@
     name: "Navbar",
     data() {
       return {
-        visible: false,
+        visible: true,
+        windowWidth: self.windowWidth,
       };
+    },
+    mounted() {
+      this.$nextTick(() => {
+        self.addEventListener("resize", this.onResize);
+      });
+    },
+    beforeDestroy() {
+      self.removeEventListener("resize", this.onResize);
     },
     methods: {
       returnVisible() {
         this.visible = !this.visible;
-        console.log(this.visible);
         this.$emit("NavReturn", this.visible);
+      },
+      onResize() {
+        this.windowWidth = self.innerWidth;
+        if (this.windowWidth <= 1000) {
+          this.visible = false;
+        }
       },
     },
   };
