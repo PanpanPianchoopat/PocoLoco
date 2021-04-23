@@ -12,7 +12,7 @@
             border: '3px solid #777777',
             color: '#777777',
           }"
-          @click="visible = !visible"
+          @click="returnPop()"
           >CANCEL</DefaultButton
         >
         <DefaultButton
@@ -36,6 +36,11 @@ export default {
   components: { DefaultButton },
   data() {
     return {};
+  },
+  methods: {
+    returnPop() {
+      this.$emit("popReturn", false);
+    },
   },
 };
 </script>
