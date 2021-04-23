@@ -34,6 +34,7 @@
           marginRight: '110px',
           border: '3px solid white',
         }"
+        @click="backToRolePage"
         >CANCEL</DefaultButton
       >
       <DefaultButton>ADD</DefaultButton>
@@ -48,6 +49,11 @@
   export default {
     name: "AddRole",
     components: { FormContainer, DefaultButton, InnerFormContainer },
+    methods: {
+      backToRolePage() {
+        this.$router.push("/Role");
+      },
+    },
   };
 </script>
 
