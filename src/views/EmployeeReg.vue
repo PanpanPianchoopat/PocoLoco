@@ -12,7 +12,7 @@
           <div v-if="departmentError">
             <h4>Department</h4>
             <select @change="getRole" v-model="details.department">
-              <option disabled value="">Department</option>
+              <option value="" disabled selected>Department</option>
               <option value="1">Admin/Owner</option>
               <option value="2">Receptionist</option>
               <option value="3">Kitchen</option>
@@ -26,7 +26,7 @@
           <div v-else>
             <h4 style="color:red">Department</h4>
             <select @change="getRole" v-model="details.department">
-              <option disabled value="">Department</option>
+              <option value="" disabled selected>Department</option>
               <option value="1">Admin/Owner</option>
               <option value="2">Receptionist</option>
               <option value="3">Kitchen</option>
@@ -41,7 +41,7 @@
           <div v-if="roleError">
             <h4>Role</h4>
             <select v-model="details.roleID">
-              <option disabled value>Role</option>
+              <option value="" disabled selected>Role</option>
               <option
                 v-for="(role, index) in roleDB"
                 v-bind:key="index"
@@ -55,7 +55,7 @@
           <div v-else>
             <h4 style="color:red">Role</h4>
             <select v-model="details.roleID">
-              <option disabled value>Role</option>
+              <option value="" disabled selected>Role</option>
               <option
                 v-for="(role, index) in roleDB"
                 v-bind:key="index"
@@ -120,7 +120,7 @@
         <div v-if="shiftError">
           <h4>Shift</h4>
           <select v-model="details.shift">
-            <option disabled value>Shift</option>
+            <option value="" disabled selected>Shift</option>
             <option value="1">05.00 - 13.00</option>
             <option value="2">13.00 - 21.00</option>
             <option value="3">21.00 - 05.00</option>
@@ -130,7 +130,7 @@
         <div v-else>
           <h4 style="color:red">Shift</h4>
           <select v-model="details.shift">
-            <option disabled value>Shift</option>
+            <option value="" disabled selected>Shift</option>
             <option value="1">05.00 - 13.00</option>
             <option value="2">13.00 - 21.00</option>
             <option value="3">21.00 - 05.00</option>

@@ -43,7 +43,7 @@
         <div>
           <h4>Room Type</h4>
           <select v-model="details.roomType" @change="validate">
-            <option disabled value>Room Type</option>
+            <option value="" disabled selected>Room Type</option>
             <option
               v-for="(room, index) in typeDB"
               v-bind:key="index"

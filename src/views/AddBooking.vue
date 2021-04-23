@@ -11,14 +11,14 @@
         <input v-model="customerID" type="text" />
         <h4 style="color:red">{{ message }}</h4>
         <!-- Add Booking Detail -->
-        <AddButton
+        <!-- <AddButton
           @click="
             $router.push({
               name: 'AddBookingDetail',
               params: { bookingID },
             })
           "
-        ></AddButton>
+        ></AddButton> -->
       </div>
 
       <!-- Table -->
@@ -122,10 +122,16 @@ export default {
   created() {
     this.getBookingID();
   },
-
+  mounted() {
+    this.customerID = this.$store.state.customerID
+  },
   methods: {
     pageReturn(page) {
       this.currentPage = page;
+    },
+    goToAddBookingDetail(){
+      this.$store.state.customerID = this.customerID
+      this.$router.push("/AddBookingDetail");
     },
     getBookingID() {
       axios
