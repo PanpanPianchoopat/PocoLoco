@@ -41,9 +41,6 @@
         this.$emit("popReturn", false);
       },
     },
-    data() {
-      return {};
-    },
   };
 </script>
 
@@ -54,16 +51,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     position: fixed;
     z-index: 100;
-    margin-left: -60px;
   }
 
   .box {
     width: 415px;
-    margin-left: -200px;
     background-color: white;
     z-index: 10;
     border-radius: 24px;
