@@ -4,7 +4,16 @@
       <h2>Add Booking Detail</h2>
     </div>
 
-    <InnerFormContainer>
+    <InnerFormContainer
+      class="styled-inner"
+      :style="
+        roomDB.length === 0
+          ? { height: '500px' }
+          : windowWidth <= 1000
+          ? { height: '1100px', position: 'relative' }
+          : { height: '800px', position: 'relative' }
+      "
+    >
       <div :style="{ alignSelf: 'center', paddingLeft: '60px' }">
         <div class="input-group">
           <!-- Guest's First Name -->
@@ -109,25 +118,20 @@
         </tr>
 
         <tr
-          v-for="(room, index) in roomDB"
+          v-for="(room, index) in roomDB.slice(
+            currentPage * numberPerPage - numberPerPage,
+            currentPage * numberPerPage
+          )"
           v-bind:key="index"
           :value="room"
           :style="[
             details.roomNumber.includes(room.roomID)
-              ? { background: 'pink' }
+              ? { background: '#adffb4' }
               : {},
           ]"
         >
           <!-- room number -->
           <td>{{ room.roomID }}</td>
-
-          <!-- room type in table -->
-          <!-- <td>{{ room.roomType }}</td> -->
-          <!-- <div v-for="(type, index) in typeDB" v-bind:key="index" :value="type">
-            <td v-if="details.roomType == type.roomTypeID">
-              {{ type.roomType }}
-            </td>
-          </div> -->
 
           <!-- Select Button -->
           <td>
@@ -141,6 +145,19 @@
           </td>
         </tr>
       </table>
+
+      <PaginationBar
+        :pageCount="Math.ceil(roomDB.length / numberPerPage)"
+        :paginationVisible="roomDB.length > numberPerPage"
+        @pageReturn="pageReturn"
+        :style="{
+          position: 'absolute',
+          bottom: '35px',
+          margin: '0 auto',
+          left: '0',
+          right: '0',
+        }"
+      />
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -160,13 +177,23 @@
 import FormContainer from "../components/FormContainer.vue";
 import DefaultButton from "../components/DefaultButton.vue";
 import InnerFormContainer from "../components/InnerFormContainer.vue";
+import PaginationBar from "../components/PaginationBar.vue";
 import axios from "axios";
 
 export default {
   name: "AddBookingDetail",
-  components: { FormContainer, DefaultButton, InnerFormContainer },
+  components: {
+    FormContainer,
+    DefaultButton,
+    InnerFormContainer,
+    PaginationBar,
+  },
   data() {
     return {
+      windowWidth: window.innerWidth,
+      numberPerPage: 5,
+      currentPage: 1,
+
       typeDB: "",
       roomDB: "",
       canGet: false,
@@ -191,12 +218,30 @@ export default {
     };
   },
 
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onResize);
+  },
+
   created() {
     this.details.bookingID = this.$route.params.bookingID;
     this.getRoomType();
   },
 
   methods: {
+    pageReturn(page) {
+      this.currentPage = page;
+    },
+
+    onResize() {
+      this.windowWidth = window.innerWidth;
+    },
+
     checkOne(room) {
       console.log(this.details.roomNumber);
       if (this.details.roomNumber.length > 1) {
@@ -315,11 +360,11 @@ select {
 }
 table {
   width: 100%;
-  max-width: 470px;
+  max-width: 350px;
   align-self: center;
   border: 1px solid black;
   border-collapse: collapse;
-  margin-top: 25px;
+  margin-top: 30px;
 }
 th {
   height: 35px;
@@ -341,7 +386,6 @@ td {
   height: 20px;
   margin: 5px auto 0 auto;
 }
-
 i {
   color: var(--primary-blue);
   margin: 5px 0 0 -35px;

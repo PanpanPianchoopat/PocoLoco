@@ -4,17 +4,24 @@
       <h2>Add Booking</h2>
     </div>
 
-    <InnerFormContainer>
+    <InnerFormContainer :style="{ height: '560px', position: 'relative' }">
       <h3>Booking ID: {{ bookingID }}</h3>
       <div class="input-group">
         <h4>Customer ID</h4>
         <input v-model="customerID" type="text" />
         <h4 style="color:red">{{ message }}</h4>
+        <!-- Add Booking Detail -->
+        <AddButton
+          @click="
+            $router.push({
+              name: 'AddBookingDetail',
+              params: { bookingID },
+            })
+          "
+        ></AddButton>
       </div>
 
       <!-- Table -->
-      <!-- ฺBooking Detail -->
-
       <table
         v-bind:style="bookingDetail_db.length !== 0 ? {} : { display: 'none' }"
       >
@@ -26,7 +33,10 @@
         </tr>
 
         <tr
-          v-for="(detail, index) in bookingDetail_db"
+          v-for="(detail, index) in bookingDetail_db.slice(
+            currentPage * numberPerPage - numberPerPage,
+            currentPage * numberPerPage
+          )"
           v-bind:key="index"
           :value="detail"
           class="row"
@@ -54,22 +64,18 @@
         </tr>
       </table>
 
-      <!-- Add Booking Detail -->
-      <div
-        @click="
-          $router.push({
-            name: 'AddBookingDetail',
-            params: { bookingID },
-          })
-        "
+      <PaginationBar
+        :pageCount="Math.ceil(bookingDetail_db.length / numberPerPage)"
+        :paginationVisible="bookingDetail_db.length > numberPerPage"
+        @pageReturn="pageReturn"
         :style="{
-          display: 'flex',
-          justifyContent: 'center',
-          paddingTop: '25px',
+          position: 'absolute',
+          bottom: '35px',
+          margin: '0 auto',
+          left: '0',
+          right: '0',
         }"
-      >
-        <AddButton />
-      </div>
+      />
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
@@ -80,9 +86,7 @@
         }"
         >CANCEL</DefaultButton
       >
-      <DefaultButton @click="addBooking"
-        >ADD</DefaultButton
-      >
+      <DefaultButton @click="addBooking">ADD</DefaultButton>
     </div>
   </FormContainer>
 </template>
@@ -92,13 +96,22 @@ import FormContainer from "../components/FormContainer.vue";
 import DefaultButton from "../components/DefaultButton.vue";
 import InnerFormContainer from "../components/InnerFormContainer.vue";
 import AddButton from "../components/AddButton.vue";
+import PaginationBar from "../components/PaginationBar.vue";
 import axios from "axios";
 
 export default {
   name: "AddBooking",
-  components: { FormContainer, DefaultButton, InnerFormContainer, AddButton },
+  components: {
+    FormContainer,
+    DefaultButton,
+    InnerFormContainer,
+    AddButton,
+    PaginationBar,
+  },
   data() {
     return {
+      numberPerPage: 5,
+      currentPage: 1,
       bookingID: "",
       customerID: "",
       bookingDetail_db: "",
@@ -111,6 +124,9 @@ export default {
   },
 
   methods: {
+    pageReturn(page) {
+      this.currentPage = page;
+    },
     getBookingID() {
       axios
         .post("http://localhost:8080/PocoLoco_db//api_booking.php", {
@@ -206,9 +222,9 @@ h3 {
   justify-content: center;
 }
 input {
-  width: 300px;
+  width: 250px;
   height: 35px;
-  margin-left: 10px;
+  margin: 0 60px 0 10px;
   align-self: center;
   padding-left: 10px;
 }
@@ -233,7 +249,7 @@ td {
 }
 .row:hover {
   cursor: pointer;
-  background: #f0f0f0;
+  background: var(--grey-highlight);
 }
 .manage-button {
   border: none;
@@ -289,6 +305,13 @@ i:hover {
     justify-content: center;
     align-items: center;
     font-size: 14px;
+  }
+  input {
+    width: 150px;
+    height: 30px;
+    margin: 0 10px 0 5px;
+    align-self: center;
+    padding-left: 10px;
   }
 }
 </style>

@@ -12,6 +12,7 @@ export default {};
   --button-blue: #54cfd6;
   --primary-yellow: #fda462;
   --primary-red: #ff8b8b;
+  --grey-highlight: #f0f0f0;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
