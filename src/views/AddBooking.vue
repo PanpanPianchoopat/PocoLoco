@@ -8,7 +8,9 @@
       <h3>Booking ID: {{ bookingID }}</h3>
       <div class="input-group">
         <h4>Customer ID</h4>
-        <input v-model="customerID" type="text" />
+        <input v-model="customerID" type="number"
+        onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+        />
         <h4 style="color:red">{{ message }}</h4>
         <!-- Add Booking Detail -->
         <!-- <AddButton
@@ -19,6 +21,7 @@
             })
           "
         ></AddButton> -->
+        <AddButton @click="goToAddBookingDetail()"></AddButton>
       </div>
 
       <!-- Table -->
@@ -320,4 +323,11 @@ i:hover {
     padding-left: 10px;
   }
 }
+  input[type="number"] {
+  -moz-appearance: textfield;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  }
 </style>

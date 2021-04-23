@@ -223,6 +223,7 @@
         <h4>Discount</h4>
         <input
           type="number"
+          onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
           name="discount"
           v-model="details.discount"
           :style="{ width: '200px' }"
@@ -234,6 +235,7 @@
         <h4 style="color:red">Discount</h4>
         <input
           type="number"
+          onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
           name="discount"
           v-model="details.discount"
           :style="{ width: '200px' }"
@@ -470,4 +472,11 @@ i {
     padding: 20px 0 10px 10%;
   }
 }
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+} 
 </style>

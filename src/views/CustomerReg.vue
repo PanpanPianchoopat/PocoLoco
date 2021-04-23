@@ -111,12 +111,16 @@
 
       <div v-if="phoneError">
         <h4>Phone</h4>
-        <input v-model="form.phone" type="text" placeholder="ex. 0812345678" />
+        <input v-model="form.phone" type="number" 
+        onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+        placeholder="ex. 0812345678" />
       </div>
 
       <div v-else>
         <h4 style="color: red">Phone</h4>
-        <input v-model="form.phone" type="text" placeholder="ex. 0812345678" />
+        <input v-model="form.phone" type="number" 
+        onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+        placeholder="ex. 0812345678" />
       </div>
 
       <div v-if="emailError">
@@ -362,4 +366,11 @@ i {
     padding: 20px 0 10px 10%;
   }
 }
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+} 
 </style>

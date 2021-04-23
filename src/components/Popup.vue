@@ -23,6 +23,7 @@
             background: 'var(--primary-yellow)',
             fontSize: '15px',
           }"
+          @click="submit()"
           >SAVE</DefaultButton
         >
       </div>
@@ -40,6 +41,9 @@
       returnPop() {
         this.$emit("popReturn", false);
       },
+      submit() {
+        this.$emit("submit", false);
+      }
     },
   };
 </script>

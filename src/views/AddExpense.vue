@@ -10,13 +10,17 @@
       <!-- Room number -->
       <div class="input-group" v-if="roomNumberError">
         <h4>Room Number</h4>
-        <input type="number" v-model="form.roomNumber" />
+        <input type="number" v-model="form.roomNumber"
+         onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107" 
+        />
       </div>
 
       <!-- Room number Error -->
       <div class="input-group" v-else>
         <h4 style="color:red">Room Number</h4>
-        <input type="text" v-model="form.roomNumber" />
+        <input type="number" v-model="form.roomNumber" 
+        onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+        />
       </div>
 
       <!-- Detail -->
@@ -34,14 +38,18 @@
         <div class="input-group" v-if="expenseError">
           <h4>Expense</h4>
           <div :style="{ display: 'flex', flexDirection: 'row' }">
-            <input type="number" v-model="form.expense" />
+            <input type="number" v-model="form.expense" 
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+            />
             <p class="unit">Baht</p>
           </div>
         </div>
         <div class="input-group" v-else>
           <h4 style="color:red">Expense</h4>
           <div :style="{ display: 'flex', flexDirection: 'row' }">
-            <input type="number" v-model="form.expense" />
+            <input type="number" v-model="form.expense" 
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+            />
             <p class="unit">Baht</p>
           </div>
         </div>
@@ -284,4 +292,11 @@ i {
     padding: 0 40px 0 10px;
   }
 }
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+} 
 </style>

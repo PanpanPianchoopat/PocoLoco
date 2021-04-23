@@ -12,7 +12,7 @@
           <div v-if="departmentError">
             <h4>Department</h4>
             <select @change="getRole" v-model="details.department">
-              <option value="" disabled selected>Department</option>
+              <option value="" disabled selected>Select</option>
               <option value="1">Admin/Owner</option>
               <option value="2">Receptionist</option>
               <option value="3">Kitchen</option>
@@ -26,7 +26,7 @@
           <div v-else>
             <h4 style="color:red">Department</h4>
             <select @change="getRole" v-model="details.department">
-              <option value="" disabled selected>Department</option>
+              <option value="" disabled selected>Select</option>
               <option value="1">Admin/Owner</option>
               <option value="2">Receptionist</option>
               <option value="3">Kitchen</option>
@@ -41,7 +41,7 @@
           <div v-if="roleError">
             <h4>Role</h4>
             <select v-model="details.roleID">
-              <option value="" disabled selected>Role</option>
+              <option value="" disabled selected>Select</option>
               <option
                 v-for="(role, index) in roleDB"
                 v-bind:key="index"
@@ -55,7 +55,7 @@
           <div v-else>
             <h4 style="color:red">Role</h4>
             <select v-model="details.roleID">
-              <option value="" disabled selected>Role</option>
+              <option value="" disabled selected>Select</option>
               <option
                 v-for="(role, index) in roleDB"
                 v-bind:key="index"
@@ -120,7 +120,7 @@
         <div v-if="shiftError">
           <h4>Shift</h4>
           <select v-model="details.shift">
-            <option value="" disabled selected>Shift</option>
+            <option value="" disabled selected>Select</option>
             <option value="1">05.00 - 13.00</option>
             <option value="2">13.00 - 21.00</option>
             <option value="3">21.00 - 05.00</option>
@@ -130,7 +130,7 @@
         <div v-else>
           <h4 style="color:red">Shift</h4>
           <select v-model="details.shift">
-            <option value="" disabled selected>Shift</option>
+            <option value="" disabled selected>Select</option>
             <option value="1">05.00 - 13.00</option>
             <option value="2">13.00 - 21.00</option>
             <option value="3">21.00 - 05.00</option>
@@ -183,7 +183,8 @@
         <div v-if="identificationError">
           <h4>ID Number / Passport Number</h4>
           <input
-            type="text"
+            type="number"
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
             v-model="details.identification"
             pattern="^[A-PR-WYa-pr-wy][1-9]\d\s?\d{4}[1-9]$"
           />
@@ -192,7 +193,8 @@
         <div v-else>
           <h4 style="color:red">ID Number / Passport Number</h4>
           <input
-            type="text"
+            type="number"
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
             v-model="details.identification"
             pattern="^[A-PR-WYa-pr-wy][1-9]\d\s?\d{4}[1-9]$"
           />
@@ -252,7 +254,7 @@
           <div v-if="genderError">
             <h4>Gender</h4>
             <select v-model="details.gender">
-              <option disabled value>Gender</option>
+              <option value="" disabled selected>Select</option>
               <option value="M">Male</option>
               <option value="F">Female</option>
             </select>
@@ -261,7 +263,7 @@
           <div v-else>
             <h4 style="color:red">Gender</h4>
             <select v-model="details.gender">
-              <option disabled value>Gender</option>
+              <option value="" disabled selected>Select</option>
               <option value="M">Male</option>
               <option value="F">Female</option>
             </select>
@@ -272,7 +274,8 @@
         <div v-if="phoneError">
           <h4>Phone</h4>
           <input
-            type="text"
+            type="number"
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
             v-model="details.phone"
             placeholder="ex. 0812345678"
           />
@@ -281,7 +284,8 @@
         <div v-else>
           <h4 style="color:red">Phone</h4>
           <input
-            type="text"
+            type="number"
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
             v-model="details.phone"
             placeholder="ex. 0812345678"
           />
@@ -618,4 +622,11 @@ i {
     padding: 20px 0 10px 10%;
   }
 }
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+} 
 </style>

@@ -13,7 +13,7 @@
             :style="{ width: '300px', marginRight: '180px' }"
             v-model="details.departmentID"
           >
-            <option value="">Choose department-</option>
+            <option value="" disabled selected>Select</option>
             <option value="1">Admin/Owner</option>
             <option value="2">Receptionist</option>
             <option value="3">Kitchen</option>
@@ -31,7 +31,7 @@
             :style="{ width: '300px', marginRight: '180px' }"
             v-model="details.departmentID"
           >
-            <option value="">Choose department-</option>
+            <option value="" disabled selected>Select</option>
             <option value="1">Admin/Owner</option>
             <option value="2">Receptionist</option>
             <option value="3">Kitchen</option>
@@ -316,6 +316,5 @@ input[type="number"] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  margin: 0;
 }
 </style>

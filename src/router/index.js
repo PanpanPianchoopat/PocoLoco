@@ -9,6 +9,8 @@ import AddPromo from "../views/AddPromo.vue";
 import AddBooking from "../views/AddBooking.vue";
 import AddBookingDetail from "../views/AddBookingDetail.vue";
 import Role from "../views/Role.vue";
+import AddExpense from "../views/AddExpense.vue";
+import AddNewService from "../views/AddNewService.vue";
 
 
 const routes = [
@@ -61,6 +63,16 @@ const routes = [
     path: "/AddBookingDetail",
     name: "AddBookingDetail",
     component: AddBookingDetail,
+  },
+  {
+    path: "/AddExpense",
+    name: "AddExpense",
+    component: AddExpense,
+  },
+  {
+    path: "/AddNewService",
+    name: "AddNewService",
+    component: AddNewService,
   },
 ];
 

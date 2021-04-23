@@ -45,6 +45,7 @@
             <input
               v-model="price"
               type="number"
+              onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
               :style="{ marginRight: '10px', width: '200px' }"
             />
             <p class="unit">Baht</p>
@@ -58,6 +59,7 @@
             <input
               v-model="price"
               type="number"
+              onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
               :style="{ marginRight: '10px', width: '200px' }"
             />
             <p class="unit">Baht</p>
@@ -211,4 +213,11 @@ i {
     padding: 20px 0 10px 10%;
   }
 }
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+} 
 </style>

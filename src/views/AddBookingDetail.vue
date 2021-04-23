@@ -43,7 +43,7 @@
         <div>
           <h4>Room Type</h4>
           <select v-model="details.roomType" @change="validate">
-            <option value="" disabled selected>Room Type</option>
+            <option value="" disabled selected>Select</option>
             <option
               v-for="(room, index) in typeDB"
               v-bind:key="index"
@@ -161,6 +161,7 @@
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
+        @click="backToAddBooking()"
         :style="{
           background: 'none',
           marginRight: '110px',
@@ -236,6 +237,10 @@ export default {
   methods: {
     pageReturn(page) {
       this.currentPage = page;
+    },
+
+    backToAddBooking() {
+      this.$router.push("/AddBooking");
     },
 
     onResize() {
