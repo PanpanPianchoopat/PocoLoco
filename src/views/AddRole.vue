@@ -149,6 +149,7 @@
           marginRight: '110px',
           border: '3px solid white',
         }"
+        @click="backToRolePage"
         >CANCEL</DefaultButton
       >
       <DefaultButton @click="addRoleFn">ADD</DefaultButton>
@@ -184,6 +185,9 @@ export default {
     };
   },
   methods: {
+    backToRolePage() {
+         this.$router.push("/Role");
+       },
     fetch() {
       axios
         .get("http://localhost:8080/PocoLoco_db/api_addRole.php")

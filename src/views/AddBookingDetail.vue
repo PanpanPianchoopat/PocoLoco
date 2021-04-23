@@ -190,7 +190,7 @@ export default {
   },
   data() {
     return {
-      windowWidth: window.innerWidth,
+      windowWidth: self.innerWidth,
       numberPerPage: 5,
       currentPage: 1,
 
@@ -239,7 +239,7 @@ export default {
     },
 
     onResize() {
-      this.windowWidth = window.innerWidth;
+      this.windowWidth = self.innerWidth;
     },
 
     checkOne(room) {
