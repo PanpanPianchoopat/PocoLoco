@@ -80,9 +80,9 @@ const routes = [
     component: Role,
   },
   {
-    path: "/Role",
-    name: "Role",
-    component: Role,
+    path: "/Customer",
+    name: "Customer",
+    component: Customer,
   },
 ];
 
