@@ -61,6 +61,18 @@
       </div>
 
       <h4>ID Number / Passport Number</h4>
+      <div class="choices">
+        <label class="container">
+          ID Number
+          <input type="radio" checked="checked" name="radio" />
+          <span class="checkmark"></span>
+        </label>
+        <label class="container"
+          >Passport Number
+          <input type="radio" checked="checked" name="radio" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
       <input type="text" />
 
       <div class="input-group">
@@ -181,6 +193,11 @@
     margin: 0 80px 40px 0;
     padding-left: 10px;
   }
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    margin: 0 10px 10px 0;
+  }
   select {
     width: 220px;
     height: 40px;
@@ -197,6 +214,65 @@
     color: var(--primary-blue);
     margin: 5px 0 0 -35px;
     padding-right: 240px;
+  }
+  .choices {
+    display: flex;
+    justify-content: flex-start;
+    width: 320px;
+  }
+  .container {
+    display: block;
+    position: relative;
+    padding: 0 0 0 35px;
+    margin: 0 0 15px 0;
+    cursor: pointer;
+    font-size: 14px;
+    user-select: none;
+    background: none;
+    width: 150px;
+  }
+
+  .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #d3d3d3;
+    border-radius: 50%;
+  }
+
+  .container:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+
+  .container input:checked ~ .checkmark {
+    background-color: var(--button-blue);
+  }
+
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  .container .checkmark:after {
+    top: 6px;
+    left: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
   }
   *:focus {
     outline: 0;
