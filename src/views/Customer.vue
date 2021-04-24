@@ -339,7 +339,6 @@
         this.editVisible = value;
       },
       getCustomerData(type, customer) {
-        console.log(customer);
         if (type === "view") {
           this.viewVisible = !this.viewVisible;
         }
