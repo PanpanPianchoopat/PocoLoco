@@ -23,7 +23,7 @@
       />
     </div>
 
-    <table v-bind:style="role_db.length !== 0 ? {} : { display: 'none' }">
+    <table v-if="role_db.length !== 0">
       <tr>
         <th>Role ID</th>
         <th>Department</th>
@@ -36,8 +36,8 @@
 
       <tr
         v-for="(role, i) in role_db.slice(
-          currentPage * numberPerPage - numberPerPage,
-          currentPage * numberPerPage
+          currentPage * tableRow - tableRow,
+          currentPage * tableRow
         )"
         :key="i"
         class="row"
@@ -55,7 +55,7 @@
             </button>
             <div class="vl"></div>
             <button class="manage-button">
-              <i class="fa fa-trash fa-2x" :style="{}"></i>
+              <i class="fa fa-trash fa-2x"></i>
             </button>
           </div>
         </td>
@@ -63,11 +63,11 @@
     </table>
 
     <PaginationBar
-      :pageCount="Math.ceil(role_db.length / numberPerPage)"
-      :paginationVisible="role_db.length > numberPerPage"
+      :pageCount="Math.ceil(role_db.length / tableRow)"
+      :paginationVisible="role_db.length > tableRow"
       @pageReturn="pageReturn"
       :style="
-        windowWidth <= 1000
+       width <= 1000
           ? {
               position: 'fixed',
               bottom: '50px',
@@ -85,7 +85,12 @@
       "
     />
   </Container>
-  <Popup v-bind:visible="visible" @popReturn="popReturn" @submit="submit">
+  <Popup
+    v-bind:visible="visible"
+    :buttons="true"
+    @popReturn="popReturn"
+    @submit="submit"
+  >
     <div class="popup-head">
       <div>Department: {{ departmentID }}</div>
       <div>Role: {{ roleName }}</div>
@@ -105,7 +110,7 @@
       type="text"
       v-model="bonusRate"
       :placeholder="bonusRate"
-      :style="{ width: '95%' }"
+      :style="{ width: '95%', marginBottom: '30px' }"
     />
   </Popup>
 </template>
@@ -117,6 +122,8 @@ import Container from "../components/Container.vue";
 import PaginationBar from "../components/PaginationBar.vue";
 import AddButton from "../components/AddButton.vue";
 import Popup from "../components/Popup.vue";
+import { useScreenWidth } from "../composables/useScreenWidth";
+import { useScreenHeight } from "../composables/useScreenHeight";
 
 import axios from "axios";
 
@@ -152,6 +159,11 @@ export default {
       windowWidth: self.innerWidth,
       windowHeight: self.innerHeight,
     };
+  },
+  setup() {
+    const { width } = useScreenWidth();
+    const { height, tableRow } = useScreenHeight();
+    return { width, height, tableRow };
   },
   mounted() {
     this.$nextTick(() => {
