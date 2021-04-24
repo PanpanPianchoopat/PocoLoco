@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="pagination-container"
-    :style="paginationVisible ? {} : { display: 'none' }"
-  >
+  <div class="pagination-container" v-if="paginationVisible">
     <div class="pagination-row">
       <button class="pagination-button" @click="prev">
         <i class="fa fa-chevron-left fa-1x"></i>

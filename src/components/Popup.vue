@@ -1,8 +1,13 @@
 <template>
-  <div class="background" v-bind:style="visible ? {} : { display: 'none' }">
-    <div class="box">
+  <div class="background" v-if="visible">
+    <div class="box" v-bind:style="buttons ? {} : { paddingTop: '10px' }">
+      <div class="exit-button" v-show="!buttons" @click="returnPop()">
+        <buttons class="exit-icon">
+          <i class="fa fa-times fa-1x"></i>
+        </buttons>
+      </div>
       <slot></slot>
-      <div class="buttons">
+      <div class="buttons" v-show="buttons">
         <DefaultButton
           :style="{
             height: '40px',
@@ -34,11 +39,16 @@
   import DefaultButton from "../components/DefaultButton.vue";
   export default {
     name: "Popup",
-    props: ["visible"],
+    props: ["visible", "buttons"],
     components: { DefaultButton },
     methods: {
       returnPop() {
         this.$emit("popReturn", false);
+        close();
+      },
+      close() {
+        this.$destroy();
+        this.$el.parentNode.removeChild(this.$el);
       },
     },
   };
@@ -59,16 +69,28 @@
 
   .box {
     width: 415px;
+    max-height: 450px;
     background-color: white;
     z-index: 10;
     border-radius: 24px;
     padding: 40px 50px;
+    overflow: scroll;
+  }
+
+  .exit-button {
+    width: 450px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .exit-icon:hover {
+    cursor: pointer;
+    color: var(--primary-blue);
   }
 
   .buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 75px;
+    margin-top: 30px;
   }
 </style>

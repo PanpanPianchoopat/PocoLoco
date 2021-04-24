@@ -14,41 +14,23 @@
           : { display: 'none' }
       "
     >
-      <i
-        class="fa fa-times fa-2x"
-        :style="width <= 1000 && visible ? {} : { display: 'none' }"
-      ></i>
-      <i
-        class="fa fa-bars fa-2x"
-        :style="!visible ? {} : { display: 'none' }"
-      ></i>
+      <i class="fa fa-times fa-2x" v-if="width <= 1000 && visible"></i>
+      <i class="fa fa-bars fa-2x" v-if="!visible"></i>
     </button>
-    <div
-      class="circle"
-      :style="visible || width > 1000 ? {} : { display: 'none' }"
-    >
+    <div class="circle" v-if="visible || width > 1000">
       <img src="../assets/owner.png" />
     </div>
-    <div
-      class="info"
-      :style="visible || width > 1000 ? {} : { display: 'none' }"
-    >
+    <div class="info" v-if="visible || width > 1000">
       <b>Role Name</b>
       <b>Employee ID</b>
     </div>
-    <div
-      class="menu"
-      :style="visible || width > 1000 ? {} : { display: 'none' }"
-    >
+    <div class="menu" v-if="visible || width > 1000">
       <router-link :to="{ name: 'Home' }">Home</router-link>
       <router-link :to="{ name: 'About' }">About</router-link>
       <router-link :to="{ name: 'Role' }">Role</router-link>
       <router-link :to="{ name: 'Customer' }">Customer</router-link>
     </div>
-    <button
-      class="logout-button"
-      :style="visible || width > 1000 ? {} : { display: 'none' }"
-    >
+    <button class="logout-button" v-if="visible || width > 1000">
       <div class="logout-text">
         <i
           class="fa fa-sign-out fa-2x"

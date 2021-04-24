@@ -12,13 +12,14 @@
         <input class="search-field" type="text" placeholder="search" />
       </div>
       <DefaultButton type="small">Search</DefaultButton>
+
       <AddButton
         :style="{ position: 'fixed', right: '5%', top: '170px' }"
         @click="goToAddRole"
       />
     </div>
 
-    <table v-bind:style="sampleRole.length !== 0 ? {} : { display: 'none' }">
+    <table v-if="sampleRole.length !== 0">
       <tr>
         <th>Role ID</th>
         <th>Department</th>
@@ -31,8 +32,8 @@
 
       <tr
         v-for="(role, i) in sampleRole.slice(
-          currentPage * numberPerPage - numberPerPage,
-          currentPage * numberPerPage
+          currentPage * tableRow - tableRow,
+          currentPage * tableRow
         )"
         :key="i"
         class="row"
@@ -53,7 +54,7 @@
             </button>
             <div class="vl"></div>
             <button class="manage-button">
-              <i class="fa fa-trash fa-2x" :style="{}"></i>
+              <i class="fa fa-trash fa-2x"></i>
             </button>
           </div>
         </td>
@@ -61,11 +62,11 @@
     </table>
 
     <PaginationBar
-      :pageCount="Math.ceil(sampleRole.length / numberPerPage)"
-      :paginationVisible="sampleRole.length > numberPerPage"
+      :pageCount="Math.ceil(sampleRole.length / tableRow)"
+      :paginationVisible="sampleRole.length > tableRow"
       @pageReturn="pageReturn"
       :style="
-        windowWidth <= 1000
+        width <= 1000
           ? {
               position: 'fixed',
               bottom: '50px',
@@ -83,7 +84,7 @@
       "
     />
   </Container>
-  <Popup v-bind:visible="visible" @popReturn="popReturn">
+  <Popup v-bind:visible="visible" :buttons="true" @popReturn="popReturn">
     <div class="popup-head">
       <div>Department: {{ department }}</div>
       <div>Role: {{ role }}</div>
@@ -103,7 +104,7 @@
       type="text"
       :value="bonusRate"
       :placeholder="bonusRate"
-      :style="{ width: '95%' }"
+      :style="{ width: '95%', marginBottom: '30px' }"
     />
   </Popup>
 </template>
@@ -115,48 +116,19 @@
   import PaginationBar from "../components/PaginationBar.vue";
   import AddButton from "../components/AddButton.vue";
   import Popup from "../components/Popup.vue";
+  import { useScreenWidth } from "../composables/useScreenWidth";
+  import { useScreenHeight } from "../composables/useScreenHeight";
 
   const sampleRole = [
     { id: 11, name: "Manager", dept: "Kitchen", salary: 30000, bonus: 0.8 },
     { id: 12, name: "Chef", dept: "Kitchen", salary: 40000, bonus: 0.9 },
     { id: 13, name: "Waiter", dept: "Kitchen", salary: 50000, bonus: 0.1 },
-    {
-      id: 21,
-      name: "Manager",
-      dept: "Housekeeping",
-      salary: 30000,
-      bonus: 0.1,
-    },
-    { id: 22, name: "Maid", dept: "Housekeeping", salary: 30000, bonus: 0.1 },
-    { id: 31, name: "Manager", dept: "Hospitality", salary: 30000, bonus: 0.1 },
-    {
-      id: 32,
-      name: "Receptionist",
-      dept: "Hospitality",
-      salary: 30000,
-      bonus: 0.1,
-    },
-    { id: 11, name: "Manager", dept: "Kitchen", salary: 30000, bonus: 0.1 },
-    { id: 12, name: "Chef", dept: "Kitchen", salary: 30000, bonus: 0.1 },
-    { id: 13, name: "Waiter", dept: "Kitchen", salary: 50000, bonus: 0.1 },
-    {
-      id: 21,
-      name: "Manager",
-      dept: "Housekeeping",
-      salary: 30000,
-      bonus: 0.1,
-    },
-    { id: 22, name: "Maid", dept: "Housekeeping", salary: 30000, bonus: 0.1 },
-    { id: 31, name: "Manager", dept: "Hospitality", salary: 30000, bonus: 0.1 },
-    {
-      id: 32,
-      name: "Receptionist",
-      dept: "Hospitality",
-      salary: 30000,
-      bonus: 0.1,
-    },
-    { id: 11, name: "Manager", dept: "Kitchen", salary: 30000, bonus: 0.1 },
-    { id: 12, name: "Chef", dept: "Kitchen", salary: 30000, bonus: 0.1 },
+    { id: 14, name: "Manager", dept: "Kitchen", salary: 30000, bonus: 0.8 },
+    { id: 15, name: "Chef", dept: "Kitchen", salary: 40000, bonus: 0.9 },
+    { id: 16, name: "Waiter", dept: "Kitchen", salary: 50000, bonus: 0.1 },
+    { id: 17, name: "Manager", dept: "Kitchen", salary: 30000, bonus: 0.8 },
+    { id: 18, name: "Chef", dept: "Kitchen", salary: 40000, bonus: 0.9 },
+    { id: 19, name: "Waiter", dept: "Kitchen", salary: 50000, bonus: 0.1 },
   ];
 
   export default {
@@ -169,29 +141,23 @@
       AddButton,
       Popup,
     },
+    setup() {
+      const { width } = useScreenWidth();
+      const { height, tableRow } = useScreenHeight();
+      return { width, height, tableRow };
+    },
     data() {
       return {
         sampleRole,
-        numberPerPage: 4,
         currentPage: 1,
         visible: false,
         department: null,
         role: null,
         salary: 0,
         bonusRate: 0,
-        navOpen: true,
-        windowWidth: self.innerWidth,
-        windowHeight: self.innerHeight,
       };
     },
-    mounted() {
-      this.$nextTick(() => {
-        self.addEventListener("resize", this.onResize);
-      });
-    },
-    beforeDestroy() {
-      self.removeEventListener("resize", this.onResize);
-    },
+
     methods: {
       pageReturn(page) {
         this.currentPage = page;
@@ -208,17 +174,6 @@
       },
       goToAddRole() {
         this.$router.push("/AddRole");
-      },
-      navReturn(isOpen) {
-        this.navOpen = isOpen;
-      },
-      onResize() {
-        this.windowWidth = self.innerWidth;
-        this.windowHeight = self.innerHeight;
-        this.numberPerPage = Math.floor((this.windowHeight - 450) / 35);
-        if (this.windowWidth <= 1000) {
-          this.visible = false;
-        }
       },
     },
   };
