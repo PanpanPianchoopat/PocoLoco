@@ -1,13 +1,13 @@
 <template>
   <div
     id="nav"
-    :style="windowWidth <= 1000 ? (visible ? {} : { width: '60px' }) : {}"
+    :style="width <= 1000 ? (visible ? {} : { width: '60px' }) : {}"
   >
     <button
       class="close"
       @click="returnVisible"
       :style="
-        windowWidth <= 1000
+        width <= 1000
           ? visible
             ? {}
             : { left: '15px', top: '15px' }
@@ -16,7 +16,7 @@
     >
       <i
         class="fa fa-times fa-2x"
-        :style="windowWidth <= 1000 && visible ? {} : { display: 'none' }"
+        :style="width <= 1000 && visible ? {} : { display: 'none' }"
       ></i>
       <i
         class="fa fa-bars fa-2x"
@@ -25,20 +25,20 @@
     </button>
     <div
       class="circle"
-      :style="visible || windowWidth > 1000 ? {} : { display: 'none' }"
+      :style="visible || width > 1000 ? {} : { display: 'none' }"
     >
       <img src="../assets/owner.png" />
     </div>
     <div
       class="info"
-      :style="visible || windowWidth > 1000 ? {} : { display: 'none' }"
+      :style="visible || width > 1000 ? {} : { display: 'none' }"
     >
       <b>Role Name</b>
       <b>Employee ID</b>
     </div>
     <div
       class="menu"
-      :style="visible || windowWidth > 1000 ? {} : { display: 'none' }"
+      :style="visible || width > 1000 ? {} : { display: 'none' }"
     >
       <router-link :to="{ name: 'Home' }">Home</router-link>
       <router-link :to="{ name: 'About' }">About</router-link>
@@ -47,7 +47,7 @@
     </div>
     <button
       class="logout-button"
-      :style="visible || windowWidth > 1000 ? {} : { display: 'none' }"
+      :style="visible || width > 1000 ? {} : { display: 'none' }"
     >
       <div class="logout-text">
         <i
@@ -62,32 +62,23 @@
 </template>
 
 <script>
+  import { useScreenWidth } from "../composables/useScreenWidth";
   export default {
     name: "Navbar",
+
+    setup() {
+      const { width } = useScreenWidth();
+      return { width };
+    },
     data() {
       return {
-        visible: true,
-        windowWidth: self.windowWidth,
+        visible: false,
       };
-    },
-    mounted() {
-      this.$nextTick(() => {
-        self.addEventListener("resize", this.onResize);
-      });
-    },
-    beforeDestroy() {
-      self.removeEventListener("resize", this.onResize);
     },
     methods: {
       returnVisible() {
         this.visible = !this.visible;
         this.$emit("NavReturn", this.visible);
-      },
-      onResize() {
-        this.windowWidth = self.innerWidth;
-        if (this.windowWidth <= 1000) {
-          this.visible = false;
-        }
       },
     },
   };
