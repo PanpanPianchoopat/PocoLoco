@@ -14,61 +14,88 @@
           class="search-field"
           type="text"
           placeholder="search"
+          :style="{ marginBottom: '0' }"
         />
       </div>
       <DefaultButton @click="searchData" type="small">Search</DefaultButton>
+
+      <!-- Sort By -->
+      <select v-model="sort">
+        <option value="all" selected>All</option>
+        <option value="rank">Rank</option>
+        <option value="id">ID</option>
+        <option value="name">Name</option>
+        <option value="visit">Number of visit</option>
+      </select>
+
+      <!-- Filter -->
+      <select v-model="filter">
+        <option value="all" selected>All</option>
+        <option value="rank">Rank</option>
+        <option value="id">ID</option>
+        <option value="name">Name</option>
+        <option value="visit">Number of visit</option>
+      </select>
+
       <AddButton
         :style="{ position: 'fixed', right: '5%', top: '170px' }"
         @click="goToCustomerReg()"
       />
     </div>
 
-    <table v-bind:style="customer_db.length !== 0 ? {} : { display: 'none' }">
+    <table v-if="customer_db.length !== 0">
       <tr>
         <th>Rank</th>
         <th>ID</th>
         <th>Name</th>
         <th>Phone</th>
-        <th>Number of stay</th>
+        <th>Number of visit</th>
         <th>Manage</th>
       </tr>
 
       <tr
         v-for="(customer, index) in customer_db.slice(
-          currentPage * numberPerPage - numberPerPage,
-          currentPage * numberPerPage
+          currentPage * tableRow - tableRow,
+          currentPage * tableRow
         )"
         v-bind:key="index"
         class="row"
       >
         <td>{{ index + 1 }}</td>
         <td>{{ customer.customerID }}</td>
-        <td>{{ customer.customerName }}</td>
+        <td>{{ customer.firstName }} {{ customer.lastName }}</td>
         <td>{{ customer.phone }}</td>
-        <td>{{ customer.numberStay }}</td>
+        <td v-if="customer.numberVisit != NULL">{{ customer.numberVisit }}</td>
+        <td v-else>0</td>
         <td>
           <div class="manage">
+            <!-- Search Button -->
             <button
               class="manage-button"
-              @click="editData(customer.customerID)"
+              @click="getCustomerData('view', customer)"
+            >
+              <i class="fa fa-search fa-2x"></i>
+            </button>
+            <!-- Edit Button -->
+            <div class="vl"></div>
+            <!--Edit-->
+            <button
+              class="manage-button"
+              @click="getCustomerData('edit', customer)"
             >
               <i class="fa fa-pencil fa-2x"></i>
             </button>
-            <!-- <div class="vl"></div>
-            <button class="manage-button">
-              <i class="fa fa-trash fa-2x" :style="{}"></i>
-            </button> -->
           </div>
         </td>
       </tr>
     </table>
 
     <PaginationBar
-      :pageCount="Math.ceil(customer_db.length / numberPerPage)"
-      :paginationVisible="customer_db.length > numberPerPage"
+      :pageCount="Math.ceil(customer_db.length / tableRow)"
+      :paginationVisible="customer_db.length > tableRow"
       @pageReturn="pageReturn"
       :style="
-        windowWidth <= 1000
+        width <= 1000
           ? {
               position: 'fixed',
               bottom: '50px',
@@ -86,28 +113,86 @@
       "
     />
   </Container>
-  <Popup v-bind:visible="visible" @popReturn="popReturn">
+
+  <!--View-->
+  <Popup v-bind:visible="viewVisible" @popReturn="viewReturn">
     <div class="popup-head">
-      <div>Department: {{ department }}</div>
-      <div>Role: {{ role }}</div>
+      <div class="ranking">
+        <div class="rank">1</div>
+        <h4>ID: {{ customerID }}</h4>
+      </div>
+
+      <div>
+        <h4>{{ firstName }} {{ lastName }}</h4>
+        <p v-if="numberVisit != NULL" class="subscript-text">
+          Number of visit: {{ numberVisit }}
+        </p>
+        <p v-else class="subscript-text">Number of visit: 0</p>
+      </div>
     </div>
-    <p>First Name</p>
-    <div :style="{ paddingBottom: '20px' }">
+    <div class="view-group">
+      <div class="view-item">
+        <p><b>Phone: </b>{{ phone }}</p>
+      </div>
+      <div>
+        <p><b>Email: </b>{{ email }}</p>
+      </div>
+    </div>
+    <div class="view-group">
+      <div class="view-item">
+        <p><b>Gender: </b> {{ gender }}</p>
+      </div>
+      <div>
+        <p><b>Birthday: </b>{{ DOB }}</p>
+      </div>
+    </div>
+    <p :style="{ textAlign: 'justify' }"><b>Address: </b>{{ address }}</p>
+  </Popup>
+
+  <!--Edit-->
+  <Popup v-bind:visible="editVisible" :buttons="true" @popReturn="editReturn">
+    <div class="input-group">
+      <p
+        :style="
+          width > 700 ? { marginRight: '130px' } : { marginRight: '90px' }
+        "
+      >
+        First Name
+      </p>
+      <p>Last Name</p>
+    </div>
+    <div class="input-group">
       <input
         type="text"
-        :value="salary"
-        :placeholder="Firstname"
-        :style="{ marginRight: '10px' }"
+        :v-model="form.firstName"
+        :value="firstName"
+        :placeholder="fname"
+        :style="{ marginRight: '20px' }"
       />
-      Baht
+      <input
+        type="text"
+        :v-model="form.lastName"
+        :value="lastName"
+        :placeholder="lname"
+      />
     </div>
-    <p>Bonus Rate</p>
+    <p>Phone</p>
     <input
       type="text"
-      :value="bonusRate"
-      :placeholder="bonusRate"
-      :style="{ width: '95%' }"
+      :v-model="form.phone"
+      :value="phone"
+      :placeholder="phone"
     />
+    <p>Email</p>
+    <input
+      type="text"
+      :v-model="form.email"
+      :value="email"
+      :placeholder="email"
+      :style="{ width: '250px' }"
+    />
+    <p>Address</p>
+    <textarea :v-model="form.address" :value="address" />
   </Popup>
 </template>
 
@@ -118,6 +203,8 @@ import Container from "../components/Container.vue";
 import PaginationBar from "../components/PaginationBar.vue";
 import AddButton from "../components/AddButton.vue";
 import Popup from "../components/Popup.vue";
+import { useScreenWidth } from "../composables/useScreenWidth";
+import { useScreenHeight } from "../composables/useScreenHeight";
 import axios from "axios";
 
 export default {
@@ -130,20 +217,24 @@ export default {
     AddButton,
     Popup,
   },
+  setup() {
+    const { width } = useScreenWidth();
+    const { height, tableRow } = useScreenHeight();
+    return { width, height, tableRow };
+  },
   data() {
     return {
-      numberPerPage: 4,
+      viewVisible: false,
+      editVisible: false,
       currentPage: 1,
-      visible: false,
-
-      navOpen: true,
-      windowWidth: self.innerWidth,
-      windowHeight: self.innerHeight,
 
       search: "",
+      sort: "all",
+      filter: "all",
       customer_db: "",
       check: false,
       form: {
+        rank: "",
         customerID: "",
         firstName: "",
         lastName: "",
@@ -151,30 +242,26 @@ export default {
         phone: "",
         email: "",
         address: "",
+        numberVisit: "",
         isEdit: false,
       },
     };
   },
 
   created() {
-    this.getCustomer();
+    this.getAllCustomer();
   },
 
-  mounted() {
-    this.$nextTick(() => {
-      self.addEventListener("resize", this.onResize);
-    });
-  },
-  beforeUnmount() {
-    self.removeEventListener("resize", this.onResize);
-  },
   methods: {
     pageReturn(page) {
       this.currentPage = page;
     },
 
-    popReturn(value) {
-      this.visible = value;
+    viewReturn(value) {
+      this.viewVisible = value;
+    },
+    editReturn(value) {
+      this.editVisible = value;
     },
 
     getRecord(department, role, salary, bonus) {
@@ -185,30 +272,38 @@ export default {
       this.bonusRate = bonus;
     },
 
+    getCustomerData(type, customer) {
+      console.log(customer);
+      if (type === "view") {
+        this.viewVisible = !this.viewVisible;
+      }
+      if (type === "edit") {
+        this.editVisible = !this.editVisible;
+        this.form.isEdit = true;
+      }
+      this.customerID = customer.customerID;
+      this.firstName = customer.firstName;
+      this.lastName = customer.lastName;
+      this.phone = customer.phone;
+      this.email = customer.email;
+      this.DOB = customer.DOB;
+      this.address = customer.address;
+      this.numberVisit = customer.numberVisit;
+      this.gender = customer.gender;
+    },
+
     goToCustomerReg() {
       this.$router.push("/CustomerReg");
     },
 
-    navReturn(isOpen) {
-      this.navOpen = isOpen;
-    },
-
-    onResize() {
-      this.windowWidth = self.innerWidth;
-      this.windowHeight = self.innerHeight;
-      this.numberPerPage = Math.floor((this.windowHeight - 450) / 35);
-      if (this.windowWidth <= 1000) {
-        this.visible = false;
-      }
-    },
-
-    getCustomer() {
+    getAllCustomer() {
       axios
         .post("http://localhost:8080/PocoLoco_db/api_customer.php", {
-          action: "getCustomer",
+          action: "getAllCustomer",
         })
         .then(
           function(res) {
+            console.log(res);
             this.customer_db = res.data;
           }.bind(this)
         );
@@ -218,8 +313,10 @@ export default {
       e.preventDefault();
       axios
         .post("http://localhost:8080/PocoLoco_db/api_customer.php", {
-          search: this.search,
           action: "searchData",
+          search: this.search,
+          sort: this.sort,
+          filter: this.filter,
         })
         .then(
           function(res) {
@@ -270,7 +367,7 @@ export default {
               if (res.data.success == true) {
                 alert("Updated Successfully");
                 this.resetData();
-                this.getCustomer();
+                this.getAllCustomer();
               }
             }.bind(this)
           );
@@ -289,7 +386,7 @@ export default {
             if (res.data.success == true) {
               alert("Deleted Successfully");
               this.resetData();
-              this.getCustomer();
+              this.getAllCustomer();
             }
           });
       }
@@ -322,6 +419,10 @@ h3 {
   font-size: 48px;
   margin: 80px 0 35px 0;
 }
+h4 {
+  font-size: 20px;
+  margin-bottom: 0;
+}
 .icon-wrap {
   position: absolute;
   z-index: 0;
@@ -331,7 +432,7 @@ h3 {
   width: 225px;
   height: 30px;
   padding-left: 45px;
-  font-size: 18px;
+  font-size: 16px;
   outline: none;
   z-index: 1;
   border: none;
@@ -362,7 +463,7 @@ table {
   justify-content: center;
 }
 .fa-pencil:hover,
-.fa-trash:hover {
+.fa-search:hover {
   color: var(--primary-blue);
 }
 .manage-button {
@@ -384,12 +485,50 @@ table {
   margin-bottom: 25px;
   font-weight: bold;
 }
+.ranking {
+  display: flex;
+  flex-direction: row;
+}
+.rank {
+  width: 50px;
+  height: 50px;
+  background: var(--button-blue);
+  color: white;
+  margin: 15px 25px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  font-size: 20px;
+}
+.subscript-text {
+  color: grey;
+  font-size: 14px;
+  margin: 10px 0 0 0;
+}
+p {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.input-group {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
 input {
-  width: 250px;
+  width: 180px;
   height: 35px;
   align-self: center;
   padding-left: 10px;
+  margin-bottom: 20px;
   color: var(--header-color);
+}
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-color);
 }
 th {
   height: 35px;
@@ -406,6 +545,14 @@ td {
   cursor: pointer;
   background: var(--grey-highlight);
 }
+.view-group {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.view-item {
+  width: 40%;
+}
 *:focus {
   outline: 0;
 }
@@ -419,6 +566,25 @@ td {
   table {
     width: 85%;
   }
+  h4 {
+    font-size: 16px;
+  }
+  p {
+    font-size: 16px;
+  }
+  .subscript-text {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  .rank {
+    width: 40px;
+    height: 40px;
+    margin: 12px 15px 0 0;
+    font-size: 16px;
+  }
+  input {
+    width: 180px;
+  }
 }
 @media (max-width: 700px) {
   table {
@@ -427,6 +593,21 @@ td {
   .search-field {
     width: 150px;
     font-size: 16px;
+  }
+  input {
+    width: 125px;
+  }
+  h4 {
+    font-size: 14px;
+  }
+  p {
+    font-size: 14px;
+  }
+  .rank {
+    width: 35px;
+    height: 35px;
+    margin: 10px 15px 0 0;
+    font-size: 14px;
   }
 }
 </style>
