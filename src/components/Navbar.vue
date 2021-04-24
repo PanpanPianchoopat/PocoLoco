@@ -43,6 +43,7 @@
       <router-link :to="{ name: 'Home' }">Home</router-link>
       <router-link :to="{ name: 'About' }">About</router-link>
       <router-link :to="{ name: 'Role' }">Role</router-link>
+      <router-link :to="{ name: 'Customer' }">Customer</router-link>
     </div>
     <button
       class="logout-button"

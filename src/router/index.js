@@ -11,7 +11,7 @@ import AddBookingDetail from "../views/AddBookingDetail.vue";
 import Role from "../views/Role.vue";
 import AddExpense from "../views/AddExpense.vue";
 import AddNewService from "../views/AddNewService.vue";
-
+import Customer from "../views/Customer.vue";
 
 const routes = [
   {
@@ -38,6 +38,11 @@ const routes = [
     path: "/CustomerReg",
     name: "CustomerReg",
     component: CustomerReg,
+  },
+  {
+    path: "/Customer",
+    name: "Customer",
+    component: Customer,
   },
   {
     path: "/AddRole",

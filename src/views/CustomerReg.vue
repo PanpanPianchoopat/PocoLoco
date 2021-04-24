@@ -158,7 +158,7 @@
           marginRight: '110px',
           border: '3px solid white',
         }"
-        @click="resetData"
+        @click="backToCustomer"
         >CANCEL</DefaultButton
       >
       <DefaultButton @click="submitData">ADD</DefaultButton>
@@ -209,6 +209,9 @@ export default {
   },
 
   methods: {
+    backToCustomer() {
+        this.$router.push("/Customer");
+      },
     submitData(e) {
       e.preventDefault();
       this.validate();
