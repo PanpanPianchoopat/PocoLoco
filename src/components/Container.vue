@@ -1,32 +1,19 @@
 <template>
   <div
     class="container"
-    :style="windowWidth > 1000 ? { padding: '0 100px 0 250px' } : {}"
+    :style="width > 1000 ? { padding: '0 100px 0 250px' } : {}"
   >
     <slot></slot>
   </div>
 </template>
 
 <script>
+import { useScreenWidth } from "../composables/useScreenWidth";
 export default {
   name: "Container",
-  data() {
-    return {
-      windowWidth: self.windowWidth,
-    };
-  },
-  mounted() {
-    this.$nextTick(() => {
-      self.addEventListener("resize", this.onResize);
-    });
-  },
-  beforeDestroy() {
-    self.removeEventListener("resize", this.onResize);
-  },
-  methods: {
-    onResize() {
-      this.windowWidth = self.innerWidth;
-    },
+  setup() {
+    const { width } = useScreenWidth();
+    return { width };
   },
 };
 </script>
