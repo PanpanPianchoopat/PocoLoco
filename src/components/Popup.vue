@@ -68,7 +68,7 @@
   }
 
   .box {
-    width: 415px;
+    width: 500px;
     max-height: 450px;
     background-color: white;
     z-index: 10;
@@ -78,7 +78,7 @@
   }
 
   .exit-button {
-    width: 450px;
+    width: 530px;
     display: flex;
     justify-content: flex-end;
   }
@@ -92,5 +92,21 @@
     flex-direction: row;
     justify-content: center;
     margin-top: 30px;
+  }
+  @media (max-width: 1000px) {
+    .box {
+      width: 400px;
+    }
+    .exit-button {
+      width: 430px;
+    }
+  }
+  @media (max-width: 700px) {
+    .box {
+      width: 300px;
+    }
+    .exit-button {
+      width: 330px;
+    }
   }
 </style>
