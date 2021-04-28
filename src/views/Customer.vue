@@ -124,11 +124,11 @@
     <div class="popup-head">
       <div class="ranking">
         <div class="rank">1</div>
-        <h4>ID: {{ customerID }}</h4>
+        <h4>ID: {{ form.customerID }}</h4>
       </div>
 
       <div>
-        <h4>{{ firstName }} {{ lastName }}</h4>
+        <h4>{{ form.firstName }} {{ form.lastName }}</h4>
         <p v-if="numberVisit != NULL" class="subscript-text">
           Number of visit: {{ numberVisit }}
         </p>
@@ -137,25 +137,31 @@
     </div>
     <div class="view-group">
       <div class="view-item">
-        <p><b>Phone: </b>{{ phone }}</p>
+        <p><b>Phone: </b>{{ form.phone }}</p>
       </div>
       <div>
-        <p><b>Email: </b>{{ email }}</p>
+        <p><b>Email: </b>{{ form.email }}</p>
       </div>
     </div>
     <div class="view-group">
       <div class="view-item">
-        <p><b>Gender: </b> {{ gender }}</p>
+        <p v-if="form.gender == 'M'"><b>Gender: </b>Male</p>
+        <p v-else><b>Gender: </b>Female</p>
       </div>
       <div>
-        <p><b>Birthday: </b>{{ DOB }}</p>
+        <p><b>Birthday: </b>{{ form.DOB }}</p>
       </div>
     </div>
-    <p :style="{ textAlign: 'justify' }"><b>Address: </b>{{ address }}</p>
+    <p :style="{ textAlign: 'justify' }"><b>Address: </b>{{ form.address }}</p>
   </Popup>
 
   <!--Edit-->
-  <Popup v-bind:visible="editVisible" :buttons="true" @popReturn="editReturn">
+  <Popup
+    v-bind:visible="editVisible"
+    :buttons="true"
+    @popReturn="editReturn"
+    @submit="submit"
+  >
     <div class="input-group">
       <p
         :style="
@@ -169,35 +175,23 @@
     <div class="input-group">
       <input
         type="text"
-        :v-model="form.firstName"
-        :value="firstName"
+        v-model="form.firstName"
         :placeholder="fname"
         :style="{ marginRight: '20px' }"
       />
-      <input
-        type="text"
-        :v-model="form.lastName"
-        :value="lastName"
-        :placeholder="lname"
-      />
+      <input type="text" v-model="form.lastName" :placeholder="lname" />
     </div>
     <p>Phone</p>
-    <input
-      type="text"
-      :v-model="form.phone"
-      :value="phone"
-      :placeholder="phone"
-    />
+    <input type="text" v-model="form.phone" :placeholder="phone" />
     <p>Email</p>
     <input
       type="text"
-      :v-model="form.email"
-      :value="email"
+      v-model="form.email"
       :placeholder="email"
       :style="{ width: '250px' }"
     />
     <p>Address</p>
-    <textarea :v-model="form.address" :value="address" />
+    <textarea v-model="form.address" />
   </Popup>
 </template>
 
@@ -268,6 +262,15 @@ export default {
     editReturn(value) {
       this.editVisible = value;
     },
+    submit(value) {
+      console.log("submit");
+      this.editVisible = value;
+      this.updateData();
+    },
+
+    goToCustomerReg() {
+      this.$router.push("/CustomerReg");
+    },
 
     getRecord(department, role, salary, bonus) {
       this.visible = !this.visible;
@@ -286,19 +289,17 @@ export default {
         this.editVisible = !this.editVisible;
         this.form.isEdit = true;
       }
-      this.customerID = customer.customerID;
-      this.firstName = customer.firstName;
-      this.lastName = customer.lastName;
-      this.phone = customer.phone;
-      this.email = customer.email;
-      this.DOB = customer.DOB;
-      this.address = customer.address;
-      this.numberVisit = customer.numberVisit;
-      this.gender = customer.gender;
-    },
+      this.form.customerID = customer.customerID;
+      this.form.firstName = customer.firstName;
+      this.form.lastName = customer.lastName;
+      this.form.phone = customer.phone;
+      this.form.email = customer.email;
+      this.form.DOB = customer.DOB;
+      this.form.address = customer.address;
+      this.form.numberVisit = customer.numberVisit;
+      this.form.gender = customer.gender;
 
-    goToCustomerReg() {
-      this.$router.push("/CustomerReg");
+      console.log("ID : " + this.form.firstName);
     },
 
     getAllCustomer() {
@@ -333,28 +334,8 @@ export default {
         );
     },
 
-    editData(customerID) {
-      this.form.isEdit = true;
-      axios
-        .post("http://localhost:8080/PocoLoco_db/api_customer.php", {
-          action: "editData",
-          customerID: customerID,
-        })
-        .then(
-          function(res) {
-            console.log(res.data);
-            this.form.customerID = res.data[0].customerID;
-            this.form.firstName = res.data[0].firstName;
-            this.form.lastName = res.data[0].lastName;
-            this.form.DOB = res.data[0].DOB;
-            this.form.phone = res.data[0].phone;
-            this.form.email = res.data[0].email;
-            this.form.address = res.data[0].address;
-          }.bind(this)
-        );
-    },
-
     updateData() {
+      console.log("update");
       this.validate();
 
       if (this.check && this.form.isEdit) {
