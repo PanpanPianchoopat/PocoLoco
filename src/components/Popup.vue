@@ -74,7 +74,7 @@
     z-index: 10;
     border-radius: 24px;
     padding: 40px 50px;
-    overflow: scroll;
+    overflow-y: scroll;
   }
 
   .exit-button {
