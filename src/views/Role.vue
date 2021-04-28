@@ -11,11 +11,25 @@
 
         <input class="search-field" type="text" placeholder="search" />
       </div>
+      <CustomSelect
+        type="Sort by"
+        :options="['A', 'B', 'C', 'Good Night']"
+        :style="{ marginRight: '20px' }"
+      />
+      <CustomSelect
+        type="Filter"
+        :options="['A', 'B', 'C', 'Sleep tight']"
+        :style="{ marginRight: '20px' }"
+      />
       <DefaultButton type="small">Search</DefaultButton>
 
       <AddButton
-        :style="{ position: 'fixed', right: '5%', top: '170px' }"
-        @click="goToAddRole"
+        :style="
+          width < 800
+            ? { position: 'fixed', right: '5%', top: '80px' }
+            : { position: 'fixed', right: '5%', top: '170px' }
+        "
+        @click="goToCustomerReg()"
       />
     </div>
 
@@ -118,6 +132,7 @@
   import Popup from "../components/Popup.vue";
   import { useScreenWidth } from "../composables/useScreenWidth";
   import { useScreenHeight } from "../composables/useScreenHeight";
+  import CustomSelect from "../components/CustomSelect.vue";
 
   const sampleRole = [
     { id: 11, name: "Manager", dept: "Kitchen", salary: 30000, bonus: 0.8 },
@@ -140,6 +155,7 @@
       PaginationBar,
       AddButton,
       Popup,
+      CustomSelect,
     },
     setup() {
       const { width } = useScreenWidth();

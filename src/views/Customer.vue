@@ -26,9 +26,9 @@
         :options="['A', 'B', 'C']"
         :style="{ marginRight: '20px' }"
       />
-      <DefaultButton type="small" :style="width < 650 ? { width: '70px' } : {}"
-        >Search</DefaultButton
-      >
+      <DefaultButton type="small" :style="width < 650 ? { width: '70px' } : {}">
+        Search
+      </DefaultButton>
       <AddButton
         :style="
           width < 800
