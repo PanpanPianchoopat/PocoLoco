@@ -16,9 +16,25 @@
           :style="{ marginBottom: '0' }"
         />
       </div>
-      <DefaultButton type="small">Search</DefaultButton>
+      <CustomSelect
+        type="Sort by"
+        :options="['A', 'B', 'C']"
+        :style="{ marginRight: '20px' }"
+      />
+      <CustomSelect
+        type="Filter"
+        :options="['A', 'B', 'C']"
+        :style="{ marginRight: '20px' }"
+      />
+      <DefaultButton type="small" :style="width < 650 ? { width: '70px' } : {}"
+        >Search</DefaultButton
+      >
       <AddButton
-        :style="{ position: 'fixed', right: '5%', top: '170px' }"
+        :style="
+          width < 800
+            ? { position: 'fixed', right: '5%', top: '80px' }
+            : { position: 'fixed', right: '5%', top: '170px' }
+        "
         @click="goToCustomerReg()"
       />
     </div>
@@ -170,6 +186,7 @@
   import Popup from "../components/Popup.vue";
   import { useScreenWidth } from "../composables/useScreenWidth";
   import { useScreenHeight } from "../composables/useScreenHeight";
+  import CustomSelect from "../components/CustomSelect.vue";
 
   const customers = [
     {
@@ -304,6 +321,7 @@
       PaginationBar,
       AddButton,
       Popup,
+      CustomSelect,
     },
     setup() {
       const { width } = useScreenWidth();
@@ -402,6 +420,7 @@
     border: 1px solid black;
     border-collapse: collapse;
     align-self: flex-start;
+    z-index: 0;
   }
   .manage {
     height: 35px;
