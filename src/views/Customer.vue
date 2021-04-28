@@ -19,22 +19,24 @@
       </div>
       <DefaultButton @click="searchData" type="small">Search</DefaultButton>
 
+      <h4>Sort By</h4>
       <!-- Sort By -->
       <select v-model="sort">
         <option value="all" selected>All</option>
         <option value="rank">Rank</option>
-        <option value="id">ID</option>
-        <option value="name">Name</option>
-        <option value="visit">Number of visit</option>
+        <option value="customerID">ID</option>
+        <option value="firstName">Name</option>
+        <option value="numberVisit">Number of visit</option>
       </select>
 
+      <h4>Filter</h4>
       <!-- Filter -->
       <select v-model="filter">
         <option value="all" selected>All</option>
         <option value="rank">Rank</option>
-        <option value="id">ID</option>
-        <option value="name">Name</option>
-        <option value="visit">Number of visit</option>
+        <option value="customerID">ID</option>
+        <option value="firstName">Name</option>
+        <option value="numberVisit">Number of visit</option>
       </select>
 
       <AddButton
@@ -43,6 +45,9 @@
       />
     </div>
 
+    <h4 v-if="customer_db.length == 0" style="color:red">
+      No results found try different keywords or different search filters
+    </h4>
     <table v-if="customer_db.length !== 0">
       <tr>
         <th>Rank</th>
@@ -300,6 +305,8 @@ export default {
       axios
         .post("http://localhost:8080/PocoLoco_db/api_customer.php", {
           action: "getAllCustomer",
+          sort: this.sort,
+          filter: this.filter,
         })
         .then(
           function(res) {
@@ -320,6 +327,7 @@ export default {
         })
         .then(
           function(res) {
+            console.log(res);
             this.customer_db = res.data;
           }.bind(this)
         );
