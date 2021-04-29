@@ -18,27 +18,13 @@
       </div>
       <CustomSelect
         type="Filter"
-        :options="[
-          'All',
-          'Role ID',
-          'Department',
-          'Name',
-          'Salary',
-          'Borate Rate',
-        ]"
+        :options="selectOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionFilter"
       />
       <CustomSelect
         type="Sort by"
-        :options="[
-          'All',
-          'Role ID',
-          'Department',
-          'Name',
-          'Salary',
-          'Borate Rate',
-        ]"
+        :options="selectOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionSort"
       />
@@ -59,6 +45,12 @@
       />
     </div>
 
+    <h4 v-if="closeTable == false && isSearch == true" style="color:red">
+      No results found try different keywords or different search filters
+    </h4>
+    <h4 v-if="closeTable == false && isSearch == false" style="color:red">
+      No results found
+    </h4>
     <table v-if="role_db.length !== 0">
       <tr>
         <th>Role ID</th>
@@ -161,8 +153,16 @@ import Popup from "../components/Popup.vue";
 import { useScreenWidth } from "../composables/useScreenWidth";
 import { useScreenHeight } from "../composables/useScreenHeight";
 import CustomSelect from "../components/CustomSelect.vue";
-
 import axios from "axios";
+
+const selectOption = [
+  "All",
+  "Role ID",
+  "Department",
+  "Name",
+  "Salary",
+  "Borate Rate",
+];
 
 export default {
   name: "Role",
@@ -180,6 +180,9 @@ export default {
       numberPerPage: 4,
       currentPage: 1,
       visible: false,
+      selectOption,
+      closeTable: true,
+      isSearch: false,
 
       role_db: "",
       departmentID: null,
@@ -205,6 +208,9 @@ export default {
     const { height, tableRow } = useScreenHeight();
     return { width, height, tableRow };
   },
+  created() {
+    this.getAllusers();
+  },
   mounted() {
     this.$nextTick(() => {
       self.addEventListener("resize", this.onResize);
@@ -225,42 +231,42 @@ export default {
       this.submitData();
     },
     selectionSort(value) {
-      if (value === "All") {
+      if (value === selectOption[0]) {
         this.sort = "all";
       }
-      if (value === "Role ID") {
+      if (value === selectOption[1]) {
         this.sort = "roleID";
       }
-      if (value === "Department") {
-        this.sort = "department";
+      if (value === selectOption[2]) {
+        this.sort = "departmentName";
       }
-      if (value === "Name") {
+      if (value === selectOption[3]) {
         this.sort = "roleName";
       }
-      if (value === "Salary") {
+      if (value === selectOption[4]) {
         this.sort = "salary";
       }
-      if (value === "Bonus Rate") {
+      if (value === selectOption[5]) {
         this.sort = "bonusRate";
       }
     },
     selectionFilter(value) {
-      if (value === "All") {
+      if (value === selectOption[0]) {
         this.filter = "all";
       }
-      if (value === "Role ID") {
+      if (value === selectOption[1]) {
         this.filter = "roleID";
       }
-      if (value === "Department") {
-        this.filter = "department";
+      if (value === selectOption[2]) {
+        this.filter = "departmentName";
       }
-      if (value === "Name") {
+      if (value === selectOption[3]) {
         this.filter = "roleName";
       }
-      if (value === "Salary") {
+      if (value === selectOption[4]) {
         this.filter = "salary";
       }
-      if (value === "Bonus Rate") {
+      if (value === selectOption[5]) {
         this.filter = "bonusRate";
       }
     },
@@ -273,7 +279,6 @@ export default {
       this.isEdit = false;
     },
     searchData() {
-      console.log("search");
       axios
         .post("http://localhost:8080/PocoLoco_db/api_role.php", {
           action: "getSearchData",
@@ -283,8 +288,13 @@ export default {
         })
         .then(
           function(res) {
-            console.log(res);
             this.role_db = res.data;
+            this.isSearch = true;
+            if (this.role_db != "") {
+              this.closeTable = true;
+            } else {
+              this.closeTable = false;
+            }
           }.bind(this)
         );
     },
@@ -308,8 +318,6 @@ export default {
     },
     submitData() {
       // this.visible = !this.visible;
-      console.log("update");
-
       this.check = this.salary != "" && this.bonusRate != "";
       if (this.check && this.isEdit) {
         axios
@@ -323,7 +331,6 @@ export default {
           })
           .then(
             function(res) {
-              console.log(res.data);
               alert(res.data.message);
               this.getAllusers();
               this.clearValue();
@@ -347,21 +354,16 @@ export default {
     },
 
     getAllusers() {
-      //ส่ง action ไปทำงานที่ php file
       axios
         .post("http://localhost:8080/PocoLoco_db/api_role.php", {
           action: "getAll",
         })
         .then(
           function(res) {
-            console.log(res);
             this.role_db = res.data;
           }.bind(this)
         );
     },
-  },
-  created() {
-    this.getAllusers();
   },
 };
 </script>
