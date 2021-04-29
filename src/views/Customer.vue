@@ -19,13 +19,13 @@
       </div>
       <CustomSelect
         type="Filter"
-        :options="['All', 'Rank', 'ID', 'Name', 'No. of visit']"
+        :options="selectOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionFilter"
       />
       <CustomSelect
         type="Sort by"
-        :options="['All', 'Rank', 'ID', 'Name', 'No. of visit']"
+        :options="selectOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionSort"
       />
@@ -35,27 +35,6 @@
         :style="width < 650 ? { width: '70px' } : {}"
         >Search</DefaultButton
       >
-      <!-- <DefaultButton @click="searchData" type="small">Search</DefaultButton> -->
-
-      <!-- <h4>Sort By</h4> -->
-      <!-- Sort By -->
-      <!-- <select v-model="sort">
-        <option value="all" selected>All</option>
-        <option value="rank">Rank</option>
-        <option value="customerID">ID</option>
-        <option value="firstName">Name</option>
-        <option value="numberVisit">Number of visit</option>
-      </select> -->
-
-      <!-- <h4>Filter</h4> -->
-      <!-- Filter -->
-      <!-- <select v-model="filter">
-        <option value="all" selected>All</option>
-        <option value="rank">Rank</option>
-        <option value="customerID">ID</option>
-        <option value="firstName">Name</option>
-        <option value="numberVisit">Number of visit</option>
-      </select> -->
 
       <AddButton
         :style="
@@ -229,6 +208,7 @@ import { useScreenHeight } from "../composables/useScreenHeight";
 import CustomSelect from "../components/CustomSelect.vue";
 import axios from "axios";
 
+const selectOption = ["All", "Rank", "ID", "Name", "No. of visit"];
 export default {
   name: "Customer",
   components: {
@@ -250,6 +230,7 @@ export default {
       viewVisible: false,
       editVisible: false,
       currentPage: 1,
+      selectOption,
 
       search: "",
       sort: "all",
@@ -291,36 +272,36 @@ export default {
       this.updateData();
     },
     selectionSort(value) {
-      if (value === "All") {
+      if (value === selectOption[0]) {
         this.sort = "all";
       }
-      if (value === "Rank") {
+      if (value === selectOption[1]) {
         this.sort = "rank";
       }
-      if (value === "ID") {
+      if (value === selectOption[2]) {
         this.sort = "customerID";
       }
-      if (value === "Name") {
+      if (value === selectOption[3]) {
         this.sort = "firstName";
       }
-      if (value === "No. of visit") {
+      if (value === selectOption[4]) {
         this.sort = "numberVisit";
       }
     },
     selectionFilter(value) {
-      if (value === "All") {
+      if (value === selectOption[0]) {
         this.filter = "all";
       }
-      if (value === "Rank") {
+      if (value === selectOption[1]) {
         this.filter = "rank";
       }
-      if (value === "ID") {
+      if (value === selectOption[2]) {
         this.filter = "customerID";
       }
-      if (value === "Name") {
+      if (value === selectOption[3]) {
         this.filter = "firstName";
       }
-      if (value === "No. of visit") {
+      if (value === selectOption[4]) {
         this.filter = "numberVisit";
       }
     },
