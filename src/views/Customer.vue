@@ -46,10 +46,10 @@
       />
     </div>
 
-    <h4 v-if="closeTable == false && isSearch == true" style="color:red">
+    <h4 v-if="closeTable == true && isSearch == true" style="color:red">
       No results found try different keywords or different search filters
     </h4>
-    <h4 v-if="closeTable == false && isSearch == false" style="color:red">
+    <h4 v-if="closeTable == true && isSearch == false" style="color:red">
       No results found
     </h4>
     <table v-if="customer_db.length !== 0">
@@ -240,7 +240,7 @@ export default {
       filter: "all",
       customer_db: "",
       check: false,
-      closeTable: true,
+      closeTable: false,
       isSearch: false,
       form: {
         rank: "",
@@ -346,9 +346,9 @@ export default {
             this.customer_db = res.data;
             this.isSearch = false;
             if (this.customer_db != "") {
-              this.closeTable = true;
-            } else {
               this.closeTable = false;
+            } else {
+              this.closeTable = true;
             }
           }.bind(this)
         );
@@ -367,9 +367,9 @@ export default {
             this.customer_db = res.data;
             this.isSearch = true;
             if (this.customer_db != "") {
-              this.closeTable = true;
-            } else {
               this.closeTable = false;
+            } else {
+              this.closeTable = true;
             }
           }.bind(this)
         );
