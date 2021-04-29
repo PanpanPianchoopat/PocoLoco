@@ -17,30 +17,52 @@
           :style="{ marginBottom: '0' }"
         />
       </div>
-      <DefaultButton @click="searchData" type="small">Search</DefaultButton>
+      <CustomSelect
+        type="Filter"
+        :options="['All', 'Rank', 'ID', 'Name', 'No. of visit']"
+        :style="{ marginRight: '20px' }"
+        @selection="selectionFilter"
+      />
+      <CustomSelect
+        type="Sort by"
+        :options="['All', 'Rank', 'ID', 'Name', 'No. of visit']"
+        :style="{ marginRight: '20px' }"
+        @selection="selectionSort"
+      />
+      <DefaultButton
+        @click="searchData()"
+        type="small"
+        :style="width < 650 ? { width: '70px' } : {}"
+        >Search</DefaultButton
+      >
+      <!-- <DefaultButton @click="searchData" type="small">Search</DefaultButton> -->
 
-      <h4>Sort By</h4>
+      <!-- <h4>Sort By</h4> -->
       <!-- Sort By -->
-      <select v-model="sort">
+      <!-- <select v-model="sort">
         <option value="all" selected>All</option>
         <option value="rank">Rank</option>
         <option value="customerID">ID</option>
         <option value="firstName">Name</option>
         <option value="numberVisit">Number of visit</option>
-      </select>
+      </select> -->
 
-      <h4>Filter</h4>
+      <!-- <h4>Filter</h4> -->
       <!-- Filter -->
-      <select v-model="filter">
+      <!-- <select v-model="filter">
         <option value="all" selected>All</option>
         <option value="rank">Rank</option>
         <option value="customerID">ID</option>
         <option value="firstName">Name</option>
         <option value="numberVisit">Number of visit</option>
-      </select>
+      </select> -->
 
       <AddButton
-        :style="{ position: 'fixed', right: '5%', top: '170px' }"
+        :style="
+          width < 800
+            ? { position: 'fixed', right: '5%', top: '80px' }
+            : { position: 'fixed', right: '5%', top: '170px' }
+        "
         @click="goToCustomerReg()"
       />
     </div>
@@ -204,6 +226,7 @@ import AddButton from "../components/AddButton.vue";
 import Popup from "../components/Popup.vue";
 import { useScreenWidth } from "../composables/useScreenWidth";
 import { useScreenHeight } from "../composables/useScreenHeight";
+import CustomSelect from "../components/CustomSelect.vue";
 import axios from "axios";
 
 export default {
@@ -215,6 +238,7 @@ export default {
     PaginationBar,
     AddButton,
     Popup,
+    CustomSelect,
   },
   setup() {
     const { width } = useScreenWidth();
@@ -263,11 +287,43 @@ export default {
       this.editVisible = value;
     },
     submit(value) {
-      console.log("submit");
       this.editVisible = value;
       this.updateData();
     },
-
+    selectionSort(value) {
+      if (value === "All") {
+        this.sort = "all";
+      }
+      if (value === "Rank") {
+        this.sort = "rank";
+      }
+      if (value === "ID") {
+        this.sort = "customerID";
+      }
+      if (value === "Name") {
+        this.sort = "firstName";
+      }
+      if (value === "No. of visit") {
+        this.sort = "numberVisit";
+      }
+    },
+    selectionFilter(value) {
+      if (value === "All") {
+        this.filter = "all";
+      }
+      if (value === "Rank") {
+        this.filter = "rank";
+      }
+      if (value === "ID") {
+        this.filter = "customerID";
+      }
+      if (value === "Name") {
+        this.filter = "firstName";
+      }
+      if (value === "No. of visit") {
+        this.filter = "numberVisit";
+      }
+    },
     goToCustomerReg() {
       this.$router.push("/CustomerReg");
     },
@@ -317,8 +373,11 @@ export default {
         );
     },
 
-    searchData(e) {
-      e.preventDefault();
+    searchData() {
+      console.log("search");
+      console.log(this.sort);
+      console.log(this.filter);
+
       axios
         .post("http://localhost:8080/PocoLoco_db/api_customer.php", {
           action: "searchData",
@@ -443,6 +502,7 @@ table {
   border: 1px solid black;
   border-collapse: collapse;
   align-self: flex-start;
+  z-index: 0;
 }
 .manage {
   height: 35px;
