@@ -191,8 +191,8 @@ export default {
       salary: 0,
       bonusRate: 0,
 
-      sort: "",
-      filter: "",
+      sort: "all",
+      filter: "all",
       search: "",
       status: "save",
       isEdit: false,
