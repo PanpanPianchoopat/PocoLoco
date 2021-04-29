@@ -16,9 +16,45 @@
           v-model="search"
         />
       </div>
-      <DefaultButton type="small" @click="searchData()">Search</DefaultButton>
+      <CustomSelect
+        type="Filter"
+        :options="[
+          'All',
+          'Role ID',
+          'Department',
+          'Name',
+          'Salary',
+          'Borate Rate',
+        ]"
+        :style="{ marginRight: '20px' }"
+        @selection="selectionFilter"
+      />
+      <CustomSelect
+        type="Sort by"
+        :options="[
+          'All',
+          'Role ID',
+          'Department',
+          'Name',
+          'Salary',
+          'Borate Rate',
+        ]"
+        :style="{ marginRight: '20px' }"
+        @selection="selectionSort"
+      />
+      <DefaultButton
+        @click="searchData()"
+        type="small"
+        :style="width < 650 ? { width: '70px' } : {}"
+        >Search</DefaultButton
+      >
+
       <AddButton
-        :style="{ position: 'fixed', right: '5%', top: '170px' }"
+        :style="
+          width < 800
+            ? { position: 'fixed', right: '5%', top: '80px' }
+            : { position: 'fixed', right: '5%', top: '170px' }
+        "
         @click="goToAddRole"
       />
     </div>
@@ -67,7 +103,7 @@
       :paginationVisible="role_db.length > tableRow"
       @pageReturn="pageReturn"
       :style="
-       width <= 1000
+        width <= 1000
           ? {
               position: 'fixed',
               bottom: '50px',
@@ -124,6 +160,7 @@ import AddButton from "../components/AddButton.vue";
 import Popup from "../components/Popup.vue";
 import { useScreenWidth } from "../composables/useScreenWidth";
 import { useScreenHeight } from "../composables/useScreenHeight";
+import CustomSelect from "../components/CustomSelect.vue";
 
 import axios from "axios";
 
@@ -136,6 +173,7 @@ export default {
     PaginationBar,
     AddButton,
     Popup,
+    CustomSelect,
   },
   data() {
     return {
@@ -150,6 +188,8 @@ export default {
       salary: 0,
       bonusRate: 0,
 
+      sort: "",
+      filter: "",
       search: "",
       status: "save",
       isEdit: false,
@@ -184,6 +224,46 @@ export default {
       this.visible = value;
       this.submitData();
     },
+    selectionSort(value) {
+      if (value === "All") {
+        this.sort = "all";
+      }
+      if (value === "Role ID") {
+        this.sort = "roleID";
+      }
+      if (value === "Department") {
+        this.sort = "department";
+      }
+      if (value === "Name") {
+        this.sort = "roleName";
+      }
+      if (value === "Salary") {
+        this.sort = "salary";
+      }
+      if (value === "Bonus Rate") {
+        this.sort = "bonusRate";
+      }
+    },
+    selectionFilter(value) {
+      if (value === "All") {
+        this.filter = "all";
+      }
+      if (value === "Role ID") {
+        this.filter = "roleID";
+      }
+      if (value === "Department") {
+        this.filter = "department";
+      }
+      if (value === "Name") {
+        this.filter = "roleName";
+      }
+      if (value === "Salary") {
+        this.filter = "salary";
+      }
+      if (value === "Bonus Rate") {
+        this.filter = "bonusRate";
+      }
+    },
     clearValue() {
       this.roleID = "";
       this.salary = "";
@@ -196,8 +276,10 @@ export default {
       console.log("search");
       axios
         .post("http://localhost:8080/PocoLoco_db/api_role.php", {
-          search: this.search,
           action: "getSearchData",
+          search: this.search,
+          sort: this.sort,
+          filter: this.filter,
         })
         .then(
           function(res) {

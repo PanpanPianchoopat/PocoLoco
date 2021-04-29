@@ -15,7 +15,7 @@
             oninvalid="alert('Please select Season')"
             required
           >
-            <option value="">Choose Season-</option>
+            <option value="" selected hidden>Select</option>
             <option
               v-for="(season, index) in seasonDB"
               v-bind:key="index"
@@ -35,7 +35,7 @@
             oninvalid="alert('Please select Season')"
             required
           >
-            <option value="">Choose Season-</option>
+            <option value="" selected hidden>Select</option>
             <option
               v-for="(season, index) in seasonDB"
               v-bind:key="index"
@@ -55,7 +55,7 @@
             oninvalid="alert('Please select Room Type')"
             required
           >
-            <option value="">Choose Room Type-</option>
+            <option value="" selected hidden>Select</option>
             <option
               v-for="(room, index) in typeDB"
               v-bind:key="index"
@@ -75,7 +75,7 @@
             oninvalid="alert('Please select Room Type')"
             required
           >
-            <option value="">Choose Room Type-</option>
+            <option value="" selected hidden>Select</option>
             <option
               v-for="(room, index) in typeDB"
               v-bind:key="index"
@@ -308,7 +308,7 @@ export default {
   methods: {
     fetch() {
       axios
-        .get("http://localhost:8080/PocoLoco_db/api_addProm.php")
+        .get("http://localhost:8080/PocoLoco_db/api_addPromo.php")
         .then((response) => {
           console.log("SUCCESS");
         })
@@ -319,7 +319,7 @@ export default {
 
     getSeason() {
       axios
-        .post("http://localhost:8080/PocoLoco_db/api_addProm.php", {
+        .post("http://localhost:8080/PocoLoco_db/api_addPromo.php", {
           action: "getSeason",
         })
         .then(
@@ -332,7 +332,7 @@ export default {
 
     getRoomType() {
       axios
-        .post("http://localhost:8080/PocoLoco_db/api_addProm.php", {
+        .post("http://localhost:8080/PocoLoco_db/api_addPromo.php", {
           action: "getRoomType",
         })
         .then(
@@ -381,14 +381,6 @@ export default {
         this.discountError;
       }
 
-      // if (
-      //   moment(this.details.startDate.format("yyyy-mm-dd")) >
-      //   moment(this.details.endDate.format("yyyy-mm-dd"))
-      // ) {
-      //   this.startDateError;
-      //   this.endDateError;
-      // }
-
       this.check =
         this.seasonError &&
         this.roomTypeError &&
@@ -402,11 +394,9 @@ export default {
       e.preventDefault();
 
       this.validatecCheck();
-      // var a = moment("2016-01-01");
-      // moment(this.details.startDate).format("dddd");
       if (this.check) {
         axios
-          .post("http://localhost:8080/PocoLoco_db/api_addProm.php", {
+          .post("http://localhost:8080/PocoLoco_db/api_addPromo.php", {
             action: "addPromotion",
             seasonID: this.details.seasonID,
             roomTypeID: this.details.roomTypeID,
@@ -415,10 +405,24 @@ export default {
             endDate: this.details.endDate,
             discount: this.details.discount,
           })
-          .then(function(res) {
-            console.log(res.data);
-          });
+          .then(
+            function(res) {
+              if (res.data.success == true) {
+                alert(res.data.message);
+                this.resetData();
+              }
+            }.bind(this)
+          );
       }
+    },
+
+    resetData() {
+      this.details.seasonID = "";
+      this.details.roomTypeID = "";
+      this.details.promotionName = "";
+      this.details.startDate = "";
+      this.details.endDate = "";
+      this.details.discount = "";
     },
   },
 };
@@ -478,5 +482,5 @@ input[type="number"] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-} 
+}
 </style>
