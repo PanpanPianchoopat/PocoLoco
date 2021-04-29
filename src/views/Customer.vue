@@ -46,8 +46,11 @@
       />
     </div>
 
-    <h4 v-if="customer_db.length == 0" style="color:red">
+    <h4 v-if="closeTable == false && isSearch == true" style="color:red">
       No results found try different keywords or different search filters
+    </h4>
+    <h4 v-if="closeTable == false && isSearch == false" style="color:red">
+      No results found
     </h4>
     <table v-if="customer_db.length !== 0">
       <tr>
@@ -130,8 +133,8 @@
 
       <div>
         <h4>{{ form.firstName }} {{ form.lastName }}</h4>
-        <p v-if="numberVisit != NULL" class="subscript-text">
-          Number of visit: {{ numberVisit }}
+        <p v-if="form.numberVisit != NULL" class="subscript-text">
+          Number of visit: {{ form.numberVisit }}
         </p>
         <p v-else class="subscript-text">Number of visit: 0</p>
       </div>
@@ -237,6 +240,8 @@ export default {
       filter: "all",
       customer_db: "",
       check: false,
+      closeTable: true,
+      isSearch: false,
       form: {
         rank: "",
         customerID: "",
@@ -309,14 +314,6 @@ export default {
       this.$router.push("/CustomerReg");
     },
 
-    getRecord(department, role, salary, bonus) {
-      this.visible = !this.visible;
-      this.department = department;
-      this.role = role;
-      this.salary = salary;
-      this.bonusRate = bonus;
-    },
-
     getCustomerData(type, customer) {
       console.log(customer);
       if (type === "view") {
@@ -335,8 +332,6 @@ export default {
       this.form.address = customer.address;
       this.form.numberVisit = customer.numberVisit;
       this.form.gender = customer.gender;
-
-      console.log("ID : " + this.form.firstName);
     },
 
     getAllCustomer() {
@@ -348,17 +343,18 @@ export default {
         })
         .then(
           function(res) {
-            console.log(res);
             this.customer_db = res.data;
+            this.isSearch = false;
+            if (this.customer_db != "") {
+              this.closeTable = true;
+            } else {
+              this.closeTable = false;
+            }
           }.bind(this)
         );
     },
 
     searchData() {
-      console.log("search");
-      console.log(this.sort);
-      console.log(this.filter);
-
       axios
         .post("http://localhost:8080/PocoLoco_db/api_customer.php", {
           action: "searchData",
@@ -368,8 +364,13 @@ export default {
         })
         .then(
           function(res) {
-            console.log(res);
             this.customer_db = res.data;
+            this.isSearch = true;
+            if (this.customer_db != "") {
+              this.closeTable = true;
+            } else {
+              this.closeTable = false;
+            }
           }.bind(this)
         );
     },
@@ -400,24 +401,6 @@ export default {
               }
             }.bind(this)
           );
-      }
-    },
-
-    deleteData(customerID) {
-      if (confirm("Do you want to delete ID " + customerID + "?")) {
-        axios
-          .post("http://localhost:8080/PocoLoco_db/api_customer.php", {
-            action: "deleteData",
-            customerID: customerID,
-          })
-          .then(function(res) {
-            alert(res.data.message);
-            if (res.data.success == true) {
-              alert("Deleted Successfully");
-              this.resetData();
-              this.getAllCustomer();
-            }
-          });
       }
     },
 
