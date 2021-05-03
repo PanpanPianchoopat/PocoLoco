@@ -12,6 +12,8 @@ import AddNewService from "../views/AddNewService.vue";
 import AddExpense from "../views/AddExpense.vue";
 import Role from "../views/Role.vue";
 import Customer from "../views/Customer.vue";
+import Booking from "../views/Booking.vue";
+import HotelExpenses from "../views/HotelExpenses.vue";
 
 const routes = [
   {
@@ -55,6 +57,11 @@ const routes = [
     component: AddPromo,
   },
   {
+    path: "/Booking",
+    name: "Booking",
+    component: Booking,
+  },
+  {
     path: "/AddBooking",
     name: "AddBooking",
     component: AddBooking,
@@ -68,6 +75,11 @@ const routes = [
     path: "/AddNewService",
     name: "AddNewService",
     component: AddNewService,
+  },
+  {
+    path: "/HotelExpenses",
+    name: "HotelExpenses",
+    component: HotelExpenses,
   },
   {
     path: "/AddExpense",
