@@ -5,11 +5,16 @@
     </div>
 
     <InnerFormContainer>
-      <h4 :style="{ paddingBottom: '20px' }">Employee ID: XXXXXXXXX</h4>
+      <div class="two-inline">
+        <div class="input-group" :style="{ marginRight: '20px' }">
+          <h4>Employee ID</h4>
+          <input type="text" />
+        </div>
 
-      <div class="input-group">
-        <h4>Room Number</h4>
-        <input type="text" />
+        <div class="input-group">
+          <h4>Room Number</h4>
+          <input type="text" />
+        </div>
       </div>
 
       <div class="input-group">
@@ -58,6 +63,7 @@
           marginRight: '110px',
           border: '3px solid white',
         }"
+        @click="backToExpenses()"
         >CANCEL</DefaultButton
       >
       <DefaultButton>ADD</DefaultButton>
@@ -80,6 +86,11 @@
           mask: "YYYY-MM-DD",
         },
       };
+    },
+    methods: {
+      backToExpenses() {
+        this.$router.push("/HotelExpenses");
+      },
     },
   };
 </script>
