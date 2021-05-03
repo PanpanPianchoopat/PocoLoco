@@ -132,7 +132,7 @@
 
     <div class="view-group">
       <div class="view-item">
-        <p><b>Room Number: </b>{{ room }}</p>
+        <p><b>Room No: </b>{{ room }}</p>
       </div>
       <div>
         <p><b>Room Type: </b>{{ roomType }}</p>
@@ -141,7 +141,15 @@
     <p :style="{ textAlign: 'justify' }"><b>Detail: </b>{{ detail }}</p>
     <div class="view-group">
       <div class="view-item">
-        <p><b>Amount: </b> {{ expenseAmount }} <b>Baht</b></p>
+        <p>
+          <b :style="width > 700 ? { marginRight: '10px' } : { margin: '0' }">
+            Amount:
+          </b>
+          {{ expenseAmount }}
+          <b :style="width > 700 ? { marginLeft: '10px' } : { margin: '0 ' }">
+            Baht
+          </b>
+        </p>
       </div>
       <div>
         <p><b>Date: </b>{{ date }}</p>
