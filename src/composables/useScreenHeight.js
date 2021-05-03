@@ -8,7 +8,14 @@ export const useScreenHeight = () => {
   onUnmounted(() => window.removeEventListener("resize", onHeightChange));
 
   const height = computed(() => windowHeight.value);
-  const tableRow = computed(() => Math.floor((windowHeight.value - 440) / 35));
+  const tableRow = computed(() => {
+    const MaxRow = Math.floor((windowHeight.value - 450) / 35);
+    if (MaxRow > 0) {
+      return MaxRow;
+    } else {
+      return 1;
+    }
+  });
 
   return { height, tableRow };
 };
