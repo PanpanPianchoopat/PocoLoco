@@ -101,7 +101,7 @@
   </Container>
 
   <!--View-->
-  <Popup v-bind:visible="viewVisible" @popReturn="viewReturn" :buttons="true">
+  <Popup v-bind:visible="editVisible" @popReturn="editReturn" :buttons="true">
     <div class="input-group">
       <div class="group-item">
         <h4>Season Name</h4>
@@ -300,7 +300,7 @@
         seasonOptions,
         roomOptions,
         currentPage: 1,
-        viewVisible: false,
+        editVisible: false,
         season: null,
         promoName: null,
         roomType: null,
@@ -322,11 +322,11 @@
       pageReturn(page) {
         this.currentPage = page;
       },
-      viewReturn(value) {
-        this.viewVisible = value;
+      editReturn(value) {
+        this.editVisible = value;
       },
       getExpenseData(promotion) {
-        this.viewVisible = !this.viewVisible;
+        this.editVisible = !this.editVisible;
         this.season = promotion.season;
         this.promoName = promotion.promoName;
         this.roomType = promotion.roomType;
