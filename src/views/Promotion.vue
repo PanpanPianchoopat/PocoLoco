@@ -68,7 +68,7 @@
         <td>{{ promotion.end }}</td>
         <td>
           <div class="manage">
-            <button class="manage-button" @click="getExpenseData(promotion)">
+            <button class="manage-button" @click="getPromotionData(promotion)">
               <i class="fa fa-pencil fa-2x"></i>
             </button>
           </div>
@@ -325,7 +325,7 @@
       editReturn(value) {
         this.editVisible = value;
       },
-      getExpenseData(promotion) {
+      getPromotionData(promotion) {
         this.editVisible = !this.editVisible;
         this.season = promotion.season;
         this.promoName = promotion.promoName;
