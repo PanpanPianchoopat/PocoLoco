@@ -261,7 +261,7 @@
     {
       season: "Hotel Special Day",
       promoName: "20th Year Celebration",
-      roomType: "All",
+      roomType: "Suite",
       discount: 0.2,
       start: "2022-07-14",
       end: "2022-07-17",
@@ -301,7 +301,6 @@
         roomOptions,
         currentPage: 1,
         viewVisible: false,
-        editVisible: false,
         season: null,
         promoName: null,
         roomType: null,
@@ -325,9 +324,6 @@
       },
       viewReturn(value) {
         this.viewVisible = value;
-      },
-      editReturn(value) {
-        this.editVisible = value;
       },
       getExpenseData(promotion) {
         this.viewVisible = !this.viewVisible;
