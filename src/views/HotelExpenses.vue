@@ -311,6 +311,46 @@
       role: "chef",
       detail: "buy a new fire extinguisher",
     },
+    {
+      informer: "Tata the rouse",
+      room: "7202",
+      roomType: "Suite",
+      expenseAmount: "6499",
+      date: "07/08/2022",
+      employeeID: "110000",
+      role: "chef",
+      detail: "buy a new fire extinguisher",
+    },
+    {
+      informer: "Tata the rouse",
+      room: "7202",
+      roomType: "Suite",
+      expenseAmount: "6499",
+      date: "07/08/2022",
+      employeeID: "110000",
+      role: "chef",
+      detail: "buy a new fire extinguisher",
+    },
+    {
+      informer: "Tata the rouse",
+      room: "7202",
+      roomType: "Suite",
+      expenseAmount: "6499",
+      date: "07/08/2022",
+      employeeID: "110000",
+      role: "chef",
+      detail: "buy a new fire extinguisher",
+    },
+    {
+      informer: "Tata the rouse",
+      room: "7202",
+      roomType: "Suite",
+      expenseAmount: "6499",
+      date: "07/08/2022",
+      employeeID: "110000",
+      role: "chef",
+      detail: "buy a new fire extinguisher",
+    },
   ];
 
   export default {
@@ -326,7 +366,7 @@
     },
     setup() {
       const { width } = useScreenWidth();
-      const { height, tableRow } = useScreenHeight();
+      const { height, tableRow } = useScreenHeight(420);
       return { width, height, tableRow };
     },
     data() {

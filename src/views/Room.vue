@@ -203,7 +203,7 @@
     },
     setup() {
       const { width } = useScreenWidth();
-      const { height, tableRow } = useScreenHeight();
+      const { height, tableRow } = useScreenHeight(420);
       return { width, height, tableRow };
     },
     data() {
