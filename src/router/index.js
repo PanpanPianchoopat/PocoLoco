@@ -14,6 +14,7 @@ import Role from "../views/Role.vue";
 import Customer from "../views/Customer.vue";
 import Booking from "../views/Booking.vue";
 import HotelExpenses from "../views/HotelExpenses.vue";
+import Promotion from "../views/Promotion.vue";
 
 const routes = [
   {
@@ -95,6 +96,11 @@ const routes = [
     path: "/Customer",
     name: "Customer",
     component: Customer,
+  },
+  {
+    path: "/Promotion",
+    name: "Promotion",
+    component: Promotion,
   },
 ];
 

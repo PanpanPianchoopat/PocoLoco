@@ -78,6 +78,7 @@
           marginRight: '110px',
           border: '3px solid white',
         }"
+        @click="backToPromo()"
         >CANCEL</DefaultButton
       >
       <DefaultButton>ADD</DefaultButton>
@@ -105,6 +106,11 @@
           mask: "YYYY-MM-DD",
         },
       };
+    },
+    methods: {
+      backToPromo() {
+        this.$router.push("/Promotion");
+      },
     },
   };
 </script>
