@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import About from "../views/About.vue";
 import Login from "../views/Login.vue";
 import EmployeeReg from "../views/EmployeeReg.vue";
 import CustomerReg from "../views/CustomerReg.vue";
@@ -16,17 +15,13 @@ import Booking from "../views/Booking.vue";
 import HotelExpenses from "../views/HotelExpenses.vue";
 import Promotion from "../views/Promotion.vue";
 import Room from "../views/Room.vue";
+import Services from "../views/Services.vue";
 
 const routes = [
   {
     path: "/Home",
     name: "Home",
     component: Home,
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: About,
   },
   {
     path: "/",
@@ -107,6 +102,11 @@ const routes = [
     path: "/Room",
     name: "Room",
     component: Room,
+  },
+  {
+    path: "/Services",
+    name: "Services",
+    component: Services,
   },
 ];
 
