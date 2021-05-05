@@ -398,7 +398,7 @@
   .vl {
     border-left: 3px solid #eeeeee;
     height: 25px;
-    margin: 0 15px;
+    margin: 0 5px;
   }
   .fa-pencil:hover,
   .fa-trash:hover {
@@ -514,7 +514,8 @@
     select {
       width: 140px;
     }
-    .fa-pencil {
+    .fa-pencil,
+    .fa-trash {
       font-size: 20px;
     }
   }
