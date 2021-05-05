@@ -12,8 +12,8 @@ import Role from "../views/Role.vue";
 import AddExpense from "../views/AddExpense.vue";
 import AddNewService from "../views/AddNewService.vue";
 import Customer from "../views/Customer.vue";
-// import Booking from "../views/Booking.vue";
-// import HotelExpenses from "../views/HotelExpenses.vue";
+import Booking from "../views/Booking.vue";
+import HotelExpenses from "../views/HotelExpenses.vue";
 
 const routes = [
   {
@@ -61,11 +61,11 @@ const routes = [
     name: "AddPromo",
     component: AddPromo,
   },
-  // {
-  //   path: "/Booking",
-  //   name: "Booking",
-  //   component: Booking,
-  // },
+  {
+    path: "/Booking",
+    name: "Booking",
+    component: Booking,
+  },
   {
     path: "/AddBooking",
     name: "AddBooking",
@@ -86,11 +86,11 @@ const routes = [
     name: "AddNewService",
     component: AddNewService,
   },
-  // {
-  //   path: "/HotelExpenses",
-  //   name: "HotelExpenses",
-  //   component: HotelExpenses,
-  // },
+  {
+    path: "/HotelExpenses",
+    name: "HotelExpenses",
+    component: HotelExpenses,
+  },
 ];
 
 const router = createRouter({
