@@ -46,6 +46,7 @@
       />
     </div>
 
+    <SearchError v-if="errorSearching" />
     <table v-if="promotion_db.length !== 0">
       <tr>
         <th>Promotion Name</th>
@@ -241,6 +242,7 @@ const selectOption = [
   "Season",
   "Promotion",
   "Room Type",
+  "Discount",
   "Start",
   "End",
 ];
@@ -266,8 +268,9 @@ export default {
       selectOption,
       currentPage: 1,
       editVisible: false,
-      sort: "",
-      filter: "",
+      errorSearching: false,
+      sort: "all",
+      filter: "all",
       search: "",
       promotion_db: "",
       season_db: "",
@@ -369,6 +372,11 @@ export default {
         .then(
           function(res) {
             this.promotion_db = res.data;
+            if (this.promotion_db != "") {
+              this.errorSearching = false;
+            } else {
+              this.errorSearching = true;
+            }
           }.bind(this)
         );
     },
@@ -438,9 +446,12 @@ export default {
         this.sort = "roomType";
       }
       if (value === selectOption[4]) {
+        this.sort = "discount";
+      }
+      if (value === selectOption[5]) {
         this.sort = "startDate";
       }
-      if (value === selectOption[4]) {
+      if (value === selectOption[6]) {
         this.sort = "endDate";
       }
     },
@@ -458,9 +469,12 @@ export default {
         this.filter = "roomType";
       }
       if (value === selectOption[4]) {
+        this.filter = "discount";
+      }
+      if (value === selectOption[5]) {
         this.filter = "startDate";
       }
-      if (value === selectOption[4]) {
+      if (value === selectOption[6]) {
         this.filter = "endDate";
       }
     },
