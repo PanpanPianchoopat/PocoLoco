@@ -403,6 +403,7 @@ export default {
             function(res) {
               if (res.data.success == true) {
                 alert(res.data.message);
+                this.backToPromo();
                 this.resetData();
               }
             }.bind(this)

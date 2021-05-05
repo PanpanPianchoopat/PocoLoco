@@ -10,6 +10,7 @@
         </span>
 
         <input
+          v-model="search"
           class="search-field"
           type="text"
           placeholder="search"
@@ -77,6 +78,10 @@
               @click="getPromotionEdit('edit', promotion)"
             >
               <i class="fa fa-pencil fa-2x"></i>
+            </button>
+            <div class="vl"></div>
+            <button @click="deleteData(promotion)" class="manage-button">
+              <i class="fa fa-trash fa-2x"></i>
             </button>
           </div>
         </td>
@@ -263,10 +268,11 @@ export default {
       editVisible: false,
       sort: "",
       filter: "",
+      search: "",
       promotion_db: "",
       season_db: "",
       roomtype_db: "",
-      isEdit: false,
+      check: false,
       form: {
         promotionID: "",
         season: "",
@@ -321,7 +327,6 @@ export default {
         .then(
           function(res) {
             this.season_db = res.data;
-            console.log(this.season_db);
           }.bind(this)
         );
     },
@@ -352,6 +357,72 @@ export default {
             this.roomtype_db = res.data;
           }.bind(this)
         );
+    },
+    searchData() {
+      axios
+        .post("http://localhost:8080/PocoLoco_db/api_promotion.php", {
+          action: "searchData",
+          search: this.search,
+          filter: this.filter,
+          sort: this.sort,
+        })
+        .then(
+          function(res) {
+            this.promotion_db = res.data;
+          }.bind(this)
+        );
+    },
+    goToAddPromotion() {
+      this.$router.push("/AddPromo");
+    },
+    updateData() {
+      this.validate();
+
+      if (this.check && this.form.isEdit) {
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_promotion.php", {
+            action: "updateData",
+            promotionID: this.form.promotionID,
+            promotion: this.form.promotion,
+            season: this.form.season,
+            roomType: this.form.roomType,
+            startDate: this.form.startDate,
+            endDate: this.form.endDate,
+            discount: this.form.discount,
+          })
+          .then(
+            function(res) {
+              if (res.data.success == true) {
+                alert(res.data.message);
+                this.resetData();
+                this.getPromotion();
+              } else {
+                alert(res.data.message);
+              }
+            }.bind(this)
+          );
+      }
+    },
+    deleteData(promotion) {
+      if (
+        confirm(
+          "Do you want to delete promotion '" + promotion.promotionName + "' ?"
+        )
+      ) {
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_promotion.php", {
+            action: "deleteData",
+            promotionID: promotion.promotionID,
+          })
+          .then(
+            function(res) {
+              if (res.data.success == true) {
+                alert(res.data.message);
+                this.getPromotion();
+              }
+            }.bind(this)
+          );
+      }
     },
     selectionSort(value) {
       if (value === selectOption[0]) {
@@ -391,53 +462,6 @@ export default {
       }
       if (value === selectOption[4]) {
         this.filter = "endDate";
-      }
-    },
-    searchData(e) {
-      e.preventDefault();
-      axios
-        .post("http://localhost:8080/PocoLoco_db/api_promotion.php", {
-          action: "searchData",
-          search: this.search,
-          filter: this.filter,
-          sort: this.sort,
-        })
-        .then(
-          function(res) {
-            this.promotion_db = res.data;
-          }.bind(this)
-        );
-    },
-    goToAddPromotion() {
-      this.$router.push("/AddPromo");
-    },
-    updateData() {
-      this.validate();
-
-      if (this.check && this.form.isEdit) {
-        axios
-          .post("http://localhost:8080/PocoLoco_db/api_promotion.php", {
-            action: "updateData",
-            promotionID: this.form.promotionID,
-            promotion: this.form.promotion,
-            season: this.form.season,
-            roomType: this.form.roomType,
-            startDate: this.form.startDate,
-            endDate: this.form.endDate,
-            discount: this.form.discount,
-          })
-          .then(
-            function(res) {
-              console.log(res.data);
-              if (res.data.success == true) {
-                alert(res.data.message);
-                this.resetData();
-                this.getPromotion();
-              } else {
-                alert(res.data.message);
-              }
-            }.bind(this)
-          );
       }
     },
     validate() {
@@ -512,7 +536,13 @@ table {
   align-items: center;
   justify-content: center;
 }
-.fa-pencil:hover {
+.vl {
+  border-left: 3px solid #eeeeee;
+  height: 25px;
+  margin: 0 15px;
+}
+.fa-pencil:hover,
+.fa-trash:hover {
   color: var(--primary-blue);
 }
 .fa-calendar {
