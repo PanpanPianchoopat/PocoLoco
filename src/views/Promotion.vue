@@ -69,7 +69,7 @@
         <td>{{ promotion.promotionName }}</td>
         <td>{{ promotion.seasonName }}</td>
         <td>{{ promotion.roomType }}</td>
-        <td>{{ promotion.discount * 100 }}%</td>
+        <td>{{ promotion.discount }}%</td>
         <td>{{ promotion.startDate }}</td>
         <td>{{ promotion.endDate }}</td>
         <td>
@@ -553,7 +553,7 @@ table {
 .vl {
   border-left: 3px solid #eeeeee;
   height: 25px;
-  margin: 0 15px;
+  margin: 0 5px;
 }
 .fa-pencil:hover,
 .fa-trash:hover {
@@ -667,7 +667,8 @@ td {
   select {
     width: 140px;
   }
-  .fa-pencil {
+  .fa-pencil,
+  .fa-trash {
     font-size: 20px;
   }
 }
