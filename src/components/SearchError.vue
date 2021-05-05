@@ -1,7 +1,6 @@
 <template>
   <div class="warning">
-    <!-- <img src="../assets/search-icon.png" /> -->
-    <img src="../assets/logo.png" />
+    <img src="../assets/search-icon.png" />
     <h2>No result found</h2>
     <p>Try different key words or different filter</p>
   </div>
