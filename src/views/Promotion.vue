@@ -71,6 +71,10 @@
             <button class="manage-button" @click="getPromotionData(promotion)">
               <i class="fa fa-pencil fa-2x"></i>
             </button>
+            <div class="vl"></div>
+            <button class="manage-button">
+              <i class="fa fa-trash fa-2x"></i>
+            </button>
           </div>
         </td>
       </tr>
@@ -391,7 +395,13 @@
     align-items: center;
     justify-content: center;
   }
-  .fa-pencil:hover {
+  .vl {
+    border-left: 3px solid #eeeeee;
+    height: 25px;
+    margin: 0 15px;
+  }
+  .fa-pencil:hover,
+  .fa-trash:hover {
     color: var(--primary-blue);
   }
   .fa-calendar {
