@@ -13,10 +13,11 @@
 import Navbar from "../components/Navbar.vue";
 import Container from "../components/Container.vue";
 import Popup from "../components/Popup.vue";
+import SearchError from "../components/SearchError";
 
 export default {
   name: "Home",
-  components: { Navbar, Container, Popup },
+  components: { Navbar, Container, Popup, SearchError },
   data() {
     return {
       employeeID: "",

@@ -46,12 +46,13 @@
       />
     </div>
 
-    <h4 v-if="closeTable == true && isSearch == true" style="color:red">
+    <!-- <h4 v-if="closeTable == true && isSearch == true" style="color:red">
       No results found try different keywords or different search filters
     </h4>
     <h4 v-if="closeTable == true && isSearch == false" style="color:red">
       No results found
-    </h4>
+    </h4> -->
+    <SearchError v-if="errorSearching" />
     <table v-if="customer_db.length !== 0">
       <tr>
         <th>Rank</th>
@@ -209,6 +210,7 @@ import Popup from "../components/Popup.vue";
 import { useScreenWidth } from "../composables/useScreenWidth";
 import { useScreenHeight } from "../composables/useScreenHeight";
 import CustomSelect from "../components/CustomSelect.vue";
+import SearchError from "../components/SearchError";
 import axios from "axios";
 
 const selectOption = ["All", "Rank", "ID", "Name", "No. of visit"];
@@ -222,16 +224,18 @@ export default {
     AddButton,
     Popup,
     CustomSelect,
+    SearchError,
   },
   setup() {
     const { width } = useScreenWidth();
-    const { height, tableRow } = useScreenHeight();
+    const { height, tableRow } = useScreenHeight(420);
     return { width, height, tableRow };
   },
   data() {
     return {
       viewVisible: false,
       editVisible: false,
+      errorSearching: false,
       currentPage: 1,
       selectOption,
 
@@ -346,9 +350,9 @@ export default {
             this.customer_db = res.data;
             this.isSearch = false;
             if (this.customer_db != "") {
-              this.closeTable = false;
+              this.errorSearching = false;
             } else {
-              this.closeTable = true;
+              this.errorSearching = true;
             }
           }.bind(this)
         );
@@ -367,9 +371,9 @@ export default {
             this.customer_db = res.data;
             this.isSearch = true;
             if (this.customer_db != "") {
-              this.closeTable = false;
+              this.errorSearching = false;
             } else {
-              this.closeTable = true;
+              this.errorSearching = true;
             }
           }.bind(this)
         );
