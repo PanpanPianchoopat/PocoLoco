@@ -250,6 +250,7 @@
           marginRight: '110px',
           border: '3px solid white',
         }"
+        @click="backToPromo()"
         >CANCEL</DefaultButton
       >
       <DefaultButton @click="addPromotionFn">ADD</DefaultButton>
@@ -306,15 +307,8 @@ export default {
   },
 
   methods: {
-    fetch() {
-      axios
-        .get("http://localhost:8080/PocoLoco_db/api_addPromo.php")
-        .then((response) => {
-          console.log("SUCCESS");
-        })
-        .catch(() => {
-          console.log("ERROR");
-        });
+    backToPromo() {
+      this.$router.push("/Promotion");
     },
 
     getSeason() {

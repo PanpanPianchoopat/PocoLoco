@@ -1,6 +1,6 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 
-export const useScreenHeight = () => {
+export const useScreenHeight = (headerHeight) => {
   let windowHeight = ref(window.innerHeight);
 
   const onHeightChange = () => (windowHeight.value = window.innerHeight);
@@ -9,7 +9,7 @@ export const useScreenHeight = () => {
 
   const height = computed(() => windowHeight.value);
   const tableRow = computed(() => {
-    const MaxRow = Math.floor((windowHeight.value - 450) / 35);
+    const MaxRow = Math.floor((windowHeight.value - headerHeight) / 35);
     if (MaxRow > 0) {
       return MaxRow;
     } else {
