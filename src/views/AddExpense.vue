@@ -5,24 +5,31 @@
     </div>
 
     <InnerFormContainer>
-      <h4 :style="{ paddingBottom: '20px' }">Employee ID: XXXXXXXXX</h4>
+      <div class="two-inline">
+        <div class="input-group" :style="{ marginRight: '20px' }">
+          <h4>Employee ID</h4>
+          <input type="text" />
+        </div>
+        <!-- Room number -->
+        <div class="input-group" v-if="roomNumberError">
+          <h4>Room Number</h4>
+          <input
+            type="number"
+            v-model="form.roomNumber"
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+          />
+        </div>
 
-      <!-- Room number -->
-      <div class="input-group" v-if="roomNumberError">
-        <h4>Room Number</h4>
-        <input type="number" v-model="form.roomNumber"
-         onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107" 
-        />
+        <!-- Room number Error -->
+        <div class="input-group" v-else>
+          <h4 style="color:red">Room Number</h4>
+          <input
+            type="number"
+            v-model="form.roomNumber"
+            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+          />
+        </div>
       </div>
-
-      <!-- Room number Error -->
-      <div class="input-group" v-else>
-        <h4 style="color:red">Room Number</h4>
-        <input type="number" v-model="form.roomNumber" 
-        onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
-        />
-      </div>
-
       <!-- Detail -->
       <div class="input-group" v-if="detailError">
         <h4>Detail</h4>
@@ -38,8 +45,10 @@
         <div class="input-group" v-if="expenseError">
           <h4>Expense</h4>
           <div :style="{ display: 'flex', flexDirection: 'row' }">
-            <input type="number" v-model="form.expense" 
-            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+            <input
+              type="number"
+              v-model="form.expense"
+              onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
             />
             <p class="unit">Baht</p>
           </div>
@@ -47,8 +56,10 @@
         <div class="input-group" v-else>
           <h4 style="color:red">Expense</h4>
           <div :style="{ display: 'flex', flexDirection: 'row' }">
-            <input type="number" v-model="form.expense" 
-            onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
+            <input
+              type="number"
+              v-model="form.expense"
+              onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107"
             />
             <p class="unit">Baht</p>
           </div>
@@ -110,7 +121,7 @@
           marginRight: '110px',
           border: '3px solid white',
         }"
-        @click="resetData"
+        @click="backToExpenses"
         >CANCEL</DefaultButton
       >
       <DefaultButton @click="submitData">ADD</DefaultButton>
@@ -147,6 +158,9 @@ export default {
     };
   },
   methods: {
+    backToExpenses() {
+      this.$router.push("/HotelExpenses");
+    },
     submitData(e) {
       e.preventDefault();
       this.validate();
@@ -298,5 +312,5 @@ input[type="number"] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-} 
+}
 </style>
