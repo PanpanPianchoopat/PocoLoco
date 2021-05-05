@@ -18,13 +18,13 @@
       </div>
       <CustomSelect
         type="Filter"
-        :options="['A', 'B', 'C']"
+        :options="selectionOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionFilter"
       />
       <CustomSelect
         type="Sort by"
-        :options="['A', 'B', 'C']"
+        :options="selectionOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionSort"
       />
@@ -41,7 +41,7 @@
       />
     </div>
 
-    <table v-if="expenses.length !== 0">
+    <table v-if="expenseDetail_db.length !== 0">
       <tr>
         <th>Informer</th>
         <th>Room Number</th>
@@ -52,19 +52,19 @@
       </tr>
 
       <tr
-        v-for="(expense, i) in expenses.slice(
+        v-for="(expense, i) in expenseDetail_db.slice(
           currentPage * tableRow - tableRow,
           currentPage * tableRow
         )"
         :key="i"
         class="row"
       >
-        <td>{{ expense.informer }}</td>
-        <td>{{ expense.room }}</td>
+        <td>{{ expense.employeeName }}</td>
+        <td>{{ expense.roomID }}</td>
         <td>{{ expense.roomType }}</td>
 
-        <td>{{ expense.expenseAmount }}</td>
-        <td>{{ expense.date }}</td>
+        <td>{{ expense.expense }}</td>
+        <td>{{ expense.expenseDate }}</td>
         <td>
           <div class="manage">
             <!--View-->
@@ -239,6 +239,17 @@ import Popup from "../components/Popup.vue";
 import { useScreenWidth } from "../composables/useScreenWidth";
 import { useScreenHeight } from "../composables/useScreenHeight";
 import CustomSelect from "../components/CustomSelect.vue";
+import axios from "axios";
+
+const selectionOption = [
+  "All",
+  "Informer",
+  "Room No.",
+  "Room Type",
+  "Expense",
+  "Date",
+];
+
 const expenses = [
   {
     informer: "Panpan panda",
@@ -352,7 +363,7 @@ const expenses = [
   },
 ];
 export default {
-  name: "Customer",
+  name: "HotelExpenses",
   components: {
     DefaultButton,
     Navbar,
@@ -369,10 +380,31 @@ export default {
   },
   data() {
     return {
-      expenses,
+      selectionOption,
       currentPage: 1,
       viewVisible: false,
       editVisible: false,
+      check: false,
+      search: "",
+      sort: "",
+      filter: "",
+      expenseDetail_db: "",
+      form: {
+        expenseID: "",
+        employeeID: "",
+        employeeName: "",
+        employeeRole: "",
+        roomID: "",
+        roomType: "",
+        detail: "",
+        expense: "",
+        expenseDate: "",
+        status: "save",
+        isEdit: false,
+      },
+
+      expenses,
+
       informer: null,
       room: null,
       roomType: null,
@@ -388,6 +420,10 @@ export default {
       },
     };
   },
+  created() {
+    this.getAllusers();
+  },
+
   methods: {
     pageReturn(page) {
       this.currentPage = page;
@@ -416,6 +452,117 @@ export default {
     },
     goToAddExpense() {
       this.$router.push("/AddExpense");
+    },
+    searchData(e) {
+      e.preventDefault();
+      console.log("search");
+      axios
+        .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
+          search: this.search,
+          sort: this.sort,
+          filter: this.filter,
+          action: "SearchData",
+        })
+        .then(
+          function(res) {
+            console.log(res);
+            this.expenseDetail_db = res.data;
+          }.bind(this)
+        );
+    },
+
+    submitData(e) {
+      e.preventDefault();
+      this.check =
+        this.form.roomID != "" &&
+        this.form.detail != "" &&
+        this.form.expense != "" &&
+        this.form.expenseDate != "";
+
+      if (this.check && this.form.isEdit) {
+        //Update Data
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
+            expenseID: this.form.expenseID,
+            roomID: this.form.roomID,
+            detail: this.form.detail,
+            expense: this.form.expense,
+            expenseDate: this.form.expenseDate,
+            action: "update",
+          })
+          .then(
+            function(res) {
+              console.log(res.data);
+              alert(res.data.message);
+              this.resetData();
+              this.getAllusers();
+            }.bind(this)
+          );
+      }
+    },
+
+    resetData() {
+      this.form.expenseID = "";
+      this.form.employeeID = "";
+      this.form.employeeName = "";
+      this.form.employeeRole = "";
+      this.form.roomID = "";
+      this.form.roomType = "";
+      this.form.detail = "";
+      this.form.expense = "";
+      this.form.expenseDate = "";
+      this.form.isEdit = false;
+    },
+
+    getAllusers() {
+      //ส่ง action ไปทำงานที่ php file
+      axios
+        .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
+          action: "getAll",
+        })
+        .then(
+          function(res) {
+            this.expenseDetail_db = res.data;
+          }.bind(this)
+        );
+    },
+
+    editData(id) {
+      this.form.isEdit = true;
+      //ส่งข้อมูลไป
+      axios
+        .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
+          action: "getEditData",
+          expenseID: id,
+        })
+        .then(
+          function(res) {
+            console.log(res);
+            this.form.expenseID = res.data.expenseID;
+            this.form.employeeID = res.data.employeeID;
+            this.form.employeeName = res.data.employeeName;
+            this.form.employeeRole = res.data.employeeRole;
+            this.form.roomID = res.data.roomID;
+            this.form.detail = res.data.detail;
+            this.form.expense = res.data.expense;
+            this.form.expenseDate = res.data.expenseDate;
+          }.bind(this)
+        );
+    },
+
+    deleteData(id) {
+      if (confirm("Do you want to delete ID " + id + "?")) {
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
+            action: "deleteData",
+            expenseID: id,
+          })
+          .then(function(res) {
+            alert(res.data.message);
+            this.resetData();
+            this.getAllusers();
+          });
+      }
     },
   },
 };
