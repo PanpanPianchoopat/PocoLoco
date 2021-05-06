@@ -6,9 +6,19 @@
 
     <InnerFormContainer>
       <div class="two-inline">
-        <div class="input-group" :style="{ marginRight: '20px' }">
+        <!-- EmployeeID -->
+        <div
+          v-if="employeeIDError"
+          class="input-group"
+          :style="{ marginRight: '20px' }"
+        >
           <h4>Employee ID</h4>
-          <input v-model="form.employeeID" type="text" />
+          <input v-model="form.employeeID" type="number" />
+        </div>
+        <!-- EmployeeID Error -->
+        <div v-else class="input-group" :style="{ marginRight: '20px' }">
+          <h4 style="color:red">Employee ID</h4>
+          <input v-model="form.employeeID" type="number" />
         </div>
         <!-- Room number -->
         <div class="input-group" v-if="roomNumberError">
@@ -140,6 +150,7 @@ export default {
   components: { FormContainer, DefaultButton, InnerFormContainer },
   data() {
     return {
+      employeeIDError: true,
       roomNumberError: true,
       detailError: true,
       expenseError: true,
@@ -197,6 +208,9 @@ export default {
         this.form.expense != "" &&
         this.form.expenseDate != "";
 
+      if (this.form.employeeID == "") {
+        this.employeeIDError = false;
+      }
       if (this.form.roomNumber == "") {
         this.roomNumberError = false;
       }
@@ -208,6 +222,9 @@ export default {
       }
       if (this.form.expenseDate == "") {
         this.expenseDateError = false;
+      }
+      if (this.form.employeeID != "") {
+        this.employeeIDError = true;
       }
       if (this.form.roomNumber != "") {
         this.roomNumberError = true;
@@ -228,6 +245,7 @@ export default {
       this.form.detail = "";
       this.form.expense = "";
       this.form.expenseDate = "";
+      this.employeeID = true;
       this.expenseDateError = true;
       this.roomNumberError = true;
       this.detailError = true;
