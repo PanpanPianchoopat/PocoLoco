@@ -1,7 +1,5 @@
 <template>
-  <Container>
-    <Navbar />
-
+  <TablePage>
     <h3>Role</h3>
     <div class="menu-bar">
       <div>
@@ -97,36 +95,36 @@
             }
       "
     />
-  </Container>
-  <Popup v-bind:visible="visible" :buttons="true" @popReturn="popReturn">
-    <div class="popup-head">
-      <div>Department: {{ department }}</div>
-      <div>Role: {{ role }}</div>
-    </div>
-    <p>Salary</p>
-    <div :style="{ paddingBottom: '20px' }">
+
+    <Popup v-bind:visible="visible" :buttons="true" @popReturn="popReturn">
+      <div class="popup-head">
+        <div>Department: {{ department }}</div>
+        <div>Role: {{ role }}</div>
+      </div>
+      <p>Salary</p>
+      <div :style="{ paddingBottom: '20px' }">
+        <input
+          type="text"
+          :value="salary"
+          :placeholder="salary"
+          :style="{ marginRight: '10px' }"
+        />
+        Baht
+      </div>
+      <p>Bonus Rate</p>
       <input
         type="text"
-        :value="salary"
-        :placeholder="salary"
-        :style="{ marginRight: '10px' }"
+        :value="bonusRate"
+        :placeholder="bonusRate"
+        :style="{ width: '95%', marginBottom: '30px' }"
       />
-      Baht
-    </div>
-    <p>Bonus Rate</p>
-    <input
-      type="text"
-      :value="bonusRate"
-      :placeholder="bonusRate"
-      :style="{ width: '95%', marginBottom: '30px' }"
-    />
-  </Popup>
+    </Popup>
+  </TablePage>
 </template>
 
 <script>
+  import TablePage from "../components/TablePage";
   import DefaultButton from "../components/DefaultButton.vue";
-  import Navbar from "../components/Navbar.vue";
-  import Container from "../components/Container.vue";
   import PaginationBar from "../components/PaginationBar.vue";
   import AddButton from "../components/AddButton.vue";
   import Popup from "../components/Popup.vue";
@@ -150,8 +148,7 @@
     name: "Role",
     components: {
       DefaultButton,
-      Navbar,
-      Container,
+      TablePage,
       PaginationBar,
       AddButton,
       Popup,
@@ -226,7 +223,7 @@
     flex-direction: row;
   }
   table {
-    width: 75%;
+    width: 100%;
     max-width: 1000;
     margin-top: 50px;
     border: 1px solid black;
@@ -295,14 +292,8 @@
     .vl {
       margin: 0 5px;
     }
-    table {
-      width: 85%;
-    }
   }
   @media (max-width: 700px) {
-    table {
-      width: 80%;
-    }
     .search-field {
       width: 150px;
       font-size: 16px;
