@@ -46,12 +46,6 @@
       />
     </div>
 
-    <!-- <h4 v-if="closeTable == true && isSearch == true" style="color:red">
-      No results found try different keywords or different search filters
-    </h4>
-    <h4 v-if="closeTable == true && isSearch == false" style="color:red">
-      No results found
-    </h4> -->
     <SearchError v-if="errorSearching" />
     <table v-if="customer_db.length !== 0">
       <tr>
