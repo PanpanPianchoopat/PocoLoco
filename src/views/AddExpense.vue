@@ -8,7 +8,7 @@
       <div class="two-inline">
         <div class="input-group" :style="{ marginRight: '20px' }">
           <h4>Employee ID</h4>
-          <input type="text" />
+          <input v-model="form.employeeID" type="text" />
         </div>
         <!-- Room number -->
         <div class="input-group" v-if="roomNumberError">
@@ -124,7 +124,7 @@
         @click="backToExpenses"
         >CANCEL</DefaultButton
       >
-      <DefaultButton @click="submitData">ADD</DefaultButton>
+      <DefaultButton @click="saveData">ADD</DefaultButton>
     </div>
   </FormContainer>
 </template>
@@ -146,6 +146,7 @@ export default {
       expenseDateError: true,
       check: false,
       form: {
+        employeeID: "",
         roomNumber: "",
         detail: "",
         expenseDate: "",
@@ -161,21 +162,23 @@ export default {
     backToExpenses() {
       this.$router.push("/HotelExpenses");
     },
-    submitData(e) {
+    saveData(e) {
+      console.log(this.form.employeeID);
       e.preventDefault();
       this.validate();
       if (this.check) {
-        // Save Data
         axios
           .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
+            action: "saveData",
+            employeeID: this.form.employeeID,
             roomNumber: this.form.roomNumber,
             detail: this.form.detail,
             expenseDate: this.form.expenseDate,
             expense: this.form.expense,
-            action: "insert",
           })
           .then(
             function(res) {
+              console.log(res);
               if (res.data.success == true) {
                 alert("Saved Successful");
                 this.resetData();
