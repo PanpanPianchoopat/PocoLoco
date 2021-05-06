@@ -27,6 +27,7 @@
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
+        @click="backToAllService"
         :style="{
           background: 'none',
           marginRight: '110px',
@@ -46,8 +47,10 @@
   export default {
     name: "AddNewService",
     components: { FormContainer, DefaultButton, InnerFormContainer },
-    data() {
-      return {};
+    methods: {
+      backToAllService() {
+        this.$router.push("/Services");
+      },
     },
   };
 </script>
