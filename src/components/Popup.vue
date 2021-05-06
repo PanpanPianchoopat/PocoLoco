@@ -65,6 +65,7 @@
     width: 100%;
     position: fixed;
     z-index: 100;
+    margin-left: -260px;
   }
 
   .box {
@@ -94,6 +95,9 @@
     margin-top: 30px;
   }
   @media (max-width: 1000px) {
+    .background {
+      margin-left: -80px;
+    }
     .box {
       width: 400px;
     }
