@@ -10,6 +10,7 @@
         </span>
 
         <input
+          v-model="search"
           class="search-field"
           type="text"
           placeholder="search"
@@ -18,17 +19,21 @@
       </div>
       <CustomSelect
         type="Filter"
-        :options="selectionOption"
+        :options="selectOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionFilter"
       />
       <CustomSelect
         type="Sort by"
-        :options="selectionOption"
+        :options="selectOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionSort"
       />
-      <DefaultButton type="small" :style="width < 650 ? { width: '70px' } : {}">
+      <DefaultButton
+        @click="searchData"
+        type="small"
+        :style="width < 650 ? { width: '70px' } : {}"
+      >
         Search
       </DefaultButton>
       <AddButton
@@ -41,6 +46,7 @@
       />
     </div>
 
+    <SearchError v-if="errorSearching" />
     <table v-if="expenseDetail_db.length !== 0">
       <tr>
         <th>Informer</th>
@@ -59,7 +65,7 @@
         :key="i"
         class="row"
       >
-        <td>{{ expense.employeeName }}</td>
+        <td>{{ expense.em_firstname }} {{ expense.em_lastname }}</td>
         <td>{{ expense.roomID }}</td>
         <td>{{ expense.roomType }}</td>
 
@@ -83,7 +89,7 @@
               <i class="fa fa-pencil fa-2x"></i>
             </button>
             <div class="vl"></div>
-            <button class="manage-button">
+            <button @click="deleteData(expense)" class="manage-button">
               <i class="fa fa-trash fa-2x"></i>
             </button>
           </div>
@@ -92,8 +98,8 @@
     </table>
 
     <PaginationBar
-      :pageCount="Math.ceil(expenses.length / tableRow)"
-      :paginationVisible="expenses.length > tableRow"
+      :pageCount="Math.ceil(expenseDetail_db.length / tableRow)"
+      :paginationVisible="expenseDetail_db.length > tableRow"
       @pageReturn="pageReturn"
       :style="
         width <= 1000
@@ -120,66 +126,75 @@
     <div class="popup-head">
       <div class="user-pic">
         <div class="user-icon">
-          <img :src="require(`../assets/${role}.png`)" />
+          <!-- แก้เรื่องรูป -->
+          <!-- <img :src="require(`../assets/${role}.png`)" /> -->
+          <img :src="require(`../assets/logo.png`)" />
         </div>
-        <h4>{{ employeeID }}</h4>
+        <h4>{{ form.employeeID }}</h4>
       </div>
       <div>
-        <h4>{{ informer }}</h4>
-        <p class="subscript-text">{{ role }}</p>
+        <h4>{{ form.em_firstname }} {{ form.em_lastname }}</h4>
+        <p class="subscript-text">{{ form.employeeRole }}</p>
       </div>
     </div>
 
     <div class="view-group">
       <div class="view-item">
-        <p><b>Room No: </b>{{ room }}</p>
+        <p><b>Room No: </b>{{ form.roomID }}</p>
       </div>
       <div>
-        <p><b>Room Type: </b>{{ roomType }}</p>
+        <p><b>Room Type: </b>{{ form.roomType }}</p>
       </div>
     </div>
-    <p :style="{ textAlign: 'justify' }"><b>Detail: </b>{{ detail }}</p>
+    <p :style="{ textAlign: 'justify' }"><b>Detail: </b>{{ form.detail }}</p>
     <div class="view-group">
       <div class="view-item">
         <p>
           <b :style="width > 700 ? { marginRight: '10px' } : { margin: '0' }">
             Amount:
           </b>
-          {{ expenseAmount }}
+          {{ form.expense }}
           <b :style="width > 700 ? { marginLeft: '10px' } : { margin: '0 ' }">
             Baht
           </b>
         </p>
       </div>
       <div>
-        <p><b>Date: </b>{{ date }}</p>
+        <p><b>Date: </b>{{ form.expenseDate }}</p>
       </div>
     </div>
   </Popup>
 
   <!--Edit-->
-  <Popup v-bind:visible="editVisible" :buttons="true" @popReturn="editReturn">
+  <Popup
+    v-bind:visible="editVisible"
+    :buttons="true"
+    @popReturn="editReturn"
+    @submit="submit"
+  >
     <div class="popup-head">
       <div class="user-pic">
         <div class="user-icon">
-          <img :src="require(`../assets/${role}.png`)" />
+          <!-- แก้เรื่องรูป -->
+          <!-- <img :src="require(`../assets/${role}.png`)" /> -->
+          <img :src="require(`../assets/logo.png`)" />
         </div>
-        <h4>{{ employeeID }}</h4>
+        <h4>{{ form.employeeID }}</h4>
       </div>
       <div>
-        <h4>{{ informer }}</h4>
-        <p class="subscript-text">{{ role }}</p>
+        <h4>{{ form.em_firstname }} {{ form.em_lastname }}</h4>
+        <p class="subscript-text">{{ form.role }}</p>
       </div>
     </div>
 
     <div class="input-group">
       <b :style="{ margin: '8px 10px 0 0' }">Room Number</b>
-      <input type="text" :placeholder="room" :value="room" />
+      <input v-model="form.roomID" type="text" :placeholder="room" />
     </div>
 
     <div class="input-group">
       <b>Detail</b>
-      <textarea :placeholder="detail" :value="detail" />
+      <textarea v-model="form.detail" :placeholder="detail" />
     </div>
 
     <div class="input-group" :style="{ marginTop: '20px' }">
@@ -188,8 +203,8 @@
         <div class="input-group">
           <input
             type="text"
+            v-model="form.expense"
             :placeholder="expenseAmount"
-            :value="expenseAmount"
             :style="{ width: '80px', marginRight: '10px', textAlign: 'right' }"
           />
           <p :style="{ margin: '10px 0 0 0' }">Baht</p>
@@ -199,7 +214,7 @@
         <b>Expense Date</b>
         <div class="flex x-full" :style="{ marginTop: '10px' }">
           <v-date-picker
-            v-model="newExpenseDate"
+            v-model="form.expenseDate"
             :masks="{ input: ['DD/MM/YYYY'] }"
             :model-config="dateConfig"
             mode="single"
@@ -239,9 +254,10 @@ import Popup from "../components/Popup.vue";
 import { useScreenWidth } from "../composables/useScreenWidth";
 import { useScreenHeight } from "../composables/useScreenHeight";
 import CustomSelect from "../components/CustomSelect.vue";
+import SearchError from "../components/SearchError";
 import axios from "axios";
 
-const selectionOption = [
+const selectOption = [
   "All",
   "Informer",
   "Room No.",
@@ -250,118 +266,6 @@ const selectionOption = [
   "Date",
 ];
 
-const expenses = [
-  {
-    informer: "Panpan panda",
-    room: "1011",
-    roomType: "Suite",
-    expenseAmount: "6499",
-    date: "3/11/2022",
-    employeeID: "000000",
-    role: "receptionist",
-    detail: "fix broken toilet and replace television",
-  },
-  {
-    informer: "Ying the stongest woman",
-    room: "1001",
-    roomType: "Standard",
-    expenseAmount: "7000",
-    date: "14/08/2022",
-    employeeID: "000001",
-    role: "maid",
-    detail: "buy new washing machine",
-  },
-  {
-    informer: "PJ mask",
-    room: "2002",
-    roomType: "Deluxe",
-    expenseAmount: "7999",
-    date: "24/12/2022",
-    employeeID: "000100",
-    role: "manager",
-    detail: "pay the salary",
-  },
-  {
-    informer: "Beambub bbubuu",
-    room: "2023",
-    roomType: "Superior",
-    expenseAmount: "6999",
-    date: "20/01/2022",
-    employeeID: "001000",
-    role: "chef",
-    detail: "buy salmon and plates",
-  },
-  {
-    informer: "Mewmew maree",
-    room: "3003",
-    roomType: "Suite",
-    expenseAmount: "6499",
-    date: "17/01/2022",
-    employeeID: "010000",
-    role: "receptionist",
-    detail: "fix the hotel's telephone",
-  },
-  {
-    informer: "Ddee thannapiann",
-    room: "1414",
-    roomType: "Deluxe",
-    expenseAmount: "7999",
-    date: "14/05/2022",
-    employeeID: "100000",
-    role: "owner",
-    detail: "renovate water park",
-  },
-  {
-    informer: "Tata the rouse",
-    room: "7202",
-    roomType: "Suite",
-    expenseAmount: "6499",
-    date: "07/08/2022",
-    employeeID: "110000",
-    role: "chef",
-    detail: "buy a new fire extinguisher",
-  },
-  {
-    informer: "Tata the rouse",
-    room: "7202",
-    roomType: "Suite",
-    expenseAmount: "6499",
-    date: "07/08/2022",
-    employeeID: "110000",
-    role: "chef",
-    detail: "buy a new fire extinguisher",
-  },
-  {
-    informer: "Tata the rouse",
-    room: "7202",
-    roomType: "Suite",
-    expenseAmount: "6499",
-    date: "07/08/2022",
-    employeeID: "110000",
-    role: "chef",
-    detail: "buy a new fire extinguisher",
-  },
-  {
-    informer: "Tata the rouse",
-    room: "7202",
-    roomType: "Suite",
-    expenseAmount: "6499",
-    date: "07/08/2022",
-    employeeID: "110000",
-    role: "chef",
-    detail: "buy a new fire extinguisher",
-  },
-  {
-    informer: "Tata the rouse",
-    room: "7202",
-    roomType: "Suite",
-    expenseAmount: "6499",
-    date: "07/08/2022",
-    employeeID: "110000",
-    role: "chef",
-    detail: "buy a new fire extinguisher",
-  },
-];
 export default {
   name: "HotelExpenses",
   components: {
@@ -372,6 +276,7 @@ export default {
     AddButton,
     Popup,
     CustomSelect,
+    SearchError,
   },
   setup() {
     const { width } = useScreenWidth();
@@ -380,19 +285,21 @@ export default {
   },
   data() {
     return {
-      selectionOption,
+      selectOption,
       currentPage: 1,
       viewVisible: false,
       editVisible: false,
+      errorSearching: false,
       check: false,
       search: "",
-      sort: "",
-      filter: "",
+      sort: "all",
+      filter: "all",
       expenseDetail_db: "",
       form: {
         expenseID: "",
         employeeID: "",
-        employeeName: "",
+        em_firstname: "",
+        em_lastname: "",
         employeeRole: "",
         roomID: "",
         roomType: "",
@@ -402,8 +309,6 @@ export default {
         status: "save",
         isEdit: false,
       },
-
-      expenses,
 
       informer: null,
       room: null,
@@ -421,7 +326,7 @@ export default {
     };
   },
   created() {
-    this.getAllusers();
+    this.getAllExpense();
   },
 
   methods: {
@@ -434,6 +339,10 @@ export default {
     editReturn(value) {
       this.editVisible = value;
     },
+    submit(value) {
+      this.editVisible = value;
+      this.updateData();
+    },
     getExpenseData(type, expense) {
       if (type === "view") {
         this.viewVisible = !this.viewVisible;
@@ -441,61 +350,69 @@ export default {
       if (type === "edit") {
         this.editVisible = !this.editVisible;
       }
-      this.informer = expense.informer;
-      this.room = expense.room;
-      this.roomType = expense.roomType;
-      this.expenseAmount = expense.expenseAmount;
-      this.date = expense.date;
-      this.employeeID = expense.employeeID;
-      this.role = expense.role;
-      this.detail = expense.detail;
+
+      this.form.expenseID = expense.expenseID;
+      this.form.employeeID = expense.employeeID;
+      this.form.em_firstname = expense.em_firstname;
+      this.form.em_lastname = expense.em_lastname;
+      this.form.employeeRole = expense.employeeRole;
+      this.form.roomType = expense.roomType;
+      this.form.roomID = expense.roomID;
+      this.form.detail = expense.detail;
+      this.form.expense = expense.expense;
+      this.form.expenseDate = expense.expenseDate;
     },
     goToAddExpense() {
       this.$router.push("/AddExpense");
     },
-    searchData(e) {
-      e.preventDefault();
-      console.log("search");
+    searchData() {
       axios
         .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
+          action: "searchData",
           search: this.search,
           sort: this.sort,
           filter: this.filter,
-          action: "SearchData",
         })
         .then(
           function(res) {
-            console.log(res);
             this.expenseDetail_db = res.data;
+            if (this.expenseDetail_db != "") {
+              this.errorSearching = false;
+            } else {
+              this.errorSearching = true;
+            }
           }.bind(this)
         );
     },
 
-    submitData(e) {
-      e.preventDefault();
+    updateData() {
       this.check =
+        this.form.employeeID != "" &&
         this.form.roomID != "" &&
         this.form.detail != "" &&
         this.form.expense != "" &&
         this.form.expenseDate != "";
 
-      if (this.check && this.form.isEdit) {
-        //Update Data
+      if (this.check) {
         axios
           .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
+            action: "update",
+            employeeID: this.form.employeeID,
             expenseID: this.form.expenseID,
             roomID: this.form.roomID,
             detail: this.form.detail,
             expense: this.form.expense,
             expenseDate: this.form.expenseDate,
-            action: "update",
           })
           .then(
             function(res) {
-              console.log(res.data);
-              alert(res.data.message);
-              this.resetData();
-              this.getAllusers();
+              if (res.data.success == true) {
+                alert(res.data.message);
+                this.resetData();
+                this.getAllExpense();
+              } else {
+                alert(res.data.message);
+              }
             }.bind(this)
           );
       }
@@ -504,7 +421,8 @@ export default {
     resetData() {
       this.form.expenseID = "";
       this.form.employeeID = "";
-      this.form.employeeName = "";
+      this.form.em_firstname = "";
+      this.form.em_lastname = "";
       this.form.employeeRole = "";
       this.form.roomID = "";
       this.form.roomType = "";
@@ -514,8 +432,7 @@ export default {
       this.form.isEdit = false;
     },
 
-    getAllusers() {
-      //ส่ง action ไปทำงานที่ php file
+    getAllExpense() {
       axios
         .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
           action: "getAll",
@@ -523,45 +440,69 @@ export default {
         .then(
           function(res) {
             this.expenseDetail_db = res.data;
+            if (this.expenseDetail_db != "") {
+              this.errorSearching = false;
+            } else {
+              this.errorSearching = true;
+            }
           }.bind(this)
         );
     },
 
-    editData(id) {
-      this.form.isEdit = true;
-      //ส่งข้อมูลไป
-      axios
-        .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
-          action: "getEditData",
-          expenseID: id,
-        })
-        .then(
-          function(res) {
-            console.log(res);
-            this.form.expenseID = res.data.expenseID;
-            this.form.employeeID = res.data.employeeID;
-            this.form.employeeName = res.data.employeeName;
-            this.form.employeeRole = res.data.employeeRole;
-            this.form.roomID = res.data.roomID;
-            this.form.detail = res.data.detail;
-            this.form.expense = res.data.expense;
-            this.form.expenseDate = res.data.expenseDate;
-          }.bind(this)
-        );
-    },
-
-    deleteData(id) {
-      if (confirm("Do you want to delete ID " + id + "?")) {
+    deleteData(expense) {
+      if (confirm("Do you want to delete ID " + expense.expenseID + "?")) {
         axios
           .post("http://localhost:8080/PocoLoco_db/api_hotelExpense.php", {
             action: "deleteData",
-            expenseID: id,
+            expenseID: expense.expenseID,
           })
-          .then(function(res) {
-            alert(res.data.message);
-            this.resetData();
-            this.getAllusers();
-          });
+          .then(
+            function(res) {
+              alert(res.data.message);
+              this.resetData();
+              this.getAllExpense();
+            }.bind(this)
+          );
+      }
+    },
+    selectionSort(value) {
+      if (value === selectOption[0]) {
+        this.sort = "all";
+      }
+      if (value === selectOption[1]) {
+        this.sort = "em_firstname";
+      }
+      if (value === selectOption[2]) {
+        this.sort = "roomID";
+      }
+      if (value === selectOption[3]) {
+        this.sort = "roomType";
+      }
+      if (value === selectOption[4]) {
+        this.sort = "expense";
+      }
+      if (value === selectOption[5]) {
+        this.sort = "expenseDate";
+      }
+    },
+    selectionFilter(value) {
+      if (value === selectOption[0]) {
+        this.filter = "all";
+      }
+      if (value === selectOption[1]) {
+        this.filter = "em_firstname";
+      }
+      if (value === selectOption[2]) {
+        this.filter = "roomID";
+      }
+      if (value === selectOption[3]) {
+        this.filter = "roomType";
+      }
+      if (value === selectOption[4]) {
+        this.filter = "expense";
+      }
+      if (value === selectOption[5]) {
+        this.filter = "expenseDate";
       }
     },
   },
