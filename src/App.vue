@@ -14,6 +14,7 @@
     --primary-red: #ff8b8b;
     --grey-highlight: #f0f0f0;
     --text-color: #2c3e50;
+    --light-grey: #dcdcdc;
   }
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
