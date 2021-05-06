@@ -399,9 +399,11 @@ export default {
             function(res) {
               console.log(res.data);
               if (res.data.success == true) {
-                alert("Updated Successfully");
+                alert(res.data.message);
                 this.resetData();
                 this.getAllCustomer();
+              } else {
+                alert(res.data.message);
               }
             }.bind(this)
           );
