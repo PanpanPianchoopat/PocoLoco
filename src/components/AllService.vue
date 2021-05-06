@@ -43,7 +43,7 @@
     <tr>
       <th>Service Name</th>
       <th>Type</th>
-      <th>Price Type</th>
+      <th>Price</th>
       <th>Manage</th>
     </tr>
 
@@ -174,7 +174,7 @@
     components: { CustomSelect, DefaultButton, AddButton, PaginationBar },
     setup() {
       const { width } = useScreenWidth();
-      const { height, tableRow } = useScreenHeight(600);
+      const { height, tableRow } = useScreenHeight(580);
       return { width, height, tableRow };
     },
     data() {
@@ -237,7 +237,7 @@
     border-bottom: 1px solid black;
   }
   td {
-    width: 100px;
+    width: 80px;
     text-align: center;
     justify-content: center;
     align-items: center;
