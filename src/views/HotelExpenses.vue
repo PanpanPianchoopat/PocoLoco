@@ -1,7 +1,5 @@
 <template>
-  <Container>
-    <Navbar />
-
+  <TablePage>
     <h3>Hotel Expenses</h3>
     <div class="menu-bar">
       <div>
@@ -34,8 +32,8 @@
       <AddButton
         :style="
           width < 800
-            ? { position: 'fixed', right: '5%', top: '80px' }
-            : { position: 'fixed', right: '5%', top: '170px' }
+            ? { position: 'fixed', right: '20px', top: '80px' }
+            : { position: 'fixed', right: '60px', top: '170px' }
         "
         @click="goToAddExpense()"
       />
@@ -113,126 +111,128 @@
             }
       "
     />
-  </Container>
-
-  <!--View-->
-  <Popup v-bind:visible="viewVisible" @popReturn="viewReturn">
-    <div class="popup-head">
-      <div class="user-pic">
-        <div class="user-icon">
-          <img :src="require(`../assets/${role}.png`)" />
+    <!--View-->
+    <Popup v-bind:visible="viewVisible" @popReturn="viewReturn">
+      <div class="popup-head">
+        <div class="user-pic">
+          <div class="user-icon">
+            <img :src="require(`../assets/${role}.png`)" />
+          </div>
+          <h4>{{ employeeID }}</h4>
         </div>
-        <h4>{{ employeeID }}</h4>
-      </div>
-      <div>
-        <h4>{{ informer }}</h4>
-        <p class="subscript-text">{{ role }}</p>
-      </div>
-    </div>
-
-    <div class="view-group">
-      <div class="view-item">
-        <p><b>Room No: </b>{{ room }}</p>
-      </div>
-      <div>
-        <p><b>Room Type: </b>{{ roomType }}</p>
-      </div>
-    </div>
-    <p :style="{ textAlign: 'justify' }"><b>Detail: </b>{{ detail }}</p>
-    <div class="view-group">
-      <div class="view-item">
-        <p>
-          <b :style="width > 700 ? { marginRight: '10px' } : { margin: '0' }">
-            Amount:
-          </b>
-          {{ expenseAmount }}
-          <b :style="width > 700 ? { marginLeft: '10px' } : { margin: '0 ' }">
-            Baht
-          </b>
-        </p>
-      </div>
-      <div>
-        <p><b>Date: </b>{{ date }}</p>
-      </div>
-    </div>
-  </Popup>
-
-  <!--Edit-->
-  <Popup v-bind:visible="editVisible" :buttons="true" @popReturn="editReturn">
-    <div class="popup-head">
-      <div class="user-pic">
-        <div class="user-icon">
-          <img :src="require(`../assets/${role}.png`)" />
-        </div>
-        <h4>{{ employeeID }}</h4>
-      </div>
-      <div>
-        <h4>{{ informer }}</h4>
-        <p class="subscript-text">{{ role }}</p>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <b :style="{ margin: '8px 10px 0 0' }">Room Number</b>
-      <input type="text" :placeholder="room" :value="room" />
-    </div>
-
-    <div class="input-group">
-      <b>Detail</b>
-      <textarea :placeholder="detail" :value="detail" />
-    </div>
-
-    <div class="input-group" :style="{ marginTop: '20px' }">
-      <div class="group-item">
-        <b :style="{ marginBottom: '10px' }">Expense Amount</b>
-        <div class="input-group">
-          <input
-            type="text"
-            :placeholder="expenseAmount"
-            :value="expenseAmount"
-            :style="{ width: '80px', marginRight: '10px', textAlign: 'right' }"
-          />
-          <p :style="{ margin: '10px 0 0 0' }">Baht</p>
+        <div>
+          <h4>{{ informer }}</h4>
+          <p class="subscript-text">{{ role }}</p>
         </div>
       </div>
-      <div>
-        <b>Expense Date</b>
-        <div class="flex x-full" :style="{ marginTop: '10px' }">
-          <v-date-picker
-            v-model="newExpenseDate"
-            :masks="{ input: ['DD/MM/YYYY'] }"
-            :model-config="dateConfig"
-            mode="single"
-            class="flex-grow"
-          >
-            <template v-slot="{ inputValue, inputEvents }">
-              <div :style="{ display: 'flex', flexDirection: 'row' }">
-                <input
-                  :value="inputValue"
-                  v-on="inputEvents"
-                  :placeholder="date"
-                  :style="{ width: '120px' }"
-                />
-                <i
-                  class="fa fa-calendar fa-2x"
-                  :style="{
-                    color: 'var(--primary-blue',
-                    margin: '3px 0 0 -35px',
-                  }"
-                ></i>
-              </div>
-            </template>
-          </v-date-picker>
+
+      <div class="view-group">
+        <div class="view-item">
+          <p><b>Room No: </b>{{ room }}</p>
+        </div>
+        <div>
+          <p><b>Room Type: </b>{{ roomType }}</p>
         </div>
       </div>
-    </div>
-  </Popup>
+      <p :style="{ textAlign: 'justify' }"><b>Detail: </b>{{ detail }}</p>
+      <div class="view-group">
+        <div class="view-item">
+          <p>
+            <b :style="width > 700 ? { marginRight: '10px' } : { margin: '0' }">
+              Amount:
+            </b>
+            {{ expenseAmount }}
+            <b :style="width > 700 ? { marginLeft: '10px' } : { margin: '0 ' }">
+              Baht
+            </b>
+          </p>
+        </div>
+        <div>
+          <p><b>Date: </b>{{ date }}</p>
+        </div>
+      </div>
+    </Popup>
+
+    <!--Edit-->
+    <Popup v-bind:visible="editVisible" :buttons="true" @popReturn="editReturn">
+      <div class="popup-head">
+        <div class="user-pic">
+          <div class="user-icon">
+            <img :src="require(`../assets/${role}.png`)" />
+          </div>
+          <h4>{{ employeeID }}</h4>
+        </div>
+        <div>
+          <h4>{{ informer }}</h4>
+          <p class="subscript-text">{{ role }}</p>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <b :style="{ margin: '8px 10px 0 0' }">Room Number</b>
+        <input type="text" :placeholder="room" :value="room" />
+      </div>
+
+      <div class="input-group">
+        <b>Detail</b>
+        <textarea :placeholder="detail" :value="detail" />
+      </div>
+
+      <div class="input-group" :style="{ marginTop: '20px' }">
+        <div class="group-item">
+          <b :style="{ marginBottom: '10px' }">Expense Amount</b>
+          <div class="input-group">
+            <input
+              type="text"
+              :placeholder="expenseAmount"
+              :value="expenseAmount"
+              :style="{
+                width: '80px',
+                marginRight: '10px',
+                textAlign: 'right',
+              }"
+            />
+            <p :style="{ margin: '10px 0 0 0' }">Baht</p>
+          </div>
+        </div>
+        <div>
+          <b>Expense Date</b>
+          <div class="flex x-full" :style="{ marginTop: '10px' }">
+            <v-date-picker
+              v-model="newExpenseDate"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="dateConfig"
+              mode="single"
+              class="flex-grow"
+            >
+              <template v-slot="{ inputValue, inputEvents }">
+                <div :style="{ display: 'flex', flexDirection: 'row' }">
+                  <input
+                    :value="inputValue"
+                    v-on="inputEvents"
+                    :placeholder="date"
+                    :style="{ width: '120px' }"
+                  />
+                  <i
+                    class="fa fa-calendar fa-2x"
+                    :style="{
+                      color: 'var(--primary-blue',
+                      margin: '3px 0 0 -35px',
+                    }"
+                  ></i>
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
+        </div>
+      </div>
+    </Popup>
+  </TablePage>
 </template>
 
 <script>
+  import TablePage from "../components/TablePage";
   import DefaultButton from "../components/DefaultButton.vue";
-  import Navbar from "../components/Navbar.vue";
-  import Container from "../components/Container.vue";
   import PaginationBar from "../components/PaginationBar.vue";
   import AddButton from "../components/AddButton.vue";
   import Popup from "../components/Popup.vue";
@@ -356,9 +356,8 @@
   export default {
     name: "Customer",
     components: {
+      TablePage,
       DefaultButton,
-      Navbar,
-      Container,
       PaginationBar,
       AddButton,
       Popup,
@@ -458,7 +457,7 @@
     flex-direction: row;
   }
   table {
-    width: 75%;
+    width: 100%;
     max-width: 1000;
     margin-top: 50px;
     border: 1px solid black;
@@ -585,9 +584,7 @@
     .vl {
       margin: 0 5px;
     }
-    table {
-      width: 85%;
-    }
+
     h4 {
       font-size: 16px;
     }
@@ -609,9 +606,6 @@
     }
   }
   @media (max-width: 700px) {
-    table {
-      width: 80%;
-    }
     .search-field {
       width: 150px;
       font-size: 16px;
