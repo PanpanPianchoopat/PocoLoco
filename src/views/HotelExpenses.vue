@@ -354,7 +354,7 @@
   ];
 
   export default {
-    name: "Customer",
+    name: "Expenses",
     components: {
       TablePage,
       DefaultButton,
