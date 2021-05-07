@@ -26,11 +26,7 @@
         :style="{ marginRight: '20px' }"
         @selection="selectionSort"
       />
-      <DefaultButton
-        @click="searchData()"
-        type="small"
-        >Search</DefaultButton
-      >
+      <DefaultButton @click="searchData()" type="small">Search</DefaultButton>
 
       <AddButton
         :style="
@@ -42,12 +38,7 @@
       />
     </div>
 
-    <h4 v-if="closeTable == false && isSearch == true" style="color:red">
-      No results found try different keywords or different search filters
-    </h4>
-    <h4 v-if="closeTable == false && isSearch == false" style="color:red">
-      No results found
-    </h4>
+    <SearchError v-if="errorSearching" />
     <table v-if="role_db.length !== 0">
       <tr>
         <th>Role ID</th>
@@ -150,6 +141,7 @@ import Popup from "../components/Popup.vue";
 import { useScreenWidth } from "../composables/useScreenWidth";
 import { useScreenHeight } from "../composables/useScreenHeight";
 import CustomSelect from "../components/CustomSelect.vue";
+import SearchError from "../components/SearchError";
 import axios from "axios";
 
 const selectOption = [
@@ -170,6 +162,7 @@ export default {
     AddButton,
     Popup,
     CustomSelect,
+    SearchError,
   },
   data() {
     return {
@@ -177,8 +170,7 @@ export default {
       currentPage: 1,
       visible: false,
       selectOption,
-      closeTable: true,
-      isSearch: false,
+      errorSearching: false,
 
       role_db: "",
       departmentID: null,
@@ -285,11 +277,10 @@ export default {
         .then(
           function(res) {
             this.role_db = res.data;
-            this.isSearch = true;
             if (this.role_db != "") {
-              this.closeTable = true;
+              this.errorSearching = false;
             } else {
-              this.closeTable = false;
+              this.errorSearching = true;
             }
           }.bind(this)
         );
@@ -313,7 +304,6 @@ export default {
         );
     },
     submitData() {
-      // this.visible = !this.visible;
       this.check = this.salary != "" && this.bonusRate != "";
       if (this.check && this.isEdit) {
         axios
