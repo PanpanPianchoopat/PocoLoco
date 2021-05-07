@@ -1,7 +1,5 @@
 <template>
-  <Container>
-    <Navbar />
-
+  <TablePage>
     <h3>Promotions</h3>
     <div class="menu-bar">
       <div>
@@ -39,8 +37,8 @@
       <AddButton
         :style="
           width < 800
-            ? { position: 'fixed', right: '5%', top: '80px' }
-            : { position: 'fixed', right: '5%', top: '170px' }
+            ? { position: 'fixed', right: '20px', top: '80px' }
+            : { position: 'fixed', right: '60px', top: '170px' }
         "
         @click="goToAddPromotion()"
       />
@@ -111,123 +109,122 @@
             }
       "
     />
-  </Container>
 
-  <!--Edit-->
-  <Popup
-    v-bind:visible="editVisible"
-    @popReturn="editReturn"
-    @submit="submit"
-    :buttons="true"
-  >
-    <div class="input-group">
-      <!-- Season Name -->
-      <div class="group-item">
-        <h4>Season Name</h4>
-        <select v-model="form.season">
-          <option :value="season" selected disabled hidden>{{
-            form.season
-          }}</option>
-          <option
-            v-for="(season, index) in season_db"
-            :key="index"
-            :value="season.seasonName"
-            :selected="option == season.seasonName ? 'selected' : null"
-          >
-            {{ season.seasonName }}
-          </option>
-        </select>
-      </div>
-      <!-- Room Type -->
+    <!--Edit-->
+    <Popup
+      v-bind:visible="editVisible"
+      @popReturn="editReturn"
+      @submit="submit"
+      :buttons="true"
+    >
       <div class="input-group">
+        <!-- Season Name -->
         <div class="group-item">
-          <h4>Room Type</h4>
-          <select>
-            <option :value="form.roomType" selected disabled hidden>
-              {{ form.roomType }}
-            </option>
+          <h4>Season Name</h4>
+          <select v-model="form.season">
+            <option :value="season" selected disabled hidden>{{
+              form.season
+            }}</option>
             <option
-              v-for="(room, index) in roomtype_db"
+              v-for="(season, index) in season_db"
               :key="index"
-              :value="room.roomType"
-              :selected="room == room.roomType ? 'selected' : null"
+              :value="season.seasonName"
+              :selected="option == season.seasonName ? 'selected' : null"
             >
-              {{ room.roomType }}
+              {{ season.seasonName }}
             </option>
           </select>
         </div>
+        <!-- Room Type -->
+        <div class="input-group">
+          <div class="group-item">
+            <h4>Room Type</h4>
+            <select>
+              <option :value="form.roomType" selected disabled hidden>
+                {{ form.roomType }}
+              </option>
+              <option
+                v-for="(room, index) in roomtype_db"
+                :key="index"
+                :value="room.roomType"
+                :selected="room == room.roomType ? 'selected' : null"
+              >
+                {{ room.roomType }}
+              </option>
+            </select>
+          </div>
+        </div>
       </div>
-    </div>
-    <!-- Promotion Name -->
-    <h4>Promotion Name</h4>
-    <input
-      type="text"
-      v-model="form.promotion"
-      :placeholder="promoName"
-      :style="{ width: '95%' }"
-    />
+      <!-- Promotion Name -->
+      <h4>Promotion Name</h4>
+      <input
+        type="text"
+        v-model="form.promotion"
+        :placeholder="promoName"
+        :style="{ width: '95%' }"
+      />
 
-    <div class="input-group">
-      <!-- Start Date -->
-      <div class="group-item">
-        <h4>Start Date</h4>
-        <div class="flex x-full">
-          <v-date-picker
-            v-model="form.startDate"
-            :masks="{ input: ['YYYY-MM-DD'] }"
-            :model-config="startDateConfig"
-            mode="single"
-            class="flex-grow"
-          >
-            <template v-slot="{ inputValue, inputEvents }">
-              <div :style="{ display: 'flex', flexDirection: 'row' }">
-                <input
-                  :value="inputValue"
-                  v-on="inputEvents"
-                  :placeholder="promoStart"
-                  :style="{ width: '120px', marginRight: '0' }"
-                />
-                <i class="fa fa-calendar fa-2x"></i>
-              </div>
-            </template>
-          </v-date-picker>
+      <div class="input-group">
+        <!-- Start Date -->
+        <div class="group-item">
+          <h4>Start Date</h4>
+          <div class="flex x-full">
+            <v-date-picker
+              v-model="form.startDate"
+              :masks="{ input: ['YYYY-MM-DD'] }"
+              :model-config="startDateConfig"
+              mode="single"
+              class="flex-grow"
+            >
+              <template v-slot="{ inputValue, inputEvents }">
+                <div :style="{ display: 'flex', flexDirection: 'row' }">
+                  <input
+                    :value="inputValue"
+                    v-on="inputEvents"
+                    :placeholder="promoStart"
+                    :style="{ width: '120px', marginRight: '0' }"
+                  />
+                  <i class="fa fa-calendar fa-2x"></i>
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
+        </div>
+        <!-- End Date -->
+        <div class="group-item">
+          <h4>End Date</h4>
+          <div class="flex x-full">
+            <v-date-picker
+              v-model="form.endDate"
+              :masks="{ input: ['YYYY-MM-DD'] }"
+              :model-config="endDateConfig"
+              mode="single"
+              class="flex-grow"
+            >
+              <template v-slot="{ inputValue, inputEvents }">
+                <div :style="{ display: 'flex', flexDirection: 'row' }">
+                  <input
+                    :value="inputValue"
+                    v-on="inputEvents"
+                    :style="{ width: '120px', marginRight: '0' }"
+                  />
+                  <i class="fa fa-calendar fa-2x"></i>
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
         </div>
       </div>
-      <!-- End Date -->
-      <div class="group-item">
-        <h4>End Date</h4>
-        <div class="flex x-full">
-          <v-date-picker
-            v-model="form.endDate"
-            :masks="{ input: ['YYYY-MM-DD'] }"
-            :model-config="endDateConfig"
-            mode="single"
-            class="flex-grow"
-          >
-            <template v-slot="{ inputValue, inputEvents }">
-              <div :style="{ display: 'flex', flexDirection: 'row' }">
-                <input
-                  :value="inputValue"
-                  v-on="inputEvents"
-                  :style="{ width: '120px', marginRight: '0' }"
-                />
-                <i class="fa fa-calendar fa-2x"></i>
-              </div>
-            </template>
-          </v-date-picker>
-        </div>
-      </div>
-    </div>
-    <!-- Discount -->
-    <h4>Discount</h4>
-    <input v-model="form.discount" type="text" :placeholder="discount" />
-  </Popup>
+      <!-- Discount -->
+      <h4>Discount</h4>
+      <input v-model="form.discount" type="text" :placeholder="discount" />
+    </Popup>
+  </TablePage>
 </template>
 
 <script>
+import TablePage from "../components/TablePage.vue";
 import DefaultButton from "../components/DefaultButton.vue";
-import Navbar from "../components/Navbar.vue";
-import Container from "../components/Container.vue";
 import PaginationBar from "../components/PaginationBar.vue";
 import AddButton from "../components/AddButton.vue";
 import Popup from "../components/Popup.vue";
@@ -249,9 +246,8 @@ const selectOption = [
 export default {
   name: "Promotion",
   components: {
+    TablePage,
     DefaultButton,
-    Navbar,
-    Container,
     PaginationBar,
     AddButton,
     Popup,
@@ -535,7 +531,7 @@ i {
   flex-direction: row;
 }
 table {
-  width: 75%;
+  width: 100%;
   max-width: 1000;
   margin-top: 50px;
   border: 1px solid black;
@@ -618,9 +614,6 @@ td {
   .vl {
     margin: 0 5px;
   }
-  table {
-    width: 85%;
-  }
   h4 {
     font-size: 16px;
   }
@@ -639,9 +632,6 @@ td {
   }
 }
 @media (max-width: 700px) {
-  table {
-    width: 80%;
-  }
   th {
     font-size: 14px;
   }
@@ -651,6 +641,9 @@ td {
   .search-field {
     width: 150px;
     font-size: 16px;
+  }
+  h3 {
+    margin: 40px 0 20px 0;
   }
   h4 {
     font-size: 14px;

@@ -1,6 +1,5 @@
 <template>
   <TablePage>
-    
       <h3>Hotel Expenses</h3>
       <div class="menu-bar">
         <div>

@@ -1,7 +1,5 @@
 <template>
-  <Container>
-    <Navbar />
-
+  <TablePage>
     <h3>Customer</h3>
     <div class="menu-bar">
       <div>
@@ -39,8 +37,8 @@
       <AddButton
         :style="
           width < 800
-            ? { position: 'fixed', right: '5%', top: '80px' }
-            : { position: 'fixed', right: '5%', top: '170px' }
+            ? { position: 'fixed', right: '20px', top: '80px' }
+            : { position: 'fixed', right: '60px', top: '170px' }
         "
         @click="goToCustomerReg()"
       />
@@ -116,88 +114,89 @@
             }
       "
     />
-  </Container>
 
-  <!--View-->
-  <Popup v-bind:visible="viewVisible" @popReturn="viewReturn">
-    <div class="popup-head">
-      <div class="ranking">
-        <div class="rank">1</div>
-        <h4>ID: {{ form.customerID }}</h4>
-      </div>
+    <!--View-->
+    <Popup v-bind:visible="viewVisible" @popReturn="viewReturn">
+      <div class="popup-head">
+        <div class="ranking">
+          <div class="rank">1</div>
+          <h4>ID: {{ form.customerID }}</h4>
+        </div>
 
-      <div>
-        <h4>{{ form.firstName }} {{ form.lastName }}</h4>
-        <p v-if="form.numberVisit != NULL" class="subscript-text">
-          Number of visit: {{ form.numberVisit }}
-        </p>
-        <p v-else class="subscript-text">Number of visit: 0</p>
+        <div>
+          <h4>{{ form.firstName }} {{ form.lastName }}</h4>
+          <p v-if="form.numberVisit != NULL" class="subscript-text">
+            Number of visit: {{ form.numberVisit }}
+          </p>
+          <p v-else class="subscript-text">Number of visit: 0</p>
+        </div>
       </div>
-    </div>
-    <div class="view-group">
-      <div class="view-item">
-        <p><b>Phone: </b>{{ form.phone }}</p>
+      <div class="view-group">
+        <div class="view-item">
+          <p><b>Phone: </b>{{ form.phone }}</p>
+        </div>
+        <div>
+          <p><b>Email: </b>{{ form.email }}</p>
+        </div>
       </div>
-      <div>
-        <p><b>Email: </b>{{ form.email }}</p>
+      <div class="view-group">
+        <div class="view-item">
+          <p v-if="form.gender == 'M'"><b>Gender: </b>Male</p>
+          <p v-else><b>Gender: </b>Female</p>
+        </div>
+        <div>
+          <p><b>Birthday: </b>{{ form.DOB }}</p>
+        </div>
       </div>
-    </div>
-    <div class="view-group">
-      <div class="view-item">
-        <p v-if="form.gender == 'M'"><b>Gender: </b>Male</p>
-        <p v-else><b>Gender: </b>Female</p>
-      </div>
-      <div>
-        <p><b>Birthday: </b>{{ form.DOB }}</p>
-      </div>
-    </div>
-    <p :style="{ textAlign: 'justify' }"><b>Address: </b>{{ form.address }}</p>
-  </Popup>
-
-  <!--Edit-->
-  <Popup
-    v-bind:visible="editVisible"
-    :buttons="true"
-    @popReturn="editReturn"
-    @submit="submit"
-  >
-    <div class="input-group">
-      <p
-        :style="
-          width > 700 ? { marginRight: '130px' } : { marginRight: '90px' }
-        "
-      >
-        First Name
+      <p :style="{ textAlign: 'justify' }">
+        <b>Address: </b>{{ form.address }}
       </p>
-      <p>Last Name</p>
-    </div>
-    <div class="input-group">
+    </Popup>
+
+    <!--Edit-->
+    <Popup
+      v-bind:visible="editVisible"
+      :buttons="true"
+      @popReturn="editReturn"
+      @submit="submit"
+    >
+      <div class="input-group">
+        <p
+          :style="
+            width > 700 ? { marginRight: '130px' } : { marginRight: '90px' }
+          "
+        >
+          First Name
+        </p>
+        <p>Last Name</p>
+      </div>
+      <div class="input-group">
+        <input
+          type="text"
+          v-model="form.firstName"
+          :placeholder="fname"
+          :style="{ marginRight: '20px' }"
+        />
+        <input type="text" v-model="form.lastName" :placeholder="lname" />
+      </div>
+      <p>Phone</p>
+      <input type="text" v-model="form.phone" :placeholder="phone" />
+      <p>Email</p>
       <input
         type="text"
-        v-model="form.firstName"
-        :placeholder="fname"
-        :style="{ marginRight: '20px' }"
+        v-model="form.email"
+        :placeholder="email"
+        :style="{ width: '250px' }"
       />
-      <input type="text" v-model="form.lastName" :placeholder="lname" />
-    </div>
-    <p>Phone</p>
-    <input type="text" v-model="form.phone" :placeholder="phone" />
-    <p>Email</p>
-    <input
-      type="text"
-      v-model="form.email"
-      :placeholder="email"
-      :style="{ width: '250px' }"
-    />
-    <p>Address</p>
-    <textarea v-model="form.address" />
-  </Popup>
+      <p>Address</p>
+      <textarea v-model="form.address" />
+    </Popup>
+  </TablePage>
 </template>
 
 <script>
+import TablePage from "../components/TablePage";
 import DefaultButton from "../components/DefaultButton.vue";
-import Navbar from "../components/Navbar.vue";
-import Container from "../components/Container.vue";
 import PaginationBar from "../components/PaginationBar.vue";
 import AddButton from "../components/AddButton.vue";
 import Popup from "../components/Popup.vue";
@@ -211,9 +210,8 @@ const selectOption = ["All", "Rank", "ID", "Name", "No. of visit"];
 export default {
   name: "Customer",
   components: {
+    TablePage,
     DefaultButton,
-    Navbar,
-    Container,
     PaginationBar,
     AddButton,
     Popup,
@@ -460,7 +458,7 @@ i {
   flex-direction: row;
 }
 table {
-  width: 75%;
+  width: 100%;
   max-width: 1000;
   margin-top: 50px;
   border: 1px solid black;
@@ -576,9 +574,6 @@ td {
   .vl {
     margin: 0 5px;
   }
-  table {
-    width: 85%;
-  }
   h4 {
     font-size: 16px;
   }
@@ -600,15 +595,15 @@ td {
   }
 }
 @media (max-width: 700px) {
-  table {
-    width: 80%;
-  }
   .search-field {
     width: 150px;
     font-size: 16px;
   }
   input {
     width: 125px;
+  }
+  h3 {
+    margin: 40px 0 20px 0;
   }
   h4 {
     font-size: 14px;
