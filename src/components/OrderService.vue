@@ -43,6 +43,7 @@
           class="add-amount"
           :id="`orderAmount${i}`"
           type="number"
+          onkeydown="return event.keyCode !== 69 && event.keyCode !== 189 && event.keyCode !== 109 && event.keyCode !== 107 && event.keyCode !== 190 && event.keyCode !== 110"
           min="1"
           :value="startingAmount"
         />
