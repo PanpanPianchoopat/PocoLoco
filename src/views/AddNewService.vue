@@ -69,6 +69,7 @@
     </InnerFormContainer>
     <div class="buttons">
       <DefaultButton
+        @click="backToAllService"
         :style="{
           background: 'none',
           marginRight: '110px',
@@ -104,6 +105,9 @@ export default {
   },
 
   methods: {
+    backToAllService() {
+        this.$router.push("/Services");
+      },
     addNewService(e) {
       e.preventDefault();
       this.validate();
@@ -219,5 +223,5 @@ input[type="number"] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-} 
+}
 </style>
