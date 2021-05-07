@@ -21,7 +21,6 @@ export default {
   text-align: center;
   align-self: center;
   margin: auto 0 auto -300px;
-  z-index: 10;
 }
 img {
   width: 140px;
