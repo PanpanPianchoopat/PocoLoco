@@ -1,7 +1,5 @@
 <template>
-  <Container>
-    <Navbar />
-
+  <TablePage>
     <h3>Role</h3>
     <div class="menu-bar">
       <div>
@@ -31,7 +29,6 @@
       <DefaultButton
         @click="searchData()"
         type="small"
-        :style="width < 650 ? { width: '70px' } : {}"
         >Search</DefaultButton
       >
 
@@ -112,41 +109,41 @@
             }
       "
     />
-  </Container>
-  <Popup
-    v-bind:visible="visible"
-    :buttons="true"
-    @popReturn="popReturn"
-    @submit="submit"
-  >
-    <div class="popup-head">
-      <div>Department: {{ departmentID }}</div>
-      <div>Role: {{ roleName }}</div>
-    </div>
-    <p>Salary</p>
-    <div :style="{ paddingBottom: '20px' }">
+
+    <Popup
+      v-bind:visible="visible"
+      :buttons="true"
+      @popReturn="popReturn"
+      @submit="submit"
+    >
+      <div class="popup-head">
+        <div>Department: {{ departmentID }}</div>
+        <div>Role: {{ roleName }}</div>
+      </div>
+      <p>Salary</p>
+      <div :style="{ paddingBottom: '20px' }">
+        <input
+          type="text"
+          v-model="salary"
+          :placeholder="salary"
+          :style="{ marginRight: '10px' }"
+        />
+        Baht
+      </div>
+      <p>Bonus Rate</p>
       <input
         type="text"
-        v-model="salary"
-        :placeholder="salary"
-        :style="{ marginRight: '10px' }"
+        v-model="bonusRate"
+        :placeholder="bonusRate"
+        :style="{ width: '95%', marginBottom: '30px' }"
       />
-      Baht
-    </div>
-    <p>Bonus Rate</p>
-    <input
-      type="text"
-      v-model="bonusRate"
-      :placeholder="bonusRate"
-      :style="{ width: '95%', marginBottom: '30px' }"
-    />
-  </Popup>
+    </Popup>
+  </TablePage>
 </template>
 
 <script>
+import TablePage from "../components/TablePage";
 import DefaultButton from "../components/DefaultButton.vue";
-import Navbar from "../components/Navbar.vue";
-import Container from "../components/Container.vue";
 import PaginationBar from "../components/PaginationBar.vue";
 import AddButton from "../components/AddButton.vue";
 import Popup from "../components/Popup.vue";
@@ -167,9 +164,8 @@ const selectOption = [
 export default {
   name: "Role",
   components: {
+    TablePage,
     DefaultButton,
-    Navbar,
-    Container,
     PaginationBar,
     AddButton,
     Popup,
@@ -398,7 +394,7 @@ i {
   flex-direction: row;
 }
 table {
-  width: 75%;
+  width: 100%;
   max-width: 1000;
   margin-top: 50px;
   border: 1px solid black;
@@ -467,14 +463,8 @@ td {
   .vl {
     margin: 0 5px;
   }
-  table {
-    width: 85%;
-  }
 }
 @media (max-width: 700px) {
-  table {
-    width: 80%;
-  }
   .search-field {
     width: 150px;
     font-size: 16px;
