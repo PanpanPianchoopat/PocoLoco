@@ -1,7 +1,7 @@
 <template>
   <div class="background" v-if="visible">
     <div class="box" v-bind:style="buttons ? {} : { paddingTop: '10px' }">
-      <div class="exit-button"  @click="returnPop()">
+      <div class="exit-button" @click="returnPop()">
         <buttons class="exit-icon">
           <i class="fa fa-times fa-1x"></i>
         </buttons>
@@ -70,6 +70,7 @@ export default {
   width: 100%;
   position: fixed;
   z-index: 100;
+  margin-left: -260px;
 }
 .box {
   width: 500px;
@@ -96,6 +97,9 @@ export default {
   margin-top: 30px;
 }
 @media (max-width: 1000px) {
+  .background {
+    margin-left: -80px;
+  }
   .box {
     width: 400px;
   }
