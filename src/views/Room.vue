@@ -16,13 +16,13 @@
       </div>
       <CustomSelect
         type="Filter"
-        :options="['A', 'B', 'C']"
+        :options="selectOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionFilter"
       />
       <CustomSelect
         type="Sort by"
-        :options="['A', 'B', 'C']"
+        :options="selectOption"
         :style="{ marginRight: '20px' }"
         @selection="selectionSort"
       />
@@ -31,7 +31,7 @@
       </DefaultButton>
     </div>
 
-    <table v-if="hotelRooms.length !== 0">
+    <table v-if="room_db.length !== 0">
       <tr>
         <th>Room No.</th>
         <th>Room Type</th>
@@ -42,21 +42,21 @@
       </tr>
 
       <tr
-        v-for="(room, i) in hotelRooms.slice(
+        v-for="(room, i) in room_db.slice(
           currentPage * tableRow - tableRow,
           currentPage * tableRow
         )"
         :key="i"
         class="row"
       >
-        <td>{{ room.roomNumber }}</td>
+        <td>{{ room.roomID }}</td>
         <td>{{ room.roomType }}</td>
-        <td>{{ room.price }}</td>
+        <td>{{ room.roomPrice }}</td>
         <td>{{ room.capacity }}</td>
         <td>{{ room.size }}</td>
         <td>
           <div class="manage">
-            <button class="manage-button" @click="getRoomData(room)">
+            <button class="manage-button" @click="getRoomDataEdit(room)">
               <i class="fa fa-pencil fa-2x"></i>
             </button>
           </div>
@@ -65,8 +65,8 @@
     </table>
 
     <PaginationBar
-      :pageCount="Math.ceil(hotelRooms.length / tableRow)"
-      :paginationVisible="hotelRooms.length > tableRow"
+      :pageCount="Math.ceil(room_db.length / tableRow)"
+      :paginationVisible="room_db.length > tableRow"
       @pageReturn="pageReturn"
       :style="
         width <= 1000
@@ -87,19 +87,24 @@
       "
     />
 
-    <Popup v-bind:visible="editVisible" @popReturn="editReturn" :buttons="true">
+    <Popup
+      v-bind:visible="editVisible"
+      @popReturn="editReturn"
+      @submit="submit"
+      :buttons="true"
+    >
       <h4>Room Type</h4>
-      <select>
+      <select v-model="form.roomType">
         <option :value="roomType" selected disabled hidden>{{
-          roomType
+          form.roomType
         }}</option>
         <option
-          v-for="(option, i) in roomOptions"
-          :key="i"
-          :value="roomType"
-          :selected="option == roomType ? 'selected' : null"
+          v-for="(type, index) in type_db"
+          :key="index"
+          :value="type.roomType"
+          :selected="type == form.roomType ? 'selected' : null"
         >
-          {{ option }}
+          {{ type.roomType }}
         </option>
       </select>
 
@@ -107,7 +112,7 @@
         <div class="group-item">
           <h4>Room Price</h4>
           <div class="input-group">
-            <input :value="price" />
+            <input v-model="form.roomPrice" />
             <p :style="{ marginLeft: '10px' }">Baht</p>
           </div>
         </div>
@@ -115,7 +120,7 @@
           <h4>Capacity</h4>
           <input
             type="number"
-            :value="capacity"
+            v-model="form.capacity"
             :placeholder="capacity"
             :style="{ width: '50px' }"
           />
@@ -134,58 +139,18 @@ import Popup from "../components/Popup.vue";
 import { useScreenWidth } from "../composables/useScreenWidth";
 import { useScreenHeight } from "../composables/useScreenHeight";
 import CustomSelect from "../components/CustomSelect.vue";
-const hotelRooms = [
-  {
-    roomNumber: 1000,
-    roomType: "Suite",
-    price: 5500,
-    capacity: 2,
-    size: 15.5,
-  },
-  {
-    roomNumber: 1001,
-    roomType: "Deluxe",
-    price: 3500,
-    capacity: 2,
-    size: 15.5,
-  },
-  {
-    roomNumber: 1002,
-    roomType: "Single",
-    price: 2800,
-    capacity: 1,
-    size: 15.5,
-  },
-  {
-    roomNumber: 1003,
-    roomType: "Villa",
-    price: 8500,
-    capacity: 4,
-    size: 55.5,
-  },
-  {
-    roomNumber: 1004,
-    roomType: "Suite",
-    price: 5500,
-    capacity: 2,
-    size: 15.5,
-  },
-  {
-    roomNumber: 1005,
-    roomType: "Suite",
-    price: 5500,
-    capacity: 2,
-    size: 15.5,
-  },
-  {
-    roomNumber: 1006,
-    roomType: "Suite",
-    price: 5500,
-    capacity: 2,
-    size: 15.5,
-  },
+import SearchError from "../components/SearchError";
+import axios from "axios";
+
+const selectOption = [
+  "All",
+  "Room No.",
+  "Room Type",
+  "Room Price",
+  "Capacity",
+  "Size",
 ];
-const roomOptions = ["Double", "Villa", "Suite", "Deluxe", "Single"];
+
 export default {
   name: "Promotion",
   components: {
@@ -195,6 +160,7 @@ export default {
     AddButton,
     Popup,
     CustomSelect,
+    SearchError,
   },
   setup() {
     const { width } = useScreenWidth();
@@ -203,15 +169,33 @@ export default {
   },
   data() {
     return {
-      hotelRooms,
-      roomOptions,
       currentPage: 1,
       editVisible: false,
-      roomType: null,
-      price: null,
-      capacity: null,
+      errorSearching: false,
+      selectOption,
+      room_db: "",
+      type_db: "",
+      search: "",
+      sort: "",
+      filter: "",
+      check: false,
+      form: {
+        search: "",
+        roomID: "",
+        roomTypeID: "",
+        roomType: "",
+        roomPrice: "",
+        capacity: "",
+        size: "",
+        status: "save",
+        isEdit: false,
+      },
     };
   },
+  created() {
+    this.getAllRoom();
+  },
+
   methods: {
     pageReturn(page) {
       this.currentPage = page;
@@ -219,11 +203,74 @@ export default {
     editReturn(value) {
       this.editVisible = value;
     },
-    getRoomData(room) {
+    submit(value) {
+      this.editVisible = value;
+      this.updateData();
+    },
+    getAllRoom() {
+      axios
+        .post("http://localhost:8080/PocoLoco_db/api_room.php", {
+          action: "getAll",
+        })
+        .then(
+          function(res) {
+            this.room_db = res.data;
+          }.bind(this)
+        );
+    },
+
+    getRoomType() {
+      axios
+        .post("http://localhost:8080/PocoLoco_db/api_room.php", {
+          action: "getRoomType",
+        })
+        .then(
+          function(res) {
+            this.type_db = res.data;
+          }.bind(this)
+        );
+    },
+
+    getRoomDataEdit(room) {
+      this.getRoomType();
       this.editVisible = !this.editVisible;
-      this.roomType = room.roomType;
-      this.price = room.price;
-      this.capacity = room.capacity;
+      this.form.roomID = room.roomID;
+      this.form.roomType = room.roomType;
+      this.form.roomPrice = room.roomPrice;
+      this.form.capacity = room.capacity;
+    },
+
+    updateData() {
+      console.log(this.form.roomType);
+      this.check =
+        this.form.roomType != "" &&
+        this.form.roomPrice != "" &&
+        this.form.capacity != "";
+
+      if (this.check) {
+        axios
+          .post("http://localhost:8080/PocoLoco_db/api_room.php", {
+            action: "updateData",
+            roomID: this.form.roomID,
+            roomType: this.form.roomType,
+            roomPrice: this.form.roomPrice,
+            capacity: this.form.capacity,
+          })
+          .then(
+            function(res) {
+              alert(res.data.message);
+              this.resetData();
+              this.getAllRoom();
+            }.bind(this)
+          );
+      }
+    },
+    resetData() {
+      this.form.roomID = "";
+      this.form.roomType = "";
+      this.form.roomPrice = "";
+      this.form.capacity = "";
+      this.form.size = "";
     },
   },
 };
