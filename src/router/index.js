@@ -16,6 +16,7 @@ import Booking from "../views/Booking.vue";
 import HotelExpenses from "../views/HotelExpenses.vue";
 import Promotion from "../views/Promotion.vue";
 import Room from "../views/Room.vue";
+import Services from "../views/Services.vue";
 
 const routes = [
   {
@@ -102,6 +103,11 @@ const routes = [
     path: "/Room",
     name: "Room",
     component: Room,
+  },
+  {
+    path: "/Services",
+    name: "Services",
+    component: Services,
   },
 ];
 
