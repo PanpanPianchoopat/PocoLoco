@@ -44,7 +44,7 @@
     data() {
       return {
         menus,
-        selected: menus[1],
+        selected: menus[0],
       };
     },
     methods: {
@@ -66,6 +66,8 @@
     background: none;
     border: none;
     cursor: pointer;
+    font-size: 14px;
+    color: var(--text-color);
   }
   .inner-container {
     display: flex;
@@ -74,10 +76,12 @@
     padding: 35px 30px;
     background: white;
   }
-  @media (max-width: 700px) {
+  @media (max-width: 1000px) {
     h3 {
       margin: 40px 0 20px 0;
     }
+  }
+  @media (max-width: 700px) {
     .inner-container {
       margin-bottom: 20px;
     }
