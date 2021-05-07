@@ -113,6 +113,31 @@
       <td></td>
     </tr>
   </table>
+
+  <div class="buttons" v-if="orders.length >= 1">
+    <DefaultButton
+      @click="clearBasket()"
+      :style="{
+        height: '40px',
+        width: '110px',
+        background: 'none',
+        marginRight: '40px',
+        border: '3px solid #777777',
+        color: '#777777',
+        fontSize: '15px',
+      }"
+      >CANCEL</DefaultButton
+    >
+    <DefaultButton
+      :style="{
+        height: '40px',
+        width: '110px',
+        background: 'var(--primary-yellow)',
+        fontSize: '15px',
+      }"
+      >CONFIRM</DefaultButton
+    >
+  </div>
 </template>
 
 <script>
@@ -162,10 +187,9 @@ const options = [
     price: 50,
   },
 ];
-const orders = [];
 export default {
   name: "OrderService",
-  components: { DefaultButton, PaginationBar },
+  components: { DefaultButton, PaginationBar, DefaultButton },
   setup() {
     const { width } = useScreenWidth();
     const { height, tableRow } = useScreenHeight(420);
@@ -174,7 +198,7 @@ export default {
   data() {
     return {
       options,
-      orders,
+      orders: [],
       currentPage: 1,
       resultPerPage: 5,
       startingAmount: 1,
@@ -206,6 +230,9 @@ export default {
       this.totalAmount = this.totalAmount - inputAmount;
       this.totalPrice = this.totalPrice - order.price * inputAmount;
       this.orders.splice(index, 1);
+    },
+    clearBasket() {
+      this.orders = [];
     },
   },
 };
@@ -299,6 +326,10 @@ td {
 }
 .fa-trash:hover {
   color: var(--primary-blue);
+}
+.buttons {
+  margin: 0 auto;
+  padding-top: 20px;
 }
 @media (max-width: 700px) {
   p {
