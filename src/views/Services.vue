@@ -19,7 +19,7 @@
 
     <div class="inner-container">
       <AllService v-if="selected == menus[0]" />
-      <AddService v-if="selected == menus[1]" />
+      <OrderService v-if="selected == menus[1]" />
       <ServiceActivity v-if="selected == menus[2]" />
     </div>
   </TablePage>
@@ -28,7 +28,7 @@
 <script>
   import TablePage from "../components/TablePage.vue";
   import AllService from "../components/AllService.vue";
-  import AddService from "../components/AddService.vue";
+  import OrderService from "../components/OrderService.vue";
   import ServiceActivity from "../components/ServiceActivity.vue";
 
   const menus = ["All Services", "Order Service", "History"];
@@ -38,13 +38,13 @@
     components: {
       TablePage,
       AllService,
-      AddService,
+      OrderService,
       ServiceActivity,
     },
     data() {
       return {
         menus,
-        selected: menus[0],
+        selected: menus[1],
       };
     },
     methods: {
