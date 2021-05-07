@@ -1,253 +1,256 @@
 <template>
-  <Container>
-    <Navbar />
+  <TablePage>
+    
+      <h3>Hotel Expenses</h3>
+      <div class="menu-bar">
+        <div>
+          <span class="icon-wrap">
+            <i class="fa fa-search fa-1x"></i>
+          </span>
 
-    <h3>Hotel Expenses</h3>
-    <div class="menu-bar">
-      <div>
-        <span class="icon-wrap">
-          <i class="fa fa-search fa-1x"></i>
-        </span>
-
-        <input
-          v-model="search"
-          class="search-field"
-          type="text"
-          placeholder="search"
-          :style="{ marginBottom: '0' }"
+          <input
+            v-model="search"
+            class="search-field"
+            type="text"
+            placeholder="search"
+            :style="{ marginBottom: '0' }"
+          />
+        </div>
+        <CustomSelect
+          type="Filter"
+          :options="selectOption"
+          :style="{ marginRight: '20px' }"
+          @selection="selectionFilter"
+        />
+        <CustomSelect
+          type="Sort by"
+          :options="selectOption"
+          :style="{ marginRight: '20px' }"
+          @selection="selectionSort"
+        />
+        <DefaultButton
+          @click="searchData"
+          type="small"
+          :style="width < 650 ? { width: '70px' } : {}"
+        >
+          Search
+        </DefaultButton>
+        <AddButton
+          :style="
+            width < 800
+              ? { position: 'fixed', right: '20px', top: '80px' }
+              : { position: 'fixed', right: '60px', top: '170px' }
+          "
+          @click="goToAddExpense()"
         />
       </div>
-      <CustomSelect
-        type="Filter"
-        :options="selectOption"
-        :style="{ marginRight: '20px' }"
-        @selection="selectionFilter"
-      />
-      <CustomSelect
-        type="Sort by"
-        :options="selectOption"
-        :style="{ marginRight: '20px' }"
-        @selection="selectionSort"
-      />
-      <DefaultButton
-        @click="searchData"
-        type="small"
-        :style="width < 650 ? { width: '70px' } : {}"
-      >
-        Search
-      </DefaultButton>
-      <AddButton
+
+      <SearchError v-if="errorSearching" />
+      <table v-if="expenseDetail_db.length !== 0">
+        <tr>
+          <th>Informer</th>
+          <th>Room Number</th>
+          <th>Room Type</th>
+          <th>Expense</th>
+          <th>Date</th>
+          <th>Manage</th>
+        </tr>
+
+        <tr
+          v-for="(expense, i) in expenseDetail_db.slice(
+            currentPage * tableRow - tableRow,
+            currentPage * tableRow
+          )"
+          :key="i"
+          class="row"
+        >
+          <td>{{ expense.em_firstname }} {{ expense.em_lastname }}</td>
+          <td>{{ expense.roomID }}</td>
+          <td>{{ expense.roomType }}</td>
+
+          <td>{{ expense.expense }}</td>
+          <td>{{ expense.expenseDate }}</td>
+          <td>
+            <div class="manage">
+              <!--View-->
+              <button
+                class="manage-button"
+                @click="getExpenseData('view', expense)"
+              >
+                <i class="fa fa-search fa-2x"></i>
+              </button>
+              <div class="vl"></div>
+              <!--Edit-->
+              <button
+                class="manage-button"
+                @click="getExpenseData('edit', expense)"
+              >
+                <i class="fa fa-pencil fa-2x"></i>
+              </button>
+              <div class="vl"></div>
+              <button @click="deleteData(expense)" class="manage-button">
+                <i class="fa fa-trash fa-2x"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <PaginationBar
+        :pageCount="Math.ceil(expenseDetail_db.length / tableRow)"
+        :paginationVisible="expenseDetail_db.length > tableRow"
+        @pageReturn="pageReturn"
         :style="
-          width < 800
-            ? { position: 'fixed', right: '5%', top: '80px' }
-            : { position: 'fixed', right: '5%', top: '170px' }
+          width <= 1000
+            ? {
+                position: 'fixed',
+                bottom: '50px',
+                margin: '0 auto',
+                right: '0',
+                left: '60px',
+              }
+            : {
+                position: 'fixed',
+                bottom: '50px',
+                margin: '0 auto',
+                right: '0',
+                left: '200px',
+              }
         "
-        @click="goToAddExpense()"
       />
-    </div>
 
-    <SearchError v-if="errorSearching" />
-    <table v-if="expenseDetail_db.length !== 0">
-      <tr>
-        <th>Informer</th>
-        <th>Room Number</th>
-        <th>Room Type</th>
-        <th>Expense</th>
-        <th>Date</th>
-        <th>Manage</th>
-      </tr>
 
-      <tr
-        v-for="(expense, i) in expenseDetail_db.slice(
-          currentPage * tableRow - tableRow,
-          currentPage * tableRow
-        )"
-        :key="i"
-        class="row"
-      >
-        <td>{{ expense.em_firstname }} {{ expense.em_lastname }}</td>
-        <td>{{ expense.roomID }}</td>
-        <td>{{ expense.roomType }}</td>
-
-        <td>{{ expense.expense }}</td>
-        <td>{{ expense.expenseDate }}</td>
-        <td>
-          <div class="manage">
-            <!--View-->
-            <button
-              class="manage-button"
-              @click="getExpenseData('view', expense)"
-            >
-              <i class="fa fa-search fa-2x"></i>
-            </button>
-            <div class="vl"></div>
-            <!--Edit-->
-            <button
-              class="manage-button"
-              @click="getExpenseData('edit', expense)"
-            >
-              <i class="fa fa-pencil fa-2x"></i>
-            </button>
-            <div class="vl"></div>
-            <button @click="deleteData(expense)" class="manage-button">
-              <i class="fa fa-trash fa-2x"></i>
-            </button>
+    <!--View-->
+    <Popup v-bind:visible="viewVisible" @popReturn="viewReturn">
+      <div class="popup-head">
+        <div class="user-pic">
+          <div class="user-icon">
+            <!-- แก้เรื่องรูป -->
+            <!-- <img :src="require(`../assets/${role}.png`)" /> -->
+            <img :src="require(`../assets/logo.png`)" />
           </div>
-        </td>
-      </tr>
-    </table>
-
-    <PaginationBar
-      :pageCount="Math.ceil(expenseDetail_db.length / tableRow)"
-      :paginationVisible="expenseDetail_db.length > tableRow"
-      @pageReturn="pageReturn"
-      :style="
-        width <= 1000
-          ? {
-              position: 'fixed',
-              bottom: '50px',
-              margin: '0 auto',
-              right: '0',
-              left: '60px',
-            }
-          : {
-              position: 'fixed',
-              bottom: '50px',
-              margin: '0 auto',
-              right: '0',
-              left: '200px',
-            }
-      "
-    />
-  </Container>
-
-  <!--View-->
-  <Popup v-bind:visible="viewVisible" @popReturn="viewReturn">
-    <div class="popup-head">
-      <div class="user-pic">
-        <div class="user-icon">
-          <!-- แก้เรื่องรูป -->
-          <!-- <img :src="require(`../assets/${role}.png`)" /> -->
-          <img :src="require(`../assets/logo.png`)" />
+          <h4>{{ form.employeeID }}</h4>
         </div>
-        <h4>{{ form.employeeID }}</h4>
-      </div>
-      <div>
-        <h4>{{ form.em_firstname }} {{ form.em_lastname }}</h4>
-        <p class="subscript-text">{{ form.employeeRole }}</p>
-      </div>
-    </div>
-
-    <div class="view-group">
-      <div class="view-item">
-        <p><b>Room No: </b>{{ form.roomID }}</p>
-      </div>
-      <div>
-        <p><b>Room Type: </b>{{ form.roomType }}</p>
-      </div>
-    </div>
-    <p :style="{ textAlign: 'justify' }"><b>Detail: </b>{{ form.detail }}</p>
-    <div class="view-group">
-      <div class="view-item">
-        <p>
-          <b :style="width > 700 ? { marginRight: '10px' } : { margin: '0' }">
-            Amount:
-          </b>
-          {{ form.expense }}
-          <b :style="width > 700 ? { marginLeft: '10px' } : { margin: '0 ' }">
-            Baht
-          </b>
-        </p>
-      </div>
-      <div>
-        <p><b>Date: </b>{{ form.expenseDate }}</p>
-      </div>
-    </div>
-  </Popup>
-
-  <!--Edit-->
-  <Popup
-    v-bind:visible="editVisible"
-    :buttons="true"
-    @popReturn="editReturn"
-    @submit="submit"
-  >
-    <div class="popup-head">
-      <div class="user-pic">
-        <div class="user-icon">
-          <!-- แก้เรื่องรูป -->
-          <!-- <img :src="require(`../assets/${role}.png`)" /> -->
-          <img :src="require(`../assets/logo.png`)" />
-        </div>
-        <h4>{{ form.employeeID }}</h4>
-      </div>
-      <div>
-        <h4>{{ form.em_firstname }} {{ form.em_lastname }}</h4>
-        <p class="subscript-text">{{ form.role }}</p>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <b :style="{ margin: '8px 10px 0 0' }">Room Number</b>
-      <input v-model="form.roomID" type="text" :placeholder="room" />
-    </div>
-
-    <div class="input-group">
-      <b>Detail</b>
-      <textarea v-model="form.detail" :placeholder="detail" />
-    </div>
-
-    <div class="input-group" :style="{ marginTop: '20px' }">
-      <div class="group-item">
-        <b :style="{ marginBottom: '10px' }">Expense Amount</b>
-        <div class="input-group">
-          <input
-            type="text"
-            v-model="form.expense"
-            :placeholder="expenseAmount"
-            :style="{ width: '80px', marginRight: '10px', textAlign: 'right' }"
-          />
-          <p :style="{ margin: '10px 0 0 0' }">Baht</p>
+        <div>
+          <h4>{{ form.em_firstname }} {{ form.em_lastname }}</h4>
+          <p class="subscript-text">{{ form.employeeRole }}</p>
         </div>
       </div>
-      <div>
-        <b>Expense Date</b>
-        <div class="flex x-full" :style="{ marginTop: '10px' }">
-          <v-date-picker
-            v-model="form.expenseDate"
-            :masks="{ input: ['DD/MM/YYYY'] }"
-            :model-config="dateConfig"
-            mode="single"
-            class="flex-grow"
-          >
-            <template v-slot="{ inputValue, inputEvents }">
-              <div :style="{ display: 'flex', flexDirection: 'row' }">
-                <input
-                  :value="inputValue"
-                  v-on="inputEvents"
-                  :placeholder="date"
-                  :style="{ width: '120px' }"
-                />
-                <i
-                  class="fa fa-calendar fa-2x"
-                  :style="{
-                    color: 'var(--primary-blue',
-                    margin: '3px 0 0 -35px',
-                  }"
-                ></i>
-              </div>
-            </template>
-          </v-date-picker>
+
+      <div class="view-group">
+        <div class="view-item">
+          <p><b>Room No: </b>{{ form.roomID }}</p>
+        </div>
+        <div>
+          <p><b>Room Type: </b>{{ form.roomType }}</p>
         </div>
       </div>
-    </div>
-  </Popup>
+      <p :style="{ textAlign: 'justify' }"><b>Detail: </b>{{ form.detail }}</p>
+      <div class="view-group">
+        <div class="view-item">
+          <p>
+            <b :style="width > 700 ? { marginRight: '10px' } : { margin: '0' }">
+              Amount:
+            </b>
+            {{ form.expense }}
+            <b :style="width > 700 ? { marginLeft: '10px' } : { margin: '0 ' }">
+              Baht
+            </b>
+          </p>
+        </div>
+        <div>
+          <p><b>Date: </b>{{ form.expenseDate }}</p>
+        </div>
+      </div>
+    </Popup>
+
+    <!--Edit-->
+    <Popup
+      v-bind:visible="editVisible"
+      :buttons="true"
+      @popReturn="editReturn"
+      @submit="submit"
+    >
+      <div class="popup-head">
+        <div class="user-pic">
+          <div class="user-icon">
+            <!-- แก้เรื่องรูป -->
+            <!-- <img :src="require(`../assets/${role}.png`)" /> -->
+            <img :src="require(`../assets/logo.png`)" />
+          </div>
+          <h4>{{ form.employeeID }}</h4>
+        </div>
+        <div>
+          <h4>{{ form.em_firstname }} {{ form.em_lastname }}</h4>
+          <p class="subscript-text">{{ form.role }}</p>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <b :style="{ margin: '8px 10px 0 0' }">Room Number</b>
+        <input v-model="form.roomID" type="text" :placeholder="room" />
+      </div>
+
+      <div class="input-group">
+        <b>Detail</b>
+        <textarea v-model="form.detail" :placeholder="detail" />
+      </div>
+
+      <div class="input-group" :style="{ marginTop: '20px' }">
+        <div class="group-item">
+          <b :style="{ marginBottom: '10px' }">Expense Amount</b>
+          <div class="input-group">
+            <input
+              type="text"
+              v-model="form.expense"
+              :placeholder="expenseAmount"
+              :style="{
+                width: '80px',
+                marginRight: '10px',
+                textAlign: 'right',
+              }"
+            />
+            <p :style="{ margin: '10px 0 0 0' }">Baht</p>
+          </div>
+        </div>
+        <div>
+          <b>Expense Date</b>
+          <div class="flex x-full" :style="{ marginTop: '10px' }">
+            <v-date-picker
+              v-model="form.expenseDate"
+              :masks="{ input: ['DD/MM/YYYY'] }"
+              :model-config="dateConfig"
+              mode="single"
+              class="flex-grow"
+            >
+              <template v-slot="{ inputValue, inputEvents }">
+                <div :style="{ display: 'flex', flexDirection: 'row' }">
+                  <input
+                    :value="inputValue"
+                    v-on="inputEvents"
+                    :placeholder="date"
+                    :style="{ width: '120px' }"
+                  />
+                  <i
+                    class="fa fa-calendar fa-2x"
+                    :style="{
+                      color: 'var(--primary-blue',
+                      margin: '3px 0 0 -35px',
+                    }"
+                  ></i>
+                </div>
+              </template>
+            </v-date-picker>
+          </div>
+        </div>
+      </div>
+    </Popup>
+  </TablePage>
 </template>
 
 <script>
+import TablePage from "../components/TablePage";
 import DefaultButton from "../components/DefaultButton.vue";
-import Navbar from "../components/Navbar.vue";
-import Container from "../components/Container.vue";
 import PaginationBar from "../components/PaginationBar.vue";
 import AddButton from "../components/AddButton.vue";
 import Popup from "../components/Popup.vue";
@@ -269,9 +272,8 @@ const selectOption = [
 export default {
   name: "HotelExpenses",
   components: {
+    TablePage,
     DefaultButton,
-    Navbar,
-    Container,
     PaginationBar,
     AddButton,
     Popup,
@@ -543,7 +545,7 @@ i {
   flex-direction: row;
 }
 table {
-  width: 75%;
+  width: 100%;
   max-width: 1000;
   margin-top: 50px;
   border: 1px solid black;
@@ -670,9 +672,6 @@ td {
   .vl {
     margin: 0 5px;
   }
-  table {
-    width: 85%;
-  }
   h4 {
     font-size: 16px;
   }
@@ -694,9 +693,6 @@ td {
   }
 }
 @media (max-width: 700px) {
-  table {
-    width: 80%;
-  }
   .search-field {
     width: 150px;
     font-size: 16px;
