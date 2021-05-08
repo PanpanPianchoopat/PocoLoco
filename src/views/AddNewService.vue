@@ -10,8 +10,8 @@
         <h4 style="color:red">Service Type</h4>
         <select v-model="serviceType">
           <option disabled value="">Service Type</option>
-          <option value="1">Food</option>
-          <option value="2">Facilities</option>
+          <option value="1">Room Facilities</option>
+          <option value="2">Food & Beverage</option>
         </select>
       </div>
 
@@ -20,8 +20,8 @@
         <h4>Service Type</h4>
         <select v-model="serviceType">
           <option disabled value="">Service Type</option>
-          <option value="1">Food</option>
-          <option value="2">Facilities</option>
+          <option value="1">Room Facilities</option>
+          <option value="2">Food & Beverage</option>
         </select>
       </div>
 
@@ -106,8 +106,8 @@ export default {
 
   methods: {
     backToAllService() {
-        this.$router.push("/Services");
-      },
+      this.$router.push("/Services");
+    },
     addNewService(e) {
       e.preventDefault();
       this.validate();
@@ -125,6 +125,7 @@ export default {
               if (res.data.success == true) {
                 alert("Saved Successful");
                 this.resetData();
+                this.backToAllService();
               } else {
                 this.message = res.data.message;
               }
