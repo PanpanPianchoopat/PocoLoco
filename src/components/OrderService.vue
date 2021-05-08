@@ -1,13 +1,14 @@
 <template>
   <div class="input-group">
     <p>Room Number</p>
-    <input type="text" />
+    <input v-model="roomID" type="text" />
   </div>
   <div class="input-group">
     <p>Service Name</p>
     <div class="search-container">
       <i class="fa fa-search fa-1x"></i>
       <input
+        v-model="search"
         class="search-field"
         type="text"
         placeholder="search"
@@ -18,6 +19,8 @@
       Search
     </DefaultButton>
   </div>
+
+  <SearchError v-if="errorSearching" />
   <table class="search-table">
     <tr>
       <th v-if="width > 700">Service ID</th>
@@ -92,7 +95,7 @@
       <td :style="{ textAlign: 'left' }">{{ order.name }}</td>
       <td>{{ order.amount }}</td>
       <td>{{ order.price }}</td>
-      <td>{{ order.amount * order.price }}</td>
+      <td>{{ order.totalPrice }}</td>
       <td>
         <button class="manage-button" @click="removeOrder(order, i)">
           <i class="fa fa-trash fa-2x"></i>
@@ -144,6 +147,8 @@ import DefaultButton from "../components/DefaultButton";
 import { useScreenHeight } from "../composables/useScreenHeight";
 import { useScreenWidth } from "../composables/useScreenWidth";
 import PaginationBar from "../components/PaginationBar";
+import SearchError from "../components/SearchError";
+import axios from "axios";
 const options = [
   {
     id: 111,
@@ -196,11 +201,31 @@ export default {
   },
   data() {
     return {
-      options,
-      orders: [],
       currentPage: 1,
       resultPerPage: 5,
       startingAmount: 1,
+      SearchError,
+      roomID: "",
+      search: "",
+      service_db: "",
+      amount: [],
+      totalPrice: 0,
+      amount_insert: 0,
+      serviceID_insert: "",
+      total_insert: "",
+      count_success: "",
+      item: {
+        id: "",
+        name: "",
+        amount: 0,
+        price: 0,
+        totalPrice: 0,
+      },
+      addServiceArray: [],
+
+      options,
+
+      orders: [],
       totalAmount: 0,
       totalPrice: 0,
     };
@@ -210,17 +235,50 @@ export default {
       this.currentPage = page;
     },
     addToOrder(item, index) {
+      var check = true;
       const inputAmount = Number(
         document.getElementById(`orderAmount${index}`).value
       );
       this.totalAmount = this.totalAmount + inputAmount;
       this.totalPrice = this.totalPrice + item.price * inputAmount;
-      this.orders.push({
-        id: item.id,
-        name: item.name,
-        amount: inputAmount,
-        price: item.price,
-      });
+
+      if (this.orders.length == 0) {
+        this.orders.push({
+          id: item.id,
+          name: item.name,
+          amount: inputAmount,
+          price: item.price,
+          totalPrice: inputAmount * item.price,
+        });
+      } else {
+        for (var i = 0; i < this.orders.length; i++) {
+          if (item.id == this.orders[i].id) {
+            var amount_order = 0;
+            var amount_item = 0;
+
+            // Update Amount
+            amount_order = Number(this.orders[i].amount);
+            amount_item = Number(inputAmount);
+            this.orders[i].amount = amount_order + amount_item;
+
+            // Update Total Price
+            item.totalPrice = this.orders[i].amount * item.price;
+            this.orders[i].totalPrice = item.totalPrice;
+
+            // Already have
+            check = false;
+          }
+        }
+        if (check == true) {
+          this.orders.push({
+            id: item.id,
+            name: item.name,
+            amount: inputAmount,
+            price: item.price,
+            totalPrice: inputAmount * item.price,
+          });
+        }
+      }
     },
     removeOrder(order, index) {
       const inputAmount = Number(
