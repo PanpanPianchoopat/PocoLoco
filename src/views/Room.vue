@@ -8,6 +8,7 @@
         </span>
 
         <input
+          v-model="search"
           class="search-field"
           type="text"
           placeholder="search"
@@ -26,11 +27,16 @@
         :style="{ marginRight: '20px' }"
         @selection="selectionSort"
       />
-      <DefaultButton type="small" :style="width < 650 ? { width: '70px' } : {}">
+      <DefaultButton
+        @click="searchData"
+        type="small"
+        :style="width < 650 ? { width: '70px' } : {}"
+      >
         Search
       </DefaultButton>
     </div>
 
+    <SearchError v-if="errorSearching" />
     <table v-if="room_db.length !== 0">
       <tr>
         <th>Room No.</th>
@@ -142,14 +148,7 @@ import CustomSelect from "../components/CustomSelect.vue";
 import SearchError from "../components/SearchError";
 import axios from "axios";
 
-const selectOption = [
-  "All",
-  "Room No.",
-  "Room Type",
-  "Room Price",
-  "Capacity",
-  "Size",
-];
+const selectOption = ["All", "Room No.", "Room Type", "Room Price"];
 
 export default {
   name: "Promotion",
@@ -176,19 +175,16 @@ export default {
       room_db: "",
       type_db: "",
       search: "",
-      sort: "",
-      filter: "",
+      sort: "all",
+      filter: "all",
       check: false,
       form: {
-        search: "",
         roomID: "",
         roomTypeID: "",
         roomType: "",
         roomPrice: "",
         capacity: "",
         size: "",
-        status: "save",
-        isEdit: false,
       },
     };
   },
@@ -265,12 +261,59 @@ export default {
           );
       }
     },
+    searchData() {
+      axios
+        .post("http://localhost:8080/PocoLoco_db/api_room.php", {
+          search: this.search,
+          sort: this.sort,
+          filter: this.filter,
+          action: "searchData",
+        })
+        .then(
+          function(res) {
+            this.room_db = res.data;
+            if (this.room_db != "") {
+              this.errorSearching = false;
+            } else {
+              this.errorSearching = true;
+            }
+          }.bind(this)
+        );
+    },
     resetData() {
       this.form.roomID = "";
       this.form.roomType = "";
       this.form.roomPrice = "";
       this.form.capacity = "";
       this.form.size = "";
+    },
+    selectionSort(value) {
+      if (value === selectOption[0]) {
+        this.sort = "all";
+      }
+      if (value === selectOption[1]) {
+        this.sort = "roomID";
+      }
+      if (value === selectOption[2]) {
+        this.sort = "roomType";
+      }
+      if (value === selectOption[3]) {
+        this.sort = "roomPrice";
+      }
+    },
+    selectionFilter(value) {
+      if (value === selectOption[0]) {
+        this.filter = "all";
+      }
+      if (value === selectOption[1]) {
+        this.filter = "roomID";
+      }
+      if (value === selectOption[2]) {
+        this.filter = "roomType";
+      }
+      if (value === selectOption[3]) {
+        this.filter = "roomPrice";
+      }
     },
   },
 };
