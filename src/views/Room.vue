@@ -264,10 +264,11 @@ export default {
     searchData() {
       axios
         .post("http://localhost:8080/PocoLoco_db/api_room.php", {
+          action: "searchData",
           search: this.search,
           sort: this.sort,
           filter: this.filter,
-          action: "searchData",
+          
         })
         .then(
           function(res) {
