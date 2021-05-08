@@ -1,13 +1,16 @@
 <template>
   <div class="dropdown-container">
     <p>{{ type }}</p>
+
     <div
       class="dropdown-button"
       @click="showDropdown"
       :style="dropdownVisible ? { borderBottom: '2px solid white' } : {}"
     >
-      <label>{{ label ? label : type }}</label>
-      <i class="fa fa-caret-down fa-2x"></i>
+      <div class="button-content">
+        <label>{{ label ? label : type }}</label>
+        <i class="fa fa-caret-down fa-2x"></i>
+      </div>
     </div>
     <div class="dropdown-list" v-if="dropdownVisible">
       <div
@@ -23,15 +26,10 @@
 </template>
 
 <script>
-  import { useScreenWidth } from "../composables/useScreenWidth";
-
   export default {
     name: "CustomSelect",
     props: ["type", "options"],
-    setup() {
-      const { width } = useScreenWidth();
-      return width;
-    },
+
     data() {
       return {
         dropdownVisible: false,
@@ -55,32 +53,43 @@
 <style scoped>
   .dropdown-container {
     margin-top: -22px;
+    position: relative;
   }
   p {
     margin: 0;
   }
   .dropdown-button {
-    width: 100px;
+    width: 120px;
     height: 30px;
     background: var(--primary-blue);
     display: flex;
+    flex-direction: row;
     align-items: center;
     cursor: pointer;
+  }
+  .button-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   label {
     color: white;
     padding-left: 5px;
+    z-index: 1;
   }
   i {
     color: white;
-    padding-left: 75px;
-    position: fixed;
+    font-size: 24px;
+    margin-right: 5px;
   }
+
   .dropdown-list {
-    width: 100px;
+    width: 120px;
     background: var(--primary-blue);
-    position: fixed;
+    align-self: flex-start;
     z-index: 10;
+    position: absolute;
   }
   .option-item {
     height: 30px;
@@ -95,17 +104,17 @@
   }
   @media (max-width: 700px) {
     .dropdown-button {
-      width: 80px;
+      width: 100px;
     }
     label {
       font-size: 14px;
     }
     i {
-      padding-left: 65px;
       font-size: 18px;
+      margin-right: 5px;
     }
     .dropdown-list {
-      width: 80px;
+      width: 100px;
     }
     .option-item {
       font-size: 14px;
