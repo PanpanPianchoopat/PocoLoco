@@ -20,7 +20,6 @@ export default {
   align-items: center;
   text-align: center;
   align-self: center;
-  background: pink;
   margin: auto 0;
 }
 img {
