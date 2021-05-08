@@ -7,7 +7,7 @@
       :style="dropdownVisible ? { borderBottom: '2px solid white' } : {}"
     >
       <div class="button-content">
-        <label>{{ label ? label : type }}</label>
+        <label>{{ label ? label : options[0] }}</label>
         <i class="fa fa-caret-down fa-2x"></i>
       </div>
     </div>
