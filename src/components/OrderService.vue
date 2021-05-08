@@ -36,7 +36,7 @@
       class="row"
     >
       <td v-if="width > 700">{{ option.id }}</td>
-      <td>{{ option.name }}</td>
+      <td :style="{ textAlign: 'left' }">{{ option.name }}</td>
       <td>{{ option.price }}</td>
       <td>
         <input
@@ -62,7 +62,6 @@
       </td>
     </tr>
     <tr
-      class="empty-row"
       v-if="
         currentPage == Math.ceil(options.length / resultPerPage) &&
           options.length % resultPerPage !== 0
@@ -90,7 +89,7 @@
 
     <tr v-for="(order, i) in orders" :key="i" class="row">
       <td v-if="width > 700">{{ order.id }}</td>
-      <td>{{ order.name }}</td>
+      <td :style="{ textAlign: 'left' }">{{ order.name }}</td>
       <td>{{ order.amount }}</td>
       <td>{{ order.price }}</td>
       <td>{{ order.amount * order.price }}</td>
@@ -286,7 +285,7 @@
 
   .search-table {
     width: 100%;
-    height: 210px;
+    height: 220px;
     max-width: 1000px;
     border-collapse: collapse;
     margin: 10px;
