@@ -75,7 +75,7 @@ export default {
   width: 200px;
   height: 100%;
   position: fixed;
-  z-index: 1;
+  z-index: 50;
   top: 0;
   left: 0;
   overflow-x: hidden;
