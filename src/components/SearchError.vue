@@ -20,7 +20,8 @@ export default {
   align-items: center;
   text-align: center;
   align-self: center;
-  margin: auto 0 auto -300px;
+  background: pink;
+  margin: auto 0;
 }
 img {
   width: 140px;
@@ -33,10 +34,5 @@ h2 {
 p {
   margin: 0;
   font-size: 18px;
-}
-@media (max-width: 1000px) {
-  .warning {
-    margin: auto 0 auto -90px;
-  }
 }
 </style>
