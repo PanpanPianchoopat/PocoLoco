@@ -1,6 +1,7 @@
 <template>
   <div class="dropdown-container">
-    <p>{{ type }}</p>
+    <p v-if="type == 'Filter'">Search by</p>
+    <p v-else>{{ type }}</p>
     <div
       class="dropdown-button"
       @click="showDropdown"
