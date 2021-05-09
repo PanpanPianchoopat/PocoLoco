@@ -260,7 +260,7 @@ import SearchError from "../components/SearchError";
 import axios from "axios";
 
 const selectOption = [
-  "All",
+  "Defalut",
   "Informer",
   "Room No.",
   "Room Type",

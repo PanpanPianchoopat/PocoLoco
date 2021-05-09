@@ -206,7 +206,7 @@ import CustomSelect from "../components/CustomSelect.vue";
 import SearchError from "../components/SearchError";
 import axios from "axios";
 
-const selectOption = ["All", "Rank", "ID", "Name", "No. of visit"];
+const selectOption = ["Defalut", "Rank", "ID", "Name", "No. of visit"];
 export default {
   name: "Customer",
   components: {

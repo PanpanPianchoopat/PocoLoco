@@ -129,7 +129,7 @@ import Popup from "../components/Popup";
 import SearchError from "../components/SearchError";
 import axios from "axios";
 
-const selectOption = ["All", "Service Type", "Service Name", "Price"];
+const selectOption = ["Defalut", "Service Type", "Service Name", "Price"];
 
 export default {
   name: "AllService",

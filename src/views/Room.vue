@@ -148,7 +148,7 @@ import CustomSelect from "../components/CustomSelect.vue";
 import SearchError from "../components/SearchError";
 import axios from "axios";
 
-const selectOption = ["All", "Room No.", "Room Type", "Room Price"];
+const selectOption = ["Defalut", "Room No.", "Room Type", "Room Price"];
 
 export default {
   name: "Promotion",
