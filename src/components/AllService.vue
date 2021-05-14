@@ -32,8 +32,9 @@
       :style="{ position: 'absolute', right: '2%' }"
     />
   </div>
+  <SearchError v-if="error" :style="{ marginTop: '80px' }" />
   <div class="table-container">
-    <table v-if="services.length !== 0">
+    <table v-if="services.length !== 0 && !error">
       <tr>
         <th>Service Name</th>
         <th>Type</th>
@@ -71,6 +72,7 @@
   </div>
 
   <PaginationBar
+    v-if="!error"
     :pageCount="Math.ceil(services.length / tableRow)"
     :paginationVisible="services.length > tableRow"
     @pageReturn="pageReturn"
@@ -120,9 +122,9 @@
   import DefaultButton from "./DefaultButton";
   import AddButton from "./AddButton";
   import { useScreenWidth } from "../composables/useScreenWidth";
-  import { useScreenHeight } from "../composables/useScreenHeight";
   import PaginationBar from "./PaginationBar";
-  import Popup from "../components/Popup";
+  import Popup from "./Popup";
+  import SearchError from "./SearchError";
 
   const services = [
     {
@@ -200,6 +202,7 @@
       AddButton,
       PaginationBar,
       Popup,
+      SearchError,
     },
     setup() {
       const { width } = useScreenWidth();
@@ -215,6 +218,7 @@
         serviceType: null,
         serviceName: null,
         servicePrice: null,
+        error: true,
       };
     },
     methods: {
