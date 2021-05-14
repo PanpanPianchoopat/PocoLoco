@@ -33,7 +33,9 @@
       :style="{ position: 'absolute', right: '2%' }"
     />
   </div>
-  <SearchError v-if="errorSearching" />
+
+  <SearchError v-if="errorSearching" :style="{ marginTop: '80px' }" />
+
   <div class="table-container">
     <table v-if="service_db.length !== 0">
       <tr>
