@@ -21,6 +21,7 @@
       <AllService v-if="selected == menus[0]" />
       <OrderService v-if="selected == menus[1]" />
       <ServiceActivity v-if="selected == menus[2]" />
+      <SearchError v-if="notFound" />
     </div>
   </TablePage>
 </template>
@@ -30,6 +31,7 @@
   import AllService from "../components/AllService.vue";
   import OrderService from "../components/OrderService.vue";
   import ServiceActivity from "../components/ServiceActivity.vue";
+  import SearchError from "../components/SearchError";
 
   const menus = ["All Services", "Order Service", "History"];
 
@@ -40,11 +42,13 @@
       AllService,
       OrderService,
       ServiceActivity,
+      SearchError,
     },
     data() {
       return {
         menus,
         selected: menus[0],
+        notFound: false,
       };
     },
     methods: {
